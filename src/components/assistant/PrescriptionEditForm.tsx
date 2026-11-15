@@ -63,7 +63,7 @@ export default function PrescriptionEditForm({
         e.preventDefault();
         await onSave(form);
       }}
-      className="mt-3 p-4 rounded-xl bg-card-subtle border border-border-color space-y-3.5"
+      className="mt-3 p-4 rounded-xl bg-surface border border-border-color space-y-3.5 shadow-sm"
     >
       <div className="flex items-center justify-between pb-2 border-b border-border-color">
         <div className="flex items-center gap-2">
@@ -121,7 +121,7 @@ export default function PrescriptionEditForm({
         <button
           type="submit"
           disabled={saving}
-          className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-lg bg-teal-600 hover:bg-teal-500 text-white shadow-sm transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-white dark:border-transparent shadow-sm transition-colors disabled:opacity-50"
         >
           <Check className="w-3.5 h-3.5" />
           {saving ? 'Adding to Schedule...' : 'Apply & Save to Schedule'}

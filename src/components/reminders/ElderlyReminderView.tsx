@@ -84,7 +84,7 @@ export default function ElderlyReminderView() {
         <button
           onClick={handleSpeak}
           disabled={speaking}
-          className="flex items-center gap-1.5 bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white px-3 py-1.5 rounded-lg font-semibold text-xs transition-colors shrink-0 shadow-sm"
+          className="flex items-center gap-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-white dark:border-transparent disabled:opacity-50 px-3 py-1.5 rounded-lg font-semibold text-xs transition-colors shrink-0 shadow-sm"
           aria-label="Read today's reminders aloud"
         >
           <Volume2 className="w-3.5 h-3.5" aria-hidden="true" />

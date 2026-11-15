@@ -84,9 +84,9 @@ export default function ElderlyAutonomyCenter({ onProposalResolved }: ElderlyAut
         {proposals.map((prop) => (
           <div
             key={prop.id}
-            className={`p-4 rounded-xl border transition-colors ${
+            className={`p-4 rounded-xl border transition-colors shadow-sm ${
               prop.status === 'pending'
-                ? 'bg-card-subtle border-border-color'
+                ? 'bg-surface border-border-color hover:border-teal-400/50'
                 : prop.status === 'approved'
                 ? 'bg-emerald-500/10 border-emerald-500/30 opacity-90'
                 : 'bg-rose-500/10 border-rose-500/30 opacity-80'
@@ -113,13 +113,13 @@ export default function ElderlyAutonomyCenter({ onProposalResolved }: ElderlyAut
                   <>
                     <button
                       onClick={() => handleResolve(prop.id, 'approved')}
-                      className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-3 py-2 rounded-lg transition-colors shadow-sm"
+                      className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border-transparent font-semibold text-xs px-3 py-2 rounded-lg transition-colors shadow-sm"
                     >
-                      <Check className="w-3.5 h-3.5" /> Approve
+                      <Check className="w-3.5 h-3.5 text-emerald-700 dark:text-white" /> Approve
                     </button>
                     <button
                       onClick={() => handleResolve(prop.id, 'declined')}
-                      className="flex items-center gap-1.5 bg-surface hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary font-semibold text-xs px-3 py-2 rounded-lg border border-border-color transition-colors"
+                      className="flex items-center gap-1.5 bg-surface hover:bg-gray-100 dark:hover:bg-gray-700 text-text-primary font-semibold text-xs px-3 py-2 rounded-lg border border-border-color transition-colors shadow-sm"
                     >
                       <X className="w-3.5 h-3.5" /> Decline
                     </button>

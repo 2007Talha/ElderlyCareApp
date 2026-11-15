@@ -74,7 +74,7 @@ export default function CaretakerOversight({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-card-subtle rounded-lg p-3 border border-border-color">
+        <div className="bg-surface rounded-xl p-3.5 border border-border-color shadow-sm">
           <p className="text-xs text-text-secondary font-medium mb-1">Adherence Status</p>
           <p className="text-sm text-text-primary">
             {missedDoseCount > 0
@@ -83,7 +83,7 @@ export default function CaretakerOversight({
           </p>
         </div>
 
-        <div className="bg-card-subtle rounded-lg p-3 border border-border-color">
+        <div className="bg-surface rounded-xl p-3.5 border border-border-color shadow-sm">
           <p className="text-xs text-text-secondary font-medium mb-1">Refill Procurement</p>
           {lowInventory.length === 0 ? (
             <p className="text-xs text-text-secondary">All supplies are currently above safety threshold.</p>

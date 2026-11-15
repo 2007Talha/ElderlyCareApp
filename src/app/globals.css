@@ -21,7 +21,7 @@
   /* Warm Daylight (Light Mode Exact Tokens) */
   --bg-primary: #FAF8F5;
   --bg-surface: #FFFFFF;
-  --bg-card-subtle: #F3EFEA;
+  --bg-card-subtle: #FFFFFF;
   --text-primary: #1C1917;
   --text-secondary: #57534E;
   --border-color: #E6E1D6;
@@ -79,7 +79,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   background-color: #FAF8F5 !important;
 }
 
-/* Secondary / Hover / Subtle Surface: #F3EFEA */
+/* Secondary / Hover / Subtle Surface: #FFFFFF (Crisp, Light, Pure) */
 [data-theme="light"] .bg-gray-950,
 .light .bg-gray-950,
 [data-theme="light"] .bg-gray-900,
@@ -100,19 +100,19 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 .light .bg-gray-800\/40,
 [data-theme="light"] .bg-card-subtle,
 .light .bg-card-subtle {
-  background-color: #F3EFEA !important;
+  background-color: #FFFFFF !important;
   border-color: #E6E1D6 !important;
   color: #1C1917 !important;
 }
 
-/* Subtle Card & Nav Hover: #EBE5DA */
+/* Subtle Card & Nav Hover: #F5F2EB */
 [data-theme="light"] .hover\:bg-gray-800:hover,
 .light .hover\:bg-gray-800:hover,
 [data-theme="light"] .hover\:bg-gray-700:hover,
 .light .hover\:bg-gray-700:hover,
 [data-theme="light"] nav button:hover,
 .light nav button:hover {
-  background-color: #EBE5DA !important;
+  background-color: #F5F2EB !important;
   color: #1C1917 !important;
 }
 
@@ -150,19 +150,57 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   color: #57534E !important;
 }
 
-/* Primary Accent & Action Buttons: #0F766E with #FFFFFF text */
-[data-theme="light"] .bg-teal-600,
-.light .bg-teal-600 {
-  background-color: #0F766E !important;
-  color: #FFFFFF !important;
+/* Light Mode Action Buttons: Clean, High-Contrast Light Aesthetic */
+[data-theme="light"] button.bg-emerald-600,
+.light button.bg-emerald-600,
+[data-theme="light"] button.bg-success,
+.light button.bg-success {
+  background-color: #ECFDF5 !important;
+  border: 1px solid #A7F3D0 !important;
+  color: #047857 !important;
 }
 
-[data-theme="light"] .bg-teal-600:hover,
-.light .bg-teal-600:hover,
-[data-theme="light"] .hover\:bg-teal-500:hover,
-.light .hover\:bg-teal-500:hover {
-  background-color: #115E59 !important;
-  color: #FFFFFF !important;
+[data-theme="light"] button.bg-emerald-600:hover,
+.light button.bg-emerald-600:hover,
+[data-theme="light"] button.bg-success:hover,
+.light button.bg-success:hover {
+  background-color: #D1FAE5 !important;
+  border-color: #6EE7B7 !important;
+  color: #065F46 !important;
+}
+
+[data-theme="light"] button.bg-emerald-600 svg,
+.light button.bg-emerald-600 svg,
+[data-theme="light"] button.bg-success svg,
+.light button.bg-success svg {
+  color: #047857 !important;
+  stroke: #047857 !important;
+}
+
+[data-theme="light"] button.bg-teal-600,
+.light button.bg-teal-600,
+[data-theme="light"] button.bg-accent,
+.light button.bg-accent {
+  background-color: #F0FDFA !important;
+  border: 1px solid #99F6E4 !important;
+  color: #0F766E !important;
+}
+
+[data-theme="light"] button.bg-teal-600:hover,
+.light button.bg-teal-600:hover,
+[data-theme="light"] button.bg-accent:hover,
+.light button.bg-accent:hover {
+  background-color: #CCFBF1 !important;
+  border-color: #5EEAD4 !important;
+  color: #115E59 !important;
+}
+
+[data-theme="light"] button.bg-teal-600 svg,
+.light button.bg-teal-600 svg,
+[data-theme="light"] button.bg-accent svg,
+.light button.bg-accent svg {
+  color: #0F766E !important;
+  stroke: #0F766E !important;
 }
 
 [data-theme="light"] .text-teal-400,

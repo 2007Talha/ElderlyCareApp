@@ -122,7 +122,7 @@ export default function PrescriptionScanner({
             <button
               onClick={handleDemoScan}
               disabled={loading}
-              className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm transition-colors"
+              className="flex items-center gap-2 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-white dark:border-transparent disabled:opacity-50 px-4 py-2 rounded-lg text-sm font-semibold shadow-sm transition-colors"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" aria-hidden="true" />}
               {loading ? 'Analyzing Label...' : 'Demo AI Scan'}

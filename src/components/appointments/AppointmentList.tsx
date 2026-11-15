@@ -43,7 +43,7 @@ export default function AppointmentList() {
           <Calendar className="w-6 h-6 text-teal-400" aria-hidden="true" />
           Medical Appointments
         </h2>
-        <button onClick={() => { setEditingApt(null); setShowForm(true); }} className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 font-semibold text-white px-4 py-2 rounded-lg transition-colors">
+        <button onClick={() => { setEditingApt(null); setShowForm(true); }} className="flex items-center gap-2 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-white dark:border-transparent font-semibold px-4 py-2 rounded-lg transition-colors shadow-sm">
           <Plus className="w-4 h-4" aria-hidden="true" />
           Add Appointment
         </button>

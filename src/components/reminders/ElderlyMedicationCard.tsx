@@ -51,14 +51,14 @@ function ElderlyMedicationCardComponent({
         <button
           onClick={() => onTakeDose(med.id, primaryTime)}
           disabled={isLogging}
-          className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold px-2.5 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
+          className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border-transparent disabled:opacity-50 font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
         >
-          <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 dark:text-white" aria-hidden="true" />
           {isLogging ? 'Saving...' : 'Took Pill'}
         </button>
         <button
           onClick={() => onToggleSnooze(med.id)}
-          className="flex items-center gap-1 bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary border border-border-color font-semibold px-2.5 py-1.5 rounded-lg text-xs transition-colors"
+          className="flex items-center gap-1.5 bg-surface hover:bg-gray-100 dark:hover:bg-gray-700 text-text-primary border border-border-color font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
         >
           <Clock className="w-3.5 h-3.5" aria-hidden="true" />
           Snooze

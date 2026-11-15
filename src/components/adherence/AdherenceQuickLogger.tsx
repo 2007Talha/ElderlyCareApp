@@ -62,25 +62,25 @@ export default function AdherenceQuickLogger({
                 <button
                   onClick={() => onDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Taken')}
                   disabled={loggingMedId === `${med.id}-Taken`}
-                  className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                  className="flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border-transparent disabled:opacity-50 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
                 >
-                  <CheckCircle className="w-3.5 h-3.5" />
+                  <CheckCircle className="w-3.5 h-3.5 text-emerald-700 dark:text-white" />
                   Taken
                 </button>
                 <button
                   onClick={() => onDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Missed')}
                   disabled={loggingMedId === `${med.id}-Missed`}
-                  className="flex items-center gap-1 bg-rose-600 hover:bg-rose-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                  className="flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 dark:bg-rose-600 dark:hover:bg-rose-500 dark:text-white dark:border-transparent disabled:opacity-50 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
                 >
-                  <XCircle className="w-3.5 h-3.5" />
+                  <XCircle className="w-3.5 h-3.5 text-rose-700 dark:text-white" />
                   Missed
                 </button>
                 <button
                   onClick={() => onDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Snoozed')}
                   disabled={loggingMedId === `${med.id}-Snoozed`}
-                  className="flex items-center gap-1 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                  className="flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-600 dark:hover:bg-amber-500 dark:text-white dark:border-transparent disabled:opacity-50 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
                 >
-                  <Clock className="w-3.5 h-3.5" />
+                  <Clock className="w-3.5 h-3.5 text-amber-700 dark:text-white" />
                   Snooze
                 </button>
               </div>

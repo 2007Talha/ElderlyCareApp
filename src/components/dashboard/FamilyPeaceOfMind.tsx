@@ -67,7 +67,7 @@ export default function FamilyPeaceOfMind({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-card-subtle rounded-lg p-3 border border-border-color">
+        <div className="bg-surface rounded-xl p-3.5 border border-border-color shadow-sm">
           <p className="text-xs text-text-secondary font-medium mb-1">Upcoming Doctor Visit</p>
           {nextApt ? (
             <div className="flex items-center justify-between text-xs mt-1">
@@ -88,7 +88,7 @@ export default function FamilyPeaceOfMind({
           )}
         </div>
 
-        <form onSubmit={handleSendNote} className="bg-card-subtle rounded-lg p-3 border border-border-color">
+        <form onSubmit={handleSendNote} className="bg-surface rounded-xl p-3.5 border border-border-color shadow-sm">
           <label htmlFor="family-note" className="block text-xs text-text-secondary font-medium mb-1">
             Send Love Note or Check-in
           </label>
@@ -98,14 +98,14 @@ export default function FamilyPeaceOfMind({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="e.g. Thinking of you, drink some water!"
-              className="flex-1 bg-surface border border-border-color rounded px-2.5 py-1 text-xs text-text-primary"
+              className="flex-1 bg-card-subtle border border-border-color rounded px-2.5 py-1 text-xs text-text-primary"
             />
             <button
               type="submit"
               disabled={!note.trim()}
-              className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs px-2.5 py-1 rounded transition-colors"
+              className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border-transparent disabled:opacity-50 font-semibold text-xs px-3 py-1.5 rounded-lg transition-colors shadow-sm"
             >
-              <Send className="w-3 h-3" />
+              <Send className="w-3 h-3 text-emerald-700 dark:text-white" />
               {sent ? 'Sent!' : 'Send'}
             </button>
           </div>

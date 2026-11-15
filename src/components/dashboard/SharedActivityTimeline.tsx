@@ -74,7 +74,7 @@ export default function SharedActivityTimeline({ activities }: SharedActivityTim
           return (
             <div
               key={item.id}
-              className="p-3.5 rounded-xl bg-card-subtle border border-border-color flex items-start gap-3 hover:border-gray-400 dark:hover:border-gray-700 transition-colors shadow-sm"
+              className="p-3.5 rounded-xl bg-surface border border-border-color flex items-start gap-3 hover:border-teal-400/50 transition-colors shadow-sm"
             >
               <div className="p-2 rounded-lg bg-surface border border-border-color shrink-0 mt-0.5">
                 {CATEGORY_ICONS[item.category]}

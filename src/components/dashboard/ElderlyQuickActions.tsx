@@ -114,7 +114,7 @@ export default function ElderlyQuickActions({
           </div>
           <button
             onClick={onVoiceClick}
-            className="flex items-center gap-1.5 text-xs bg-accent/20 hover:bg-accent/30 text-accent border border-accent/40 px-3 py-1.5 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 text-xs bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-accent/20 dark:hover:bg-accent/30 dark:text-accent dark:border-accent/40 font-medium px-3 py-1.5 rounded-lg transition-colors shadow-sm"
           >
             <Volume2 className="w-4 h-4" />
             Voice Command
@@ -123,23 +123,23 @@ export default function ElderlyQuickActions({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {medications.filter((m) => m.isActive).map((med) => (
-            <div key={med.id} className="bg-card-subtle border border-border-color rounded-lg p-3 flex items-center justify-between gap-2.5">
+            <div key={med.id} className="bg-surface border border-border-color rounded-xl p-3.5 flex items-center justify-between gap-2.5 shadow-sm hover:border-teal-400/50 transition-colors">
               <div className="flex items-center gap-2.5">
-                <div className="p-1.5 rounded-md bg-surface shrink-0">
+                <div className="p-2 rounded-lg bg-card-subtle border border-border-color shrink-0">
                   <PillShapeIcon medicationName={med.medicationName} size={24} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-text-primary">{med.medicationName}</p>
-                  <p className="text-xs text-text-secondary tabular-nums">{med.dosage} • {med.scheduledTimes[0]}</p>
+                  <p className="text-sm font-bold text-text-primary">{med.medicationName}</p>
+                  <p className="text-xs text-text-secondary tabular-nums mt-0.5">{med.dosage} • {med.scheduledTimes[0]}</p>
                 </div>
               </div>
               <button
                 onClick={() => handleQuickTake(med.id, med.scheduledTimes[0])}
                 disabled={loggingId === med.id}
-                className="flex items-center gap-1 bg-success hover:bg-emerald-600 disabled:opacity-50 text-white text-xs px-2.5 py-1.5 rounded-md transition-colors"
+                className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border-transparent font-semibold text-xs px-3 py-1.5 rounded-lg transition-colors shadow-sm disabled:opacity-50"
                 aria-label={`Mark ${med.medicationName} as taken`}
               >
-                <CheckCircle2 className="w-3.5 h-3.5" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 dark:text-white" />
                 {loggingId === med.id ? 'Saving...' : 'Took Pill'}
               </button>
             </div>
