@@ -103,7 +103,7 @@ export default function ElderlyReminderView() {
           </div>
           <button
             onClick={handleAcknowledgeCheckIn}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm shrink-0"
+            className="bg-teal-600 hover:bg-teal-500 text-white font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm shrink-0"
           >
             I Am OK 👍
           </button>

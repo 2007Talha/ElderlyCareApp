@@ -98,7 +98,7 @@ export default function ElderlyQuickActions({
           <button
             onClick={handleConfirmSafe}
             disabled={confirmingCheckIn}
-            className="flex items-center gap-2 bg-success hover:bg-emerald-600 disabled:opacity-50 text-white font-bold px-4 py-2.5 rounded-lg text-sm shrink-0 transition-colors shadow-lg"
+            className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-bold px-4 py-2.5 rounded-lg text-sm shrink-0 transition-colors shadow-lg"
           >
             <Heart className="w-4 h-4 fill-white" />
             {confirmingCheckIn ? 'Confirming...' : "I'm Safe & OK"}
@@ -114,7 +114,7 @@ export default function ElderlyQuickActions({
           </div>
           <button
             onClick={onVoiceClick}
-            className="flex items-center gap-1.5 text-xs bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-accent/20 dark:hover:bg-accent/30 dark:text-accent dark:border-accent/40 font-medium px-3 py-1.5 rounded-lg transition-colors shadow-sm"
+            className="flex items-center gap-1.5 text-xs bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-950/40 dark:hover:bg-teal-900/60 dark:text-teal-300 dark:border-teal-500/40 font-medium px-3 py-1.5 rounded-lg transition-colors shadow-sm"
           >
             <Volume2 className="w-4 h-4" />
             Voice Command
@@ -136,10 +136,10 @@ export default function ElderlyQuickActions({
               <button
                 onClick={() => handleQuickTake(med.id, med.scheduledTimes[0])}
                 disabled={loggingId === med.id}
-                className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border-transparent font-semibold text-xs px-3 py-1.5 rounded-lg transition-colors shadow-sm disabled:opacity-50"
+                className="flex items-center gap-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-white dark:border-transparent font-semibold text-xs px-3 py-1.5 rounded-lg transition-colors shadow-sm disabled:opacity-50"
                 aria-label={`Mark ${med.medicationName} as taken`}
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 dark:text-white" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-teal-700 dark:text-white" />
                 {loggingId === med.id ? 'Saving...' : 'Took Pill'}
               </button>
             </div>

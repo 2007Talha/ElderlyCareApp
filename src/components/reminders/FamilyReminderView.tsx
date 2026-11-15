@@ -82,7 +82,7 @@ export default function FamilyReminderView() {
           <button
             onClick={() => handleSendLovingNudge()}
             disabled={sending || !customMsg.trim()}
-            className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-lg text-xs transition-colors flex items-center gap-1 shrink-0"
+            className="bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-bold px-4 py-2 rounded-lg text-xs transition-colors flex items-center gap-1 shrink-0"
           >
             <Send className="w-3.5 h-3.5" />
             Send

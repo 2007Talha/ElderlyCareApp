@@ -1,6 +1,4 @@
-/**
- * Smart Care Assistant: Multimodal label scanner & contextual advice.
- */
+/** Smart Care Assistant: Multimodal label scanner & contextual advice. */
 import type { AssistantMessage, PrescriptionScanResult } from '@/types';
 import { AI_CONFIG } from '@/config/constants';
 import { getMedications, getAppointments, getAdherenceRecords } from '@/store/dataStore';

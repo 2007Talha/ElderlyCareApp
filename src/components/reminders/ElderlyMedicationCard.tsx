@@ -51,9 +51,9 @@ function ElderlyMedicationCardComponent({
         <button
           onClick={() => onTakeDose(med.id, primaryTime)}
           disabled={isLogging}
-          className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border-transparent disabled:opacity-50 font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
+          className="flex items-center gap-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-white dark:border-transparent disabled:opacity-50 font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
         >
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 dark:text-white" aria-hidden="true" />
+          <CheckCircle2 className="w-3.5 h-3.5 text-teal-700 dark:text-white" aria-hidden="true" />
           {isLogging ? 'Saving...' : 'Took Pill'}
         </button>
         <button

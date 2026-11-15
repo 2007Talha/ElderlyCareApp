@@ -13,10 +13,7 @@ interface PrescriptionScannerProps {
 }
 
 /** AI Prescription Label Scanner with multimodal OCR and review form. */
-export default function PrescriptionScanner({
-  onScanResult,
-  onMedicationAdded,
-}: PrescriptionScannerProps) {
+export default function PrescriptionScanner({ onScanResult, onMedicationAdded }: PrescriptionScannerProps) {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

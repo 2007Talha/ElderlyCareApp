@@ -62,9 +62,9 @@ export default function AdherenceQuickLogger({
                 <button
                   onClick={() => onDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Taken')}
                   disabled={loggingMedId === `${med.id}-Taken`}
-                  className="flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border-transparent disabled:opacity-50 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                  className="flex items-center gap-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-600 dark:hover:bg-teal-500 dark:text-white dark:border-transparent disabled:opacity-50 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
                 >
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-700 dark:text-white" />
+                  <CheckCircle className="w-3.5 h-3.5 text-teal-700 dark:text-white" />
                   Taken
                 </button>
                 <button
