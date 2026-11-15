@@ -65,13 +65,13 @@ export default function FamilyReminderView() {
   return (
     <div className="space-y-6">
       {/* Peace of Mind Banner */}
-      <div className="p-5 rounded-2xl bg-emerald-500/10 border-2 border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Heart className="w-6 h-6 text-emerald-400" aria-hidden="true" />
+          <h2 className="text-sm font-bold flex items-center gap-2">
+            <Heart className="w-4 h-4 text-emerald-400" aria-hidden="true" />
             Family Peace-of-Mind & Gentle Reminders
           </h2>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-xs text-gray-400 mt-0.5">
             Stay connected with your loved one&apos;s daily routine and send loving encouragements.
           </p>
         </div>

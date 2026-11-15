@@ -22,7 +22,7 @@ export default function ReminderCenter({ role }: ReminderCenterProps) {
       <div className="flex items-center justify-between pb-2 border-b border-gray-800 flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <Bell className="w-5 h-5 text-teal-400" aria-hidden="true" />
-          <h2 className="text-xl font-bold">
+          <h2 className="text-lg font-bold">
             Reminders Center — <span className="text-teal-400">{role} Mode</span>
           </h2>
         </div>

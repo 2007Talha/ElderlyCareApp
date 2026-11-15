@@ -57,13 +57,13 @@ export default function CaretakerReminderView() {
   return (
     <div className="space-y-6">
       {/* Header and Automated Dispatch Trigger */}
-      <div className="p-5 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <ShieldAlert className="w-6 h-6 text-amber-400" aria-hidden="true" />
+          <h2 className="text-sm font-bold flex items-center gap-2">
+            <ShieldAlert className="w-4 h-4 text-amber-400" aria-hidden="true" />
             Clinical Reminders & Escalation Hub
           </h2>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-xs text-gray-400 mt-0.5">
             Automated monitoring scans for missed doses, refills, and urgent check-ins.
           </p>
         </div>
@@ -71,9 +71,9 @@ export default function CaretakerReminderView() {
           <button
             onClick={handleDispatchReminders}
             disabled={dispatching}
-            className="flex items-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2.5 rounded-xl text-sm transition-all shadow-md active:scale-95 disabled:opacity-50"
+            className="flex items-center gap-1.5 bg-amber-600 hover:bg-amber-500 text-white font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm disabled:opacity-50"
           >
-            <Zap className="w-4 h-4" aria-hidden="true" />
+            <Zap className="w-3.5 h-3.5" aria-hidden="true" />
             {dispatching ? 'Running Scan...' : 'Dispatch Automated Checks'}
           </button>
         </div>

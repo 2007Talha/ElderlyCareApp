@@ -20,6 +20,7 @@ import ThemeToggle from '@/components/ui/ThemeToggle';
 import { HeartHandshake, Stethoscope, UsersRound } from 'lucide-react';
 
 const SESSION_KEY = 'eldercare_session';
+const COMFORT_KEY = 'eldercare_comfort_mode';
 
 /** Root page — authentication gate with local persistence and role views. */
 export default function HomePage() {
@@ -31,12 +32,14 @@ export default function HomePage() {
   useEffect(() => {
     setMounted(true);
     try {
+      const savedComfort = localStorage.getItem(COMFORT_KEY);
+      if (savedComfort !== null) setComfortMode(savedComfort === 'true');
+
       const stored = localStorage.getItem(SESSION_KEY);
       if (stored) {
         const parsed: AuthSession = JSON.parse(stored);
         if (new Date(parsed.expiresAt).getTime() > Date.now()) {
           setSession(parsed);
-          if (parsed.role === 'Elderly Individual') setComfortMode(true);
         } else {
           localStorage.removeItem(SESSION_KEY);
         }
@@ -46,8 +49,19 @@ export default function HomePage() {
 
   const handleLogin = useCallback((s: AuthSession) => {
     setSession(s);
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch { /* ignore */ }
-    if (s.role === 'Elderly Individual') setComfortMode(true);
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(s));
+      const savedComfort = localStorage.getItem(COMFORT_KEY);
+      if (savedComfort !== null) setComfortMode(savedComfort === 'true');
+    } catch { /* ignore */ }
+  }, []);
+
+  const handleToggleComfort = useCallback(() => {
+    setComfortMode((prev) => {
+      const next = !prev;
+      try { localStorage.setItem(COMFORT_KEY, String(next)); } catch { /* ignore */ }
+      return next;
+    });
   }, []);
 
   const handleLogout = useCallback(() => {
@@ -102,7 +116,7 @@ export default function HomePage() {
             <ThemeToggle />
             <ComfortModeToggle
               enabled={comfortMode}
-              onToggle={() => setComfortMode(!comfortMode)}
+              onToggle={handleToggleComfort}
             />
           </div>
         </header>

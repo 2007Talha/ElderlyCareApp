@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import type { Medication, Appointment, ApiResponse } from '@/types';
+import type { Medication, Appointment } from '@/types';
 import PillShapeIcon from '@/components/ui/PillShapeIcon';
 import ScheduleTimelineIcon from '@/components/medications/ScheduleTimelineIcon';
-import { Volume2, CheckCircle2, Clock, Calendar, Heart, BellRing, Sparkles } from 'lucide-react';
+import { Volume2, CheckCircle2, Clock, Calendar, Heart, Sparkles } from 'lucide-react';
 
 interface CheckInAlert {
   id: string;
@@ -26,7 +26,7 @@ function speakReminders(meds: Medication[], apts: Appointment[]) {
   window.speechSynthesis.speak(speech);
 }
 
-/** Elderly-focused reminder center with audio speech and 1-click dose confirmation. */
+/** Elderly-focused reminder center with compact typography and 1-click dose confirmation. */
 export default function ElderlyReminderView() {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -62,7 +62,7 @@ export default function ElderlyReminderView() {
           status: 'Taken',
           scheduledTime: time,
           recordedBy: 'Elderly Individual',
-          notes: 'Confirmed via Elderly Reminders View',
+          notes: 'Confirmed via Daily Reminders',
         }),
       });
       await fetchData();
@@ -84,96 +84,93 @@ export default function ElderlyReminderView() {
   }, [medications, appointments]);
 
   return (
-    <div className="space-y-6">
-      {/* Audio Announcement Header */}
-      <div className="p-5 rounded-2xl bg-teal-500/10 border-2 border-teal-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <BellRing className="w-6 h-6 text-teal-400" aria-hidden="true" />
-            My Daily Reminders
-          </h2>
-          <p className="text-sm text-gray-400 mt-1">
-            Tap &quot;Take Pill Now&quot; to confirm your medicine or listen to your schedule aloud.
+    <div className="space-y-4">
+      {/* Audio Announcement Bar */}
+      <div className="p-3.5 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-teal-400 shrink-0" aria-hidden="true" />
+          <p className="text-xs text-gray-300">
+            Listen to your daily routine or tap <strong className="text-teal-400">Took Pill</strong> to confirm doses.
           </p>
         </div>
         <button
           onClick={handleSpeak}
           disabled={speaking}
-          className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 text-white px-5 py-3 rounded-xl font-bold text-base shadow-md transition-all active:scale-95 self-start sm:self-auto"
+          className="flex items-center gap-1.5 bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white px-3 py-1.5 rounded-lg font-semibold text-xs transition-colors shrink-0 shadow-sm"
           aria-label="Read today's reminders aloud"
         >
-          <Volume2 className="w-5 h-5" aria-hidden="true" />
-          {speaking ? 'Reading Aloud...' : 'Read Aloud'}
+          <Volume2 className="w-3.5 h-3.5" aria-hidden="true" />
+          {speaking ? 'Reading...' : 'Read Aloud'}
         </button>
       </div>
 
       {/* Pending Check-In Message */}
       {checkInAlert && (
-        <aside aria-label="Incoming check-in alert" className="p-5 rounded-2xl bg-amber-500/15 border-2 border-amber-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-pulse">
-          <div className="flex items-start gap-3">
-            <Heart className="w-7 h-7 text-amber-400 shrink-0 mt-0.5" aria-hidden="true" />
+        <aside aria-label="Incoming check-in alert" className="p-3.5 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-between gap-3 animate-pulse">
+          <div className="flex items-start gap-2.5">
+            <Heart className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" aria-hidden="true" />
             <div>
-              <p className="font-bold text-base">Check-In From Care Team</p>
-              <p className="text-sm text-gray-300 mt-0.5">{checkInAlert.message}</p>
+              <p className="font-semibold text-xs text-white">Check-In From Care Team</p>
+              <p className="text-[11px] text-gray-300 mt-0.5">{checkInAlert.message}</p>
             </div>
           </div>
           <button
             onClick={handleAcknowledgeCheckIn}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all shadow-md self-start sm:self-auto"
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded-lg text-xs transition-colors shadow-sm shrink-0"
           >
-            I Am Doing Well! 👍
+            I Am OK 👍
           </button>
         </aside>
       )}
 
       {/* Medication Reminders List */}
-      <section aria-labelledby="med-reminders-heading" className="space-y-4">
-        <h3 id="med-reminders-heading" className="font-bold text-lg flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-teal-400" aria-hidden="true" />
+      <section aria-labelledby="med-reminders-heading" className="space-y-2.5">
+        <h3 id="med-reminders-heading" className="font-bold text-xs uppercase tracking-wider text-gray-400">
           Medications Due Today
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
           {medications.map((med) => {
             const isSnoozed = snoozedId === med.id;
             const primaryTime = med.scheduledTimes[0] || '08:00';
             return (
-              <article key={med.id} className="p-5 rounded-2xl bg-surface border border-gray-800 shadow-sm flex flex-col justify-between gap-4">
-                <div className="flex items-start gap-3.5">
-                  <div className="p-3 rounded-xl bg-gray-800/80 border border-gray-700/60 shrink-0">
-                    <PillShapeIcon medicationName={med.medicationName} size={36} />
+              <article key={med.id} className="p-3 rounded-xl bg-surface border border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-lg bg-gray-900/60 border border-gray-700/50 shrink-0">
+                    <PillShapeIcon medicationName={med.medicationName} size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg">{med.medicationName}</h4>
-                    <p className="text-sm text-teal-400 font-semibold tabular-nums mt-0.5">{med.dosage} • {med.frequency}</p>
-                    <div className="flex flex-wrap items-center gap-2 mt-2">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-semibold text-sm text-white">{med.medicationName}</h4>
+                      <span className="text-xs text-teal-400 font-semibold tabular-nums">{med.dosage}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-1">
                       {med.scheduledTimes.map((t) => (
-                        <ScheduleTimelineIcon key={t} time={t} showLabel={true} />
+                        <ScheduleTimelineIcon key={t} time={t} showLabel={false} />
                       ))}
+                      <span className="text-[11px] text-gray-400">({med.frequency})</span>
                     </div>
                   </div>
                 </div>
 
-                {isSnoozed && (
-                  <div className="p-2.5 rounded-lg bg-amber-500/15 border border-amber-500/30 text-xs text-amber-300 font-medium flex items-center gap-2">
-                    <Clock className="w-4 h-4 shrink-0" aria-hidden="true" />
-                    Snoozed for 15 minutes. We will remind you again soon!
-                  </div>
-                )}
-
-                <div className="flex items-center gap-3 pt-2 border-t border-gray-800">
+                <div className="flex items-center gap-2 shrink-0">
+                  {isSnoozed && (
+                    <span className="text-[11px] text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2 py-1 rounded-md flex items-center gap-1">
+                      <Clock className="w-3 h-3" /> Snoozed 15m
+                    </span>
+                  )}
                   <button
                     onClick={() => handleTakeDose(med.id, primaryTime)}
                     disabled={loggedId === med.id}
-                    className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold py-3 px-4 rounded-xl text-sm transition-all shadow-md active:scale-98"
+                    className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold px-2.5 py-1.5 rounded-lg text-xs transition-colors shadow-sm"
                   >
-                    <CheckCircle2 className="w-5 h-5" aria-hidden="true" />
-                    {loggedId === med.id ? 'Recording...' : 'Take Pill Now'}
+                    <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+                    {loggedId === med.id ? 'Saving...' : 'Took Pill'}
                   </button>
                   <button
                     onClick={() => setSnoozedId(isSnoozed ? null : med.id)}
-                    className="flex items-center justify-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 font-semibold py-3 px-3.5 rounded-xl text-sm transition-colors"
+                    className="flex items-center gap-1 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 font-semibold px-2.5 py-1.5 rounded-lg text-xs transition-colors"
                   >
-                    <Clock className="w-4 h-4" aria-hidden="true" />
+                    <Clock className="w-3.5 h-3.5" aria-hidden="true" />
                     Snooze
                   </button>
                 </div>
@@ -184,24 +181,24 @@ export default function ElderlyReminderView() {
       </section>
 
       {/* Appointment Reminders */}
-      <section aria-labelledby="apt-reminders-heading" className="space-y-3">
-        <h3 id="apt-reminders-heading" className="font-bold text-lg flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-amber-400" aria-hidden="true" />
+      <section aria-labelledby="apt-reminders-heading" className="space-y-2">
+        <h3 id="apt-reminders-heading" className="font-bold text-xs uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
+          <Calendar className="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
           Upcoming Doctor Appointments
         </h3>
         {appointments.slice(0, 2).map((apt) => {
           const aptDate = new Date(apt.appointmentDateTime);
           return (
-            <div key={apt.id} className="p-4 rounded-xl bg-surface border border-gray-800 flex items-center justify-between">
+            <div key={apt.id} className="p-3 rounded-xl bg-surface border border-gray-800 flex items-center justify-between text-xs">
               <div>
-                <p className="font-bold text-base">{apt.doctorName} — {apt.specialty}</p>
-                <p className="text-xs text-gray-400 mt-1">{apt.location}</p>
+                <p className="font-semibold text-xs text-white">{apt.doctorName} — {apt.specialty}</p>
+                <p className="text-[11px] text-gray-400 mt-0.5">{apt.location}</p>
               </div>
               <div className="text-right">
-                <span className="text-sm font-semibold text-amber-400 tabular-nums">
+                <span className="text-xs font-semibold text-amber-400 tabular-nums">
                   {aptDate.toLocaleDateString()} at {aptDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
-                <p className="text-xs text-gray-400 mt-0.5">{apt.preparationNotes || 'Scheduled'}</p>
+                <p className="text-[11px] text-gray-400 mt-0.5">{apt.preparationNotes || 'Scheduled'}</p>
               </div>
             </div>
           );
