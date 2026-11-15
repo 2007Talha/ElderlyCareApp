@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import type { AuthSession, PrescriptionScanResult } from '@/types';
+import type { AuthSession } from '@/types';
 import PasscodeLogin from '@/components/auth/PasscodeLogin';
 import Sidebar from '@/components/layout/Sidebar';
 import type { TabId } from '@/components/layout/Sidebar';
@@ -77,7 +77,7 @@ export default function HomePage() {
     else if (lower.includes('family') || lower.includes('check-in')) setActiveTab('settings');
   }, []);
 
-  const handleScanResult = useCallback((_result: PrescriptionScanResult) => {
+  const handleScanResult = useCallback(() => {
     setActiveTab('medications');
   }, []);
 

@@ -3,7 +3,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { AssistantMessage, ApiResponse, UserRole } from '@/types';
 import { Sparkles, Send } from 'lucide-react';
-import { useDebounce } from '@/hooks/useDebounce';
 import MarkdownView from '@/components/shared/MarkdownView';
 import TelemetryBar, { GuardrailsTelemetry } from '@/components/shared/TelemetryBar';
 
@@ -18,7 +17,6 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const debouncedInput = useDebounce(input, 300);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });

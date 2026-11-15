@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import {
   ShieldCheck, ShieldAlert, Clock, EyeOff, CheckCircle,
-  ChevronDown, ChevronUp, Activity, Cpu, Sparkles,
+  ChevronDown, ChevronUp, Activity,
 } from 'lucide-react';
 
 export interface GuardrailsTelemetry {

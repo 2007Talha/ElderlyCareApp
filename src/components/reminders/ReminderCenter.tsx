@@ -6,7 +6,7 @@ import ElderlyReminderView from './ElderlyReminderView';
 import CaretakerReminderView from './CaretakerReminderView';
 import FamilyReminderView from './FamilyReminderView';
 import EmailLog from './EmailLog';
-import { MailCheck, Bell, Shield, HeartHandshake, Stethoscope, UsersRound } from 'lucide-react';
+import { MailCheck, Bell } from 'lucide-react';
 
 interface ReminderCenterProps {
   readonly role: UserRole;
