@@ -132,6 +132,24 @@ npm test
 npm run lint
 ```
 
+### Deploy to Netlify
+This repository is pre-configured with `netlify.toml` and `@netlify/plugin-nextjs` for seamless zero-config deployment on Netlify.
+
+#### Option A: Connect via GitHub (Recommended)
+1. Go to [Netlify Dashboard](https://app.netlify.com/) → **Add new site** → **Import an existing project**.
+2. Select GitHub and choose `2007Talha/ElderlyCareApp`.
+3. Netlify automatically detects `netlify.toml`:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `.next`
+   - **Node Version:** `20`
+4. Click **Deploy Site**.
+
+#### Option B: Netlify CLI
+```bash
+npm install -g netlify-cli
+netlify deploy --build --prod
+```
+
 ---
 
 ## Test Coverage
