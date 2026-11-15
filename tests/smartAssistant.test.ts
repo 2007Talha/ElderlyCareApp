@@ -62,6 +62,12 @@ describe('drugInteractionService', () => {
     expect(interactions[0].severity).toBe('High');
   });
 
+  it('detects Warfarin + Ibuprofen interaction case-insensitively', () => {
+    const interactions = checkInteractions('ibuprofen');
+    expect(interactions.length).toBeGreaterThanOrEqual(1);
+    expect(interactions[0].description).toContain('NSAIDs');
+  });
+
   it('returns empty for a safe medication', () => {
     const interactions = checkInteractions('Vitamin D');
     expect(interactions).toHaveLength(0);
@@ -82,5 +88,18 @@ describe('drugInteractionService', () => {
       isActive: true, createdAt: '', updatedAt: '',
     };
     expect(estimateDaysUntilDepletion(med)).toBe(10);
+  });
+
+  it('handles zero inventory and empty schedule gracefully', () => {
+    const zeroInv = {
+      id: 'z1', medicationName: 'Zero', dosage: '10mg',
+      frequency: 'Daily', scheduledTimes: ['08:00'],
+      inventoryCount: 0, instructions: '', prescribedBy: 'Dr. T',
+      isActive: true, createdAt: '', updatedAt: '',
+    };
+    expect(estimateDaysUntilDepletion(zeroInv)).toBe(0);
+
+    const noSched = { ...zeroInv, scheduledTimes: [] };
+    expect(estimateDaysUntilDepletion(noSched)).toBe(Infinity);
   });
 });

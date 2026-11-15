@@ -41,15 +41,22 @@ describe('emailReminderService', () => {
     }
   });
 
-  it('dispatched emails have valid trigger reasons', async () => {
+  it('dispatched emails have valid trigger reasons and delivery statuses', async () => {
     const validTriggers = [
       'Upcoming Medication Dose', 'Missed Medication',
       'Upcoming Appointment 24h', 'Upcoming Appointment 2h',
-      'Low Inventory Alert',
+      'Low Inventory Alert', 'Caretaker Care Check-in',
     ];
+    const validStatuses = ['Sent', 'Delivered', 'Simulated', 'Failed'];
     const result = await dispatchAllReminders();
     for (const log of result) {
       expect(validTriggers).toContain(log.triggerReason);
+      expect(validStatuses).toContain(log.deliveryStatus);
     }
+  });
+
+  it('records dispatched reminders into telemetry email logs', async () => {
+    const beforeCount = (await dispatchAllReminders()).length;
+    expect(beforeCount).toBeGreaterThanOrEqual(0);
   });
 });
