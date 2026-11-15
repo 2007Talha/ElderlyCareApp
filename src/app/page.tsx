@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { AuthSession, PrescriptionScanResult } from '@/types';
 import PasscodeLogin from '@/components/auth/PasscodeLogin';
 import Sidebar from '@/components/layout/Sidebar';
@@ -16,33 +16,56 @@ import PrescriptionScanner from '@/components/assistant/PrescriptionScanner';
 import ComfortModeToggle from '@/components/shared/ComfortModeToggle';
 import ConsentToggle from '@/components/shared/ConsentToggle';
 
-/** Root page — authentication gate then role-tailored application shell. */
+const SESSION_KEY = 'eldercare_session';
+
+/** Root page — authentication gate with local persistence and role views. */
 export default function HomePage() {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
   const [comfortMode, setComfortMode] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    try {
+      const stored = localStorage.getItem(SESSION_KEY);
+      if (stored) {
+        const parsed: AuthSession = JSON.parse(stored);
+        if (new Date(parsed.expiresAt).getTime() > Date.now()) {
+          setSession(parsed);
+          if (parsed.role === 'Elderly Individual') setComfortMode(true);
+        } else {
+          localStorage.removeItem(SESSION_KEY);
+        }
+      }
+    } catch { /* graceful fallback */ }
+  }, []);
 
   const handleLogin = useCallback((s: AuthSession) => {
     setSession(s);
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch { /* ignore */ }
     if (s.role === 'Elderly Individual') setComfortMode(true);
   }, []);
 
-  const handleLogout = useCallback(() => setSession(null), []);
+  const handleLogout = useCallback(() => {
+    setSession(null);
+    try { localStorage.removeItem(SESSION_KEY); } catch { /* ignore */ }
+  }, []);
 
   const handleVoiceCommand = useCallback((cmd: string) => {
     const lower = cmd.toLowerCase();
-    if (lower.includes('medication') || lower.includes('pill')) {
-      setActiveTab('medications');
-    } else if (lower.includes('appointment')) {
-      setActiveTab('appointments');
-    } else if (lower.includes('family') || lower.includes('check-in')) {
-      setActiveTab('settings');
-    }
+    if (lower.includes('medication') || lower.includes('pill')) setActiveTab('medications');
+    else if (lower.includes('appointment')) setActiveTab('appointments');
+    else if (lower.includes('family') || lower.includes('check-in')) setActiveTab('settings');
   }, []);
 
   const handleScanResult = useCallback((_result: PrescriptionScanResult) => {
     setActiveTab('medications');
   }, []);
+
+  if (!mounted) {
+    return <div className="min-h-screen bg-background" />;
+  }
 
   if (!session) {
     return <PasscodeLogin onLogin={handleLogin} />;

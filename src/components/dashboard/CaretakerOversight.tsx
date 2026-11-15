@@ -21,9 +21,16 @@ export default function CaretakerOversight({
     setTimeout(() => setReorderedId(null), 3000);
   }, []);
 
-  const handleEmergencyCall = useCallback(() => {
-    setCalled(true);
-    setTimeout(() => setCalled(false), 3000);
+  const handleEmergencyCall = useCallback(async () => {
+    try {
+      await fetch('/api/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Urgent wellness check requested by Caretaker.' }),
+      });
+      setCalled(true);
+      setTimeout(() => setCalled(false), 4000);
+    } catch { /* fallback */ }
   }, []);
 
   return (

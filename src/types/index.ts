@@ -18,7 +18,8 @@ export type ReminderTrigger =
   | 'Missed Medication'
   | 'Upcoming Appointment 24h'
   | 'Upcoming Appointment 2h'
-  | 'Low Inventory Alert';
+  | 'Low Inventory Alert'
+  | 'Caretaker Care Check-in';
 
 /** Authenticated session payload. */
 export interface AuthSession {

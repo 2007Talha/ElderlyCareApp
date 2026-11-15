@@ -118,6 +118,16 @@ export function setConsent(prefs: ConsentPreferences): void {
   consentPrefs = prefs;
 }
 
+/** Active check-in alert state. */
+let activeCheckIn: { id: string; requestedAt: string; message: string; acknowledged: boolean } | null = null;
+
+/** Returns active check-in alert. */
+export function getCheckInAlert() { return activeCheckIn; }
+/** Sets or clears active check-in alert. */
+export function setCheckInAlert(val: { id: string; requestedAt: string; message: string; acknowledged: boolean } | null) {
+  activeCheckIn = val;
+}
+
 /* ── Rate Limiter Accessors ── */
 
 /** Returns the rate limit state for a given IP key. */
