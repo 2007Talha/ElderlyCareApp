@@ -39,7 +39,7 @@ export default function EmailLog() {
         <div className="flex gap-2">
           <button
             onClick={fetchLogs}
-            className="flex items-center gap-2 bg-stone-200 hover:bg-stone-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-stone-800 dark:text-white border border-stone-300 dark:border-gray-600 px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
+            className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
             aria-label="Refresh email logs"
           >
             <RefreshCw className="w-4 h-4" aria-hidden="true" />

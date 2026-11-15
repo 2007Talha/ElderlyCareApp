@@ -137,14 +137,14 @@ export default function ElderlyReminderView() {
             const isSnoozed = snoozedId === med.id;
             const primaryTime = med.scheduledTimes[0] || '08:00';
             return (
-              <article key={med.id} className="p-5 rounded-2xl bg-surface border-2 border-stone-200 dark:border-gray-800 shadow-sm flex flex-col justify-between gap-4">
+              <article key={med.id} className="p-5 rounded-2xl bg-surface border border-gray-800 shadow-sm flex flex-col justify-between gap-4">
                 <div className="flex items-start gap-3.5">
-                  <div className="p-3 rounded-xl bg-stone-100 dark:bg-gray-800/80 border border-stone-200 dark:border-gray-700/60 shrink-0">
+                  <div className="p-3 rounded-xl bg-gray-800/80 border border-gray-700/60 shrink-0">
                     <PillShapeIcon medicationName={med.medicationName} size={36} />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg">{med.medicationName}</h4>
-                    <p className="text-sm text-teal-500 font-semibold tabular-nums mt-0.5">{med.dosage} • {med.frequency}</p>
+                    <p className="text-sm text-teal-400 font-semibold tabular-nums mt-0.5">{med.dosage} • {med.frequency}</p>
                     <div className="flex flex-wrap items-center gap-2 mt-2">
                       {med.scheduledTimes.map((t) => (
                         <ScheduleTimelineIcon key={t} time={t} showLabel={true} />
@@ -160,7 +160,7 @@ export default function ElderlyReminderView() {
                   </div>
                 )}
 
-                <div className="flex items-center gap-3 pt-2 border-t border-stone-200 dark:border-gray-800">
+                <div className="flex items-center gap-3 pt-2 border-t border-gray-800">
                   <button
                     onClick={() => handleTakeDose(med.id, primaryTime)}
                     disabled={loggedId === med.id}
@@ -171,7 +171,7 @@ export default function ElderlyReminderView() {
                   </button>
                   <button
                     onClick={() => setSnoozedId(isSnoozed ? null : med.id)}
-                    className="flex items-center justify-center gap-1.5 bg-stone-200 hover:bg-stone-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-stone-800 dark:text-gray-200 font-semibold py-3 px-3.5 rounded-xl text-sm transition-colors"
+                    className="flex items-center justify-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 font-semibold py-3 px-3.5 rounded-xl text-sm transition-colors"
                   >
                     <Clock className="w-4 h-4" aria-hidden="true" />
                     Snooze
@@ -192,7 +192,7 @@ export default function ElderlyReminderView() {
         {appointments.slice(0, 2).map((apt) => {
           const aptDate = new Date(apt.appointmentDateTime);
           return (
-            <div key={apt.id} className="p-4 rounded-xl bg-surface border border-stone-200 dark:border-gray-800 flex items-center justify-between">
+            <div key={apt.id} className="p-4 rounded-xl bg-surface border border-gray-800 flex items-center justify-between">
               <div>
                 <p className="font-bold text-base">{apt.doctorName} — {apt.specialty}</p>
                 <p className="text-xs text-gray-400 mt-1">{apt.location}</p>

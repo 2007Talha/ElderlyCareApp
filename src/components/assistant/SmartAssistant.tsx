@@ -78,15 +78,15 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
         )}
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[80%] rounded-xl px-4 py-2 text-sm ${
-              msg.role === 'user' ? 'bg-accent text-white' : 'bg-gray-800 text-gray-200'
+            <div className={`max-w-[80%] rounded-xl px-4 py-2.5 text-sm ${
+              msg.role === 'user' ? 'bg-teal-600 text-white shadow-sm font-medium' : 'bg-gray-800 text-gray-200 border border-gray-700/60'
             }`}>
               {msg.role === 'user' ? (
                 <p className="whitespace-pre-wrap">{msg.content}</p>
               ) : (
                 <MarkdownView content={msg.content} />
               )}
-              <p className="text-xs opacity-50 mt-1">
+              <p className="text-xs opacity-60 mt-1">
                 {new Date(msg.timestamp).toLocaleTimeString()}
               </p>
             </div>
@@ -115,7 +115,7 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
         <button
           type="submit"
           disabled={loading || !input.trim()}
-          className="bg-accent hover:bg-blue-600 disabled:opacity-50 text-white px-4 py-2 rounded-lg"
+          className="bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm"
           aria-label="Send message"
         >
           <Send className="w-5 h-5" />

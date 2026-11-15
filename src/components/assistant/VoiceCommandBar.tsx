@@ -57,15 +57,15 @@ export default function VoiceCommandBar({ onCommand }: VoiceCommandBarProps) {
     <div className="bg-surface border border-gray-800 rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-medium flex items-center gap-2">
-          <Volume2 className="w-5 h-5 text-accent" aria-hidden="true" />
+          <Volume2 className="w-5 h-5 text-teal-400" aria-hidden="true" />
           Voice Commands
         </h3>
         <button
           onClick={startListening}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm ${
             isListening
               ? 'bg-danger text-white animate-pulse'
-              : 'bg-accent hover:bg-blue-600 text-white'
+              : 'bg-teal-600 hover:bg-teal-500 text-white'
           }`}
           aria-label={isListening ? 'Stop listening' : 'Start voice command'}
         >

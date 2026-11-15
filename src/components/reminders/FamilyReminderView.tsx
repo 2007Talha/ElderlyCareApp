@@ -78,7 +78,7 @@ export default function FamilyReminderView() {
       </div>
 
       {/* Send Loving Nudge Section */}
-      <section aria-labelledby="loving-nudge-heading" className="p-5 rounded-2xl bg-surface border border-stone-200 dark:border-gray-800 space-y-4">
+      <section aria-labelledby="loving-nudge-heading" className="p-5 rounded-2xl bg-surface border border-gray-800 space-y-4">
         <h3 id="loving-nudge-heading" className="text-base font-bold flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-emerald-400" aria-hidden="true" />
           Send a Caring Reminder or Check-in
@@ -90,19 +90,19 @@ export default function FamilyReminderView() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleSendLovingNudge('❤️ Thinking of you today! Hope you are feeling well and hydrated.')}
-            className="text-xs bg-stone-200 dark:bg-gray-800 hover:bg-stone-300 dark:hover:bg-gray-700 px-3.5 py-2 rounded-xl font-medium transition-colors"
+            className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3.5 py-2 rounded-xl font-medium transition-colors"
           >
             ❤️ Thinking of you check-in
           </button>
           <button
             onClick={() => handleSendLovingNudge('💊 Gentle reminder for your evening medications with dinner!')}
-            className="text-xs bg-stone-200 dark:bg-gray-800 hover:bg-stone-300 dark:hover:bg-gray-700 px-3.5 py-2 rounded-xl font-medium transition-colors"
+            className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3.5 py-2 rounded-xl font-medium transition-colors"
           >
             💊 Evening pill reminder
           </button>
           <button
             onClick={() => handleSendLovingNudge('🚗 Excited to see you tomorrow! I can drive you to your doctor visit.')}
-            className="text-xs bg-stone-200 dark:bg-gray-800 hover:bg-stone-300 dark:hover:bg-gray-700 px-3.5 py-2 rounded-xl font-medium transition-colors"
+            className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3.5 py-2 rounded-xl font-medium transition-colors"
           >
             🚗 Doctor visit ride offer
           </button>
@@ -114,7 +114,7 @@ export default function FamilyReminderView() {
             value={customMsg}
             onChange={(e) => setCustomMsg(e.target.value)}
             placeholder="Write a personal note (e.g. Love you! Don't forget your vitamins)..."
-            className="flex-1 bg-stone-100 dark:bg-gray-900 border border-stone-300 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500"
+            className="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"
           />
           <button
             onClick={() => handleSendLovingNudge()}
@@ -134,7 +134,7 @@ export default function FamilyReminderView() {
       </section>
 
       {/* Family Notification Preferences */}
-      <section aria-labelledby="family-prefs-heading" className="p-5 rounded-2xl bg-surface border border-stone-200 dark:border-gray-800 space-y-4">
+      <section aria-labelledby="family-prefs-heading" className="p-5 rounded-2xl bg-surface border border-gray-800 space-y-4">
         <h3 id="family-prefs-heading" className="text-base font-bold flex items-center gap-2">
           <BellRing className="w-5 h-5 text-teal-400" aria-hidden="true" />
           Family Oversight Alert Subscriptions
@@ -145,7 +145,7 @@ export default function FamilyReminderView() {
 
         <div className="space-y-3">
           {preferences.map((pref) => (
-            <div key={pref.id} className="p-4 rounded-xl bg-stone-100/50 dark:bg-gray-800/40 border border-stone-200 dark:border-gray-700/60 flex items-center justify-between gap-4">
+            <div key={pref.id} className="p-4 rounded-xl bg-gray-800/40 border border-gray-700/60 flex items-center justify-between gap-4">
               <div>
                 <p className="font-bold text-sm text-white">{pref.label}</p>
                 <p className="text-xs text-gray-400 mt-0.5">{pref.description}</p>
@@ -155,7 +155,7 @@ export default function FamilyReminderView() {
                 className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${
                   pref.enabled
                     ? 'bg-emerald-500 text-white'
-                    : 'bg-stone-300 dark:bg-gray-700 text-stone-600 dark:text-gray-400'
+                    : 'bg-gray-700 text-gray-400'
                 }`}
               >
                 {pref.enabled ? 'Enabled' : 'Disabled'}

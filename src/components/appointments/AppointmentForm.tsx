@@ -72,11 +72,11 @@ export default function AppointmentForm({ appointment, onSave, onCancel }: Appoi
       </div>
       {error && <p className="text-danger text-sm" role="alert">{error}</p>}
       <div className="flex gap-3">
-        <button type="submit" disabled={loading} className="flex items-center gap-2 bg-accent hover:bg-blue-600 disabled:opacity-50 text-white px-4 py-2 rounded-lg">
+        <button type="submit" disabled={loading} className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow-sm">
           <Save className="w-4 h-4" aria-hidden="true" />
           {loading ? 'Saving...' : 'Save'}
         </button>
-        <button type="button" onClick={onCancel} className="flex items-center gap-2 bg-stone-200 hover:bg-stone-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-stone-800 dark:text-white border border-stone-300 dark:border-gray-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+        <button type="button" onClick={onCancel} className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
           <X className="w-4 h-4" aria-hidden="true" />
           Cancel
         </button>

@@ -106,7 +106,7 @@ export default function CaretakerReminderView() {
       )}
 
       {/* Clinical Nudge Tool */}
-      <section aria-labelledby="nudge-heading" className="p-5 rounded-2xl bg-surface border border-stone-200 dark:border-gray-800 space-y-4">
+      <section aria-labelledby="nudge-heading" className="p-5 rounded-2xl bg-surface border border-gray-800 space-y-4">
         <h3 id="nudge-heading" className="text-base font-bold flex items-center gap-2">
           <Send className="w-5 h-5 text-teal-400" aria-hidden="true" />
           Send Immediate Clinical Nudge to Elderly Dashboard
@@ -118,13 +118,13 @@ export default function CaretakerReminderView() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleSendNudge('Clinical Check-in: Please remember to take your scheduled afternoon medication.')}
-            className="text-xs bg-stone-200 dark:bg-gray-800 hover:bg-stone-300 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg font-medium transition-colors"
+            className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3 py-1.5 rounded-lg font-medium transition-colors"
           >
             + Afternoon Dose Nudge
           </button>
           <button
             onClick={() => handleSendNudge('Pre-appointment Reminder: Remember to record blood pressure readings before tomorrow’s visit.')}
-            className="text-xs bg-stone-200 dark:bg-gray-800 hover:bg-stone-300 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg font-medium transition-colors"
+            className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3 py-1.5 rounded-lg font-medium transition-colors"
           >
             + Blood Pressure Log Nudge
           </button>
@@ -136,7 +136,7 @@ export default function CaretakerReminderView() {
             value={nudgeMessage}
             onChange={(e) => setNudgeMessage(e.target.value)}
             placeholder="Or type a custom clinical message..."
-            className="flex-1 bg-stone-100 dark:bg-gray-900 border border-stone-300 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+            className="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
           />
           <button
             onClick={() => handleSendNudge()}
@@ -166,7 +166,7 @@ export default function CaretakerReminderView() {
         </div>
         <div className="space-y-2">
           {recentLogs.slice(-3).reverse().map((log) => (
-            <div key={log.id} className="p-3.5 rounded-xl bg-surface border border-stone-200 dark:border-gray-800 flex items-center justify-between">
+            <div key={log.id} className="p-3.5 rounded-xl bg-surface border border-gray-800 flex items-center justify-between">
               <div>
                 <p className="font-semibold text-sm text-white">{log.subject}</p>
                 <p className="text-xs text-gray-400 mt-0.5">To: {log.recipient} • Reason: {log.triggerReason}</p>

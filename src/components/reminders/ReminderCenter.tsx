@@ -19,7 +19,7 @@ export default function ReminderCenter({ role }: ReminderCenterProps) {
   return (
     <div className="space-y-6">
       {/* View Switcher Bar */}
-      <div className="flex items-center justify-between pb-2 border-b border-stone-200 dark:border-gray-800 flex-wrap gap-3">
+      <div className="flex items-center justify-between pb-2 border-b border-gray-800 flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <Bell className="w-5 h-5 text-teal-400" aria-hidden="true" />
           <h2 className="text-xl font-bold">
@@ -29,7 +29,7 @@ export default function ReminderCenter({ role }: ReminderCenterProps) {
 
         <button
           onClick={() => setShowTechnicalLogs(!showTechnicalLogs)}
-          className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-stone-200 hover:bg-stone-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-stone-700 dark:text-gray-300 transition-colors"
+          className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 transition-colors"
         >
           <MailCheck className="w-4 h-4" />
           {showTechnicalLogs ? 'Back to Mode Reminders' : 'View Email Delivery Logs'}

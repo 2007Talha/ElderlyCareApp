@@ -8,7 +8,8 @@ const config: Config = {
       colors: {
         surface: '#111827',
         background: '#0B0F19',
-        accent: '#3B82F6',
+        accent: '#2DD4BF',
+        'accent-hover': '#14B8A6',
         success: '#10B981',
         warning: '#F59E0B',
         danger: '#EF4444',

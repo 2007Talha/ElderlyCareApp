@@ -39,7 +39,7 @@ export default function AdherenceQuickLogger({
               className="p-3.5 rounded-xl bg-gray-800/60 border border-gray-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
             >
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-stone-100 dark:bg-gray-900/60 border border-stone-200 dark:border-gray-700/50 shrink-0">
+                <div className="p-2 rounded-lg bg-gray-900/60 border border-gray-700/50 shrink-0">
                   <PillShapeIcon medicationName={med.medicationName} size={28} />
                 </div>
                 <div>

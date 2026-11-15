@@ -72,7 +72,7 @@ export default function MedicationList() {
           <article key={med.id} className="bg-surface border border-gray-800 rounded-xl p-4 shadow-sm hover:border-gray-700 transition-colors">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-3.5">
-                <div className="p-2 rounded-lg bg-stone-100 dark:bg-gray-800/70 border border-stone-200 dark:border-gray-700/60 shrink-0">
+                <div className="p-2 rounded-lg bg-gray-800/70 border border-gray-700/60 shrink-0">
                   <PillShapeIcon medicationName={med.medicationName} size={32} />
                 </div>
                 <div>
