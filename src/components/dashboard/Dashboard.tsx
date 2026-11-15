@@ -1,8 +1,11 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import type { Medication, Appointment, ApiResponse, DoseStatus } from '@/types';
+import type { Medication, Appointment, ApiResponse, DoseStatus, UserRole } from '@/types';
 import StatusBadge from '@/components/shared/StatusBadge';
+import ElderlyQuickActions from './ElderlyQuickActions';
+import CaretakerOversight from './CaretakerOversight';
+import FamilyPeaceOfMind from './FamilyPeaceOfMind';
 import { Heart, Pill, Calendar, Activity, AlertTriangle } from 'lucide-react';
 
 interface AdherenceData {
@@ -12,8 +15,13 @@ interface AdherenceData {
   breakdown: Record<DoseStatus, number>;
 }
 
-/** Dashboard overview with key health metrics and quick status. */
-export default function Dashboard() {
+interface DashboardProps {
+  readonly role: UserRole;
+  readonly onVoiceClick?: () => void;
+}
+
+/** Dashboard overview with role-tailored priority panels. */
+export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [adherence, setAdherence] = useState<AdherenceData | null>(null);
@@ -22,9 +30,7 @@ export default function Dashboard() {
   const fetchAll = useCallback(async () => {
     try {
       const [medRes, aptRes, adhRes] = await Promise.all([
-        fetch('/api/medications'),
-        fetch('/api/appointments'),
-        fetch('/api/adherence'),
+        fetch('/api/medications'), fetch('/api/appointments'), fetch('/api/adherence'),
       ]);
       const medData: ApiResponse<{ medications: Medication[]; lowInventory: Medication[] }> = await medRes.json();
       const aptData: ApiResponse<Appointment[]> = await aptRes.json();
@@ -50,8 +56,28 @@ export default function Dashboard() {
     <section aria-labelledby="dashboard-heading">
       <h2 id="dashboard-heading" className="text-xl font-bold flex items-center gap-2 mb-6">
         <Heart className="w-6 h-6 text-accent" aria-hidden="true" />
-        Health Dashboard
+        Health Dashboard — <span className="text-accent text-lg font-normal">{role} View</span>
       </h2>
+
+      {role === 'Elderly Individual' && (
+        <ElderlyQuickActions
+          medications={medications}
+          onDoseLogged={fetchAll}
+          onVoiceClick={onVoiceClick ?? (() => {})}
+        />
+      )}
+      {role === 'Caretaker' && (
+        <CaretakerOversight
+          lowInventory={lowInventory}
+          missedDoseCount={adherence?.breakdown.Missed ?? 0}
+        />
+      )}
+      {role === 'Family Member' && (
+        <FamilyPeaceOfMind
+          adherenceRate={adherence?.rate ?? 100}
+          appointments={appointments}
+        />
+      )}
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">

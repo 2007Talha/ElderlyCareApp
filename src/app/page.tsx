@@ -16,13 +16,17 @@ import PrescriptionScanner from '@/components/assistant/PrescriptionScanner';
 import ComfortModeToggle from '@/components/shared/ComfortModeToggle';
 import ConsentToggle from '@/components/shared/ConsentToggle';
 
-/** Root page — authentication gate then main application shell. */
+/** Root page — authentication gate then role-tailored application shell. */
 export default function HomePage() {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
   const [comfortMode, setComfortMode] = useState(false);
 
-  const handleLogin = useCallback((s: AuthSession) => setSession(s), []);
+  const handleLogin = useCallback((s: AuthSession) => {
+    setSession(s);
+    if (s.role === 'Elderly Individual') setComfortMode(true);
+  }, []);
+
   const handleLogout = useCallback(() => setSession(null), []);
 
   const handleVoiceCommand = useCallback((cmd: string) => {
@@ -55,16 +59,26 @@ export default function HomePage() {
 
       <main className="flex-1 p-6 overflow-y-auto">
         <header className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">
-            Welcome, {session.role}
-          </h1>
+          <div>
+            <h1 className="text-2xl font-bold">Welcome, {session.role}</h1>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {session.role === 'Elderly Individual' && 'Primary Decision-Maker • Full Privacy Autonomy'}
+              {session.role === 'Caretaker' && 'Healthcare Clinical Oversight & Supply Management'}
+              {session.role === 'Family Member' && 'Family Peace-of-Mind & Support Network'}
+            </p>
+          </div>
           <ComfortModeToggle
             enabled={comfortMode}
             onToggle={() => setComfortMode(!comfortMode)}
           />
         </header>
 
-        {activeTab === 'dashboard' && <Dashboard />}
+        {activeTab === 'dashboard' && (
+          <Dashboard
+            role={session.role}
+            onVoiceClick={() => setActiveTab('assistant')}
+          />
+        )}
         {activeTab === 'medications' && (
           <div className="space-y-6">
             <PrescriptionScanner onScanResult={handleScanResult} />
@@ -81,7 +95,7 @@ export default function HomePage() {
           </div>
         )}
         {activeTab === 'email-log' && <EmailLog />}
-        {activeTab === 'settings' && <ConsentToggle />}
+        {activeTab === 'settings' && <ConsentToggle role={session.role} />}
       </main>
     </div>
   );
