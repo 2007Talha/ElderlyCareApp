@@ -17,11 +17,11 @@ export function deducePillShape(name?: string): PillShapeType {
   if (lower.includes('drop') || lower.includes('liquid') || lower.includes('syrup')) {
     return 'liquid-drop';
   }
-  if (lower.includes('omeprazole') || lower.includes('capsule') || lower.includes('cap')) {
-    return 'capsule';
-  }
   if (lower.includes('metformin') || lower.includes('caplet') || lower.includes('500')) {
     return 'oval-caplet';
+  }
+  if (lower.includes('omeprazole') || lower.includes('capsule') || lower.includes('cap')) {
+    return 'capsule';
   }
   return 'round-tablet';
 }

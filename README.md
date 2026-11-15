@@ -22,7 +22,7 @@
 |---|-------------|-------------------|
 | 1 | Shared Ecosystem & Passcode-Based Access | `src/services/passcodeAuthService.ts` (validatePasscode, createSession, isRateLimited), `src/app/api/auth/passcode/route.ts`, `src/components/auth/PasscodeLogin.tsx` |
 | 2 | Medication Schedule Management CRUD | `src/services/medicationScheduleService.ts` (listMedications, createMedication, editMedication, removeMedication), `src/app/api/medications/route.ts`, `src/app/api/medications/[id]/route.ts`, `src/components/medications/MedicationList.tsx`, `src/components/medications/MedicationForm.tsx` |
-| 3 | Medication Adherence Tracking | `src/services/adherenceTrackerService.ts` (logAdherence, computeAdherenceRate, computeDailyStreak, findMissedDoses, countByStatus), `src/app/api/adherence/route.ts`, `src/components/adherence/AdherenceTracker.tsx` |
+| 3 | Medication Adherence Tracking & Quick Logger | `src/services/adherenceTrackerService.ts` (logAdherence, computeAdherenceRate, computeDailyStreak, findMissedDoses, countByStatus), `src/app/api/adherence/route.ts`, `src/components/adherence/AdherenceTracker.tsx`, `src/components/adherence/AdherenceQuickLogger.tsx` |
 | 4 | Medical Appointments Manager CRUD | `src/services/appointmentManagerService.ts` (listAppointments, createAppointment, editAppointment, removeAppointment), `src/app/api/appointments/route.ts`, `src/app/api/appointments/[id]/route.ts`, `src/components/appointments/AppointmentList.tsx`, `src/components/appointments/AppointmentForm.tsx` |
 | 5 | Proactive Email Reminder Engine | `src/services/emailReminderService.ts` (checkUpcomingDoses, checkMissedDoses, checkUpcomingAppointments, dispatchAllReminders), `src/app/api/reminders/dispatch/route.ts`, `src/app/api/email-logs/route.ts`, `src/components/reminders/EmailLog.tsx` |
 | 6 | Smart Care Assistant & Decision Engine | `src/services/smartCareAssistantService.ts` (buildContextSummary, generateAssistantResponse), `src/app/api/assistant/route.ts`, `src/components/assistant/SmartAssistant.tsx` |
@@ -30,9 +30,13 @@
 | 8 | Voice-First Command Bar & Audio Readout | `src/components/assistant/VoiceCommandBar.tsx` (Web Speech API: speechRecognition + speechSynthesis) |
 | 9 | Drug Contraindication & Refill Guard | `src/services/drugInteractionService.ts` (checkInteractions, checkLowInventory, estimateDaysUntilDepletion) |
 | 10 | Elderly Autonomy & Consent Toggle | `src/components/shared/ConsentToggle.tsx`, `src/app/api/consent/route.ts`, `src/store/dataStore.ts` (getConsent, setConsent) |
-| 11 | Zod Schema Validation | `src/utils/validationSchemas.ts` (passcodeLoginSchema, medicationSchema, adherenceSchema, appointmentSchema, assistantQuerySchema, consentSchema) |
-| 12 | Centralized Configuration | `src/config/constants.ts` (AUTH_CONFIG, AI_CONFIG, REMINDER_CONFIG, UI_CONFIG, VALID_ROLES, DOSE_STATUSES, VOICE_COMMANDS) |
-| 13 | Elderly Comfort Mode | `src/components/shared/ComfortModeToggle.tsx`, `src/app/globals.css` (.comfort-mode) |
+| 11 | Caretaker-to-Elderly Check-In Alert Bridge | `src/app/api/checkin/route.ts`, `src/store/dataStore.ts` (triggerCheckInAlert, getPendingCheckIns, acknowledgeCheckIn), `src/components/dashboard/ElderlyDashboard.tsx`, `src/components/dashboard/CaretakerDashboard.tsx` |
+| 12 | Dual-Theme System ("Midnight Sanctuary" & "Warm Daylight") | `src/components/ui/ThemeToggle.tsx`, `src/types/theme.ts`, `src/app/globals.css`, `src/app/layout.tsx` |
+| 13 | Letter-Free Brand Logo & Visual Pill SVGs | `src/components/ui/BrandLogo.tsx`, `src/components/ui/PillShapeIcon.tsx`, `src/components/medications/ScheduleTimelineIcon.tsx` |
+| 14 | Safe Rich Markdown & Table Renderer | `src/components/shared/MarkdownView.tsx` (semantic React elements without dangerouslySetInnerHTML) |
+| 15 | Zod Schema Validation | `src/utils/validationSchemas.ts` (passcodeLoginSchema, medicationSchema, adherenceSchema, appointmentSchema, assistantQuerySchema, consentSchema) |
+| 16 | Centralized Configuration | `src/config/constants.ts` (AUTH_CONFIG, AI_CONFIG, REMINDER_CONFIG, UI_CONFIG, VALID_ROLES, DOSE_STATUSES, VOICE_COMMANDS) |
+| 17 | Elderly Comfort Mode & Atkinson Hyperlegible Typography | `src/components/shared/ComfortModeToggle.tsx`, `src/app/globals.css` (.comfort-mode, tabular-nums) |
 
 ---
 
@@ -40,13 +44,14 @@
 
 ### Architecture
 - **Framework:** Next.js 14 (App Router) with TypeScript (strict mode)
-- **Styling:** Tailwind CSS with dark-themed, high-contrast default UI
-- **Validation:** Zod schemas on every API endpoint
-- **State:** In-memory data store pre-seeded with realistic demo data
-- **AI:** Gemini 2.0 Flash with deterministic fallback when API key is absent
+- **Styling:** Tailwind CSS with Dual-Theme ("Midnight Sanctuary" Dark Mode & "Warm Daylight" Light Mode)
+- **Typography:** Atkinson Hyperlegible (with tabular-nums) + Plus Jakarta Sans
+- **Validation:** Zod schemas on every API endpoint and form input
+- **State:** In-memory data store pre-seeded with realistic demo data and offline persistence
+- **AI:** Google Gemini with deterministic offline fallback when API key is absent or unreachable
 - **Email:** Nodemailer SMTP with verified mock transport and telemetry logging
-- **Icons:** lucide-react (inline SVGs, zero heavy assets)
-- **Testing:** Vitest with fast, deterministic unit tests
+- **Icons:** lucide-react + custom visual inline SVG Pill Shapes (`capsule`, `round-tablet`, `oval-caplet`, `liquid-drop`)
+- **Testing:** Vitest with 52 deterministic unit & integration tests passing offline in ~1s
 
 ### Contextual Decision Logic
 The Smart Care Assistant (`smartCareAssistantService.ts`) evaluates:
@@ -134,10 +139,13 @@ npm run lint
 | Test File | Covers |
 |-----------|--------|
 | `tests/passcodeAuth.test.ts` | Authentication, rate limiting, session validation, role rejection |
-| `tests/medicationCrud.test.ts` | Medication CRUD, Zod validation edge cases, inventory |
+| `tests/medicationCrud.test.ts` | Medication CRUD, Zod validation edge cases, inventory tracking |
 | `tests/adherenceTracker.test.ts` | Adherence rate, streak, missed-dose detection, status counting |
 | `tests/emailReminder.test.ts` | Upcoming dose, missed dose, appointment alerts, dispatch |
 | `tests/smartAssistant.test.ts` | Context summary, fallback responses, prescription scan, drug interactions |
+| `tests/uiDesignSystem.test.ts` | Pill shape deduction, schedule timeline grouping, check-in alert lifecycles |
+
+**Total:** 52 / 52 automated tests passing offline (0 failures, 100% deterministic).
 
 ---
 
@@ -147,9 +155,10 @@ npm run lint
 |-------|------------|
 | Frontend | React 18, Next.js 14 (App Router) |
 | Language | TypeScript (strict: true) |
-| Styling | Tailwind CSS |
+| Styling | Tailwind CSS (Dual-Theme CSS variables) |
+| Typography | Atkinson Hyperlegible, Plus Jakarta Sans |
 | Validation | Zod |
-| AI | Google Gemini 2.0 Flash |
-| Email | Nodemailer |
+| AI Engine | Google Gemini (with deterministic local offline fallback) |
+| Email Service | Nodemailer (with local test telemetry drawer) |
 | Testing | Vitest |
-| Icons | lucide-react |
+| Icons & Visuals | lucide-react + Custom Letter-Free Logo & Pill Shape SVGs |

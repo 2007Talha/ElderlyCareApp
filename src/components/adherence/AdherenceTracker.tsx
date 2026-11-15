@@ -3,8 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { AdherenceRecord, Medication, ApiResponse, DoseStatus } from '@/types';
 import StatusBadge from '@/components/shared/StatusBadge';
-import PillShapeIcon from '@/components/ui/PillShapeIcon';
-import ScheduleTimelineIcon from '@/components/medications/ScheduleTimelineIcon';
+import AdherenceQuickLogger from './AdherenceQuickLogger';
 import { Activity, CheckCircle, XCircle, Clock, SkipForward } from 'lucide-react';
 import { DOSE_STATUSES } from '@/config/constants';
 
@@ -15,7 +14,7 @@ interface AdherenceData {
   breakdown: Record<DoseStatus, number>;
 }
 
-/** Adherence tracking panel with direct 1-click dose loggers and manual entry. */
+/** Adherence tracking panel with metrics and dose loggers. */
 export default function AdherenceTracker() {
   const [data, setData] = useState<AdherenceData | null>(null);
   const [medications, setMedications] = useState<Medication[]>([]);
@@ -81,9 +80,7 @@ export default function AdherenceTracker() {
   const handleMedSelect = useCallback((medId: string) => {
     setSelectedMed(medId);
     const med = medications.find((m) => m.id === medId);
-    if (med && med.scheduledTimes.length > 0) {
-      setSelectedTime(med.scheduledTimes[0]);
-    }
+    if (med && med.scheduledTimes.length > 0) setSelectedTime(med.scheduledTimes[0]);
   }, [medications]);
 
   const statusIcons: Record<string, React.ReactNode> = {
@@ -119,74 +116,12 @@ export default function AdherenceTracker() {
         </div>
       )}
 
-      {/* Active Medications Quick Logger */}
-      <div className="bg-surface border border-gray-800 rounded-xl p-5 mb-6">
-        <h3 className="font-bold text-white text-base mb-1">
-          Active Medications — Quick Intake Logger
-        </h3>
-        <p className="text-xs text-gray-400 mb-4">
-          All added medications appear here. Click to mark intake status instantly:
-        </p>
+      <AdherenceQuickLogger
+        activeMeds={activeMeds}
+        loggingMedId={loggingMedId}
+        onDirectLog={handleDirectLog}
+      />
 
-        {activeMeds.length === 0 ? (
-          <p className="text-xs text-gray-400 italic">No active medications scheduled. Add one in the Medications tab.</p>
-        ) : (
-          <div className="space-y-3">
-            {activeMeds.map((med) => (
-              <div key={med.id} className="p-3.5 rounded-xl bg-gray-800/60 border border-gray-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-stone-100 dark:bg-gray-900/60 border border-stone-200 dark:border-gray-700/50 shrink-0">
-                    <PillShapeIcon medicationName={med.medicationName} size={28} />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-bold text-white text-sm">{med.medicationName}</p>
-                      <span className="text-xs text-teal-400 font-semibold tabular-nums">{med.dosage}</span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                      {med.scheduledTimes.map((time) => (
-                        <ScheduleTimelineIcon key={time} time={time} showLabel={false} />
-                      ))}
-                      <span className="text-[11px] text-gray-400 tabular-nums ml-1">
-                        (Inventory: {med.inventoryCount})
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 shrink-0">
-                  <button
-                    onClick={() => handleDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Taken')}
-                    disabled={loggingMedId === `${med.id}-Taken`}
-                    className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
-                  >
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    Taken
-                  </button>
-                  <button
-                    onClick={() => handleDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Missed')}
-                    disabled={loggingMedId === `${med.id}-Missed`}
-                    className="flex items-center gap-1 bg-rose-600 hover:bg-rose-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
-                  >
-                    <XCircle className="w-3.5 h-3.5" />
-                    Missed
-                  </button>
-                  <button
-                    onClick={() => handleDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Snoozed')}
-                    disabled={loggingMedId === `${med.id}-Snoozed`}
-                    className="flex items-center gap-1 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
-                  >
-                    <Clock className="w-3.5 h-3.5" />
-                    Snooze
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Manual Entry Form */}
       <form onSubmit={handleManualLog} className="bg-surface border border-gray-800 rounded-xl p-5 mb-6">
         <h3 className="font-bold text-white text-sm mb-3">Custom Dose Entry</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -236,7 +171,6 @@ export default function AdherenceTracker() {
         </button>
       </form>
 
-      {/* History */}
       <div className="space-y-2" aria-live="polite">
         <h3 className="font-bold text-white text-sm mb-2">Recent Adherence Activity</h3>
         {data?.records.slice(-10).reverse().map((r) => (
