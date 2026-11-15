@@ -9,8 +9,12 @@ import PillShapeIcon from '@/components/ui/PillShapeIcon';
 import ScheduleTimelineIcon from './ScheduleTimelineIcon';
 import { Pill, Plus, Edit, Trash2, AlertTriangle, ShieldCheck } from 'lucide-react';
 
+interface MedicationListProps {
+  readonly refreshTrigger?: number;
+}
+
 /** Medication schedule management panel with Pill Shape SVGs and timeline icons. */
-export default function MedicationList() {
+export default function MedicationList({ refreshTrigger }: MedicationListProps = {}) {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [lowInventory, setLowInventory] = useState<Medication[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -27,7 +31,7 @@ export default function MedicationList() {
     } catch { /* graceful offline fallback */ }
   }, []);
 
-  useEffect(() => { fetchMedications(); }, [fetchMedications]);
+  useEffect(() => { fetchMedications(); }, [fetchMedications, refreshTrigger]);
 
   const handleDelete = useCallback(async (id: string) => {
     try {

@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import type { Medication, Appointment, ApiResponse, DoseStatus, UserRole } from '@/types';
+import type { Medication, Appointment, ApiResponse, DoseStatus, UserRole, EcosystemActivity, ElderlyProposal } from '@/types';
 import StatusBadge from '@/components/shared/StatusBadge';
 import ElderlyQuickActions from './ElderlyQuickActions';
 import CaretakerOversight from './CaretakerOversight';
 import FamilyPeaceOfMind from './FamilyPeaceOfMind';
+import ElderlyAutonomyCenter from '@/components/elderly/ElderlyAutonomyCenter';
+import SharedActivityTimeline from './SharedActivityTimeline';
+import { SEED_ACTIVITIES } from '@/store/seedData';
 import { Heart, Pill, Calendar, Activity, AlertTriangle } from 'lucide-react';
 
 interface AdherenceData {
@@ -26,6 +29,19 @@ export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [adherence, setAdherence] = useState<AdherenceData | null>(null);
   const [lowInventory, setLowInventory] = useState<Medication[]>([]);
+  const [activities, setActivities] = useState<EcosystemActivity[]>(SEED_ACTIVITIES);
+
+  const handleProposalResolved = useCallback((prop: ElderlyProposal, action: 'approved' | 'declined') => {
+    const entry: EcosystemActivity = {
+      id: `act-${Date.now()}`,
+      actorRole: 'Elderly Individual',
+      action: action === 'approved' ? `Approved: ${prop.title}` : `Declined: ${prop.title}`,
+      details: prop.suggestedChange,
+      timestamp: 'Just now',
+      category: 'autonomy',
+    };
+    setActivities((prev) => [entry, ...prev]);
+  }, []);
 
   const fetchAll = useCallback(async () => {
     try {
@@ -61,11 +77,14 @@ export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
       </h2>
 
       {role === 'Elderly Individual' && (
-        <ElderlyQuickActions
-          medications={medications}
-          onDoseLogged={fetchAll}
-          onVoiceClick={onVoiceClick ?? (() => {})}
-        />
+        <>
+          <ElderlyAutonomyCenter onProposalResolved={handleProposalResolved} />
+          <ElderlyQuickActions
+            medications={medications}
+            onDoseLogged={fetchAll}
+            onVoiceClick={onVoiceClick ?? (() => {})}
+          />
+        </>
       )}
       {role === 'Caretaker' && (
         <CaretakerOversight
@@ -119,7 +138,7 @@ export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
       )}
 
       {upcomingApts.length > 0 && (
-        <div className="bg-surface border border-gray-800 rounded-xl p-4">
+        <div className="bg-surface border border-gray-800 rounded-xl p-4 mb-6">
           <h3 className="font-medium mb-3">Next Appointments</h3>
           {upcomingApts.slice(0, 3).map((apt) => (
             <div key={apt.id} className="flex items-center justify-between py-2 border-b border-gray-800 last:border-0">
@@ -135,6 +154,8 @@ export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
           ))}
         </div>
       )}
+
+      <SharedActivityTimeline activities={activities} />
     </section>
   );
 }

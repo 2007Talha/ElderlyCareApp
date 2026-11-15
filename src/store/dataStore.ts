@@ -152,3 +152,18 @@ export function setRateLimit(
 ): void {
   rateLimiter.set(key, val);
 }
+
+/** Resets all in-memory data back to deterministic initial seeds. */
+export function resetDataStore(): void {
+  medications.splice(0, medications.length, ...SEED_MEDICATIONS);
+  medMap.clear();
+  SEED_MEDICATIONS.forEach((m) => medMap.set(m.id, m));
+  appointments.splice(0, appointments.length, ...SEED_APPOINTMENTS);
+  aptMap.clear();
+  SEED_APPOINTMENTS.forEach((a) => aptMap.set(a.id, a));
+  adherenceRecords.splice(0, adherenceRecords.length, ...SEED_ADHERENCE);
+  emailLogs.length = 0;
+  consentPrefs = { shareWithCaretaker: true, shareWithFamily: true, allowScheduleModifications: true };
+  activeCheckIn = null;
+  rateLimiter.clear();
+}

@@ -1,11 +1,12 @@
 import { z } from 'zod';
-import { AUTH_CONFIG, VALID_ROLES, DOSE_STATUSES } from '@/config/constants';
+import { VALID_ROLES, DOSE_STATUSES } from '@/config/constants';
 
 /** Passcode login request schema. */
 export const passcodeLoginSchema = z.object({
   passcode: z
     .string()
-    .length(AUTH_CONFIG.PASSCODE_LENGTH, 'Passcode must be 6 digits')
+    .min(4, 'Passcode must be at least 4 digits')
+    .max(6, 'Passcode must be at most 6 digits')
     .regex(/^\d+$/, 'Passcode must contain only digits'),
   role: z.enum(VALID_ROLES),
 });

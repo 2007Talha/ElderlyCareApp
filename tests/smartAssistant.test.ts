@@ -6,6 +6,7 @@ import {
   buildContextSummary, generateAssistantResponse,
   scanPrescriptionLabel,
 } from '@/services/smartCareAssistantService';
+import { deriveScheduledTimes } from '@/utils/helpers';
 import {
   checkInteractions, checkLowInventory, estimateDaysUntilDepletion,
 } from '@/services/drugInteractionService';
@@ -52,6 +53,20 @@ describe('smartCareAssistantService', () => {
     expect(result.medicationName).toBe('Amlodipine');
     expect(result.dosage).toBe('5mg');
     expect(result.frequency).toBeTruthy();
+  });
+
+  it('correctly maps dosage frequencies to scheduled times', () => {
+    expect(deriveScheduledTimes('Once daily')).toEqual(['08:00']);
+    expect(deriveScheduledTimes('Twice daily')).toEqual(['08:00', '20:00']);
+    expect(deriveScheduledTimes('Three times daily')).toEqual(['08:00', '13:00', '20:00']);
+    expect(deriveScheduledTimes('At bedtime')).toEqual(['21:00']);
+  });
+
+  it('returns realistic medication details for custom image uploads', async () => {
+    const customResult = await scanPrescriptionLabel('custom-image-base64-data');
+    expect(customResult.medicationName).toBeTruthy();
+    expect(customResult.dosage).toBeTruthy();
+    expect(customResult.instructions).toBeTruthy();
   });
 });
 

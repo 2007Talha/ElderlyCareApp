@@ -7,6 +7,7 @@ import type { EmailDispatchLog, ReminderTrigger, EmailDeliveryStatus, Medication
 import { REMINDER_CONFIG } from '@/config/constants';
 import { getMedications, getAppointments, addEmailLog, getConsent, getAdherenceRecords } from '@/store/dataStore';
 import { generateId, nowISO } from '@/utils/helpers';
+import { generateMissedDoseHtml, generateUpcomingDoseHtml, generateAppointmentHtml } from './emailTemplateService';
 
 /** Checks if real SMTP credentials exist in environment variables. */
 function isSmtpConfigured(): boolean {
@@ -34,11 +35,11 @@ async function sendRealEmail(to: string, subject: string, body: string): Promise
 
 /** Logs a structured email dispatch entry to the telemetry audit log. */
 function logDispatch(
-  recipient: string, subject: string, trigger: ReminderTrigger, status: EmailDeliveryStatus, body: string
+  recipient: string, subject: string, trigger: ReminderTrigger, status: EmailDeliveryStatus, body: string, htmlBody?: string
 ): EmailDispatchLog {
   const entry: EmailDispatchLog = {
     id: `email-${generateId()}`, recipient, subject, triggerReason: trigger,
-    timestamp: nowISO(), deliveryStatus: status, body,
+    timestamp: nowISO(), deliveryStatus: status, body, htmlBody,
   };
   addEmailLog(entry);
   return entry;
@@ -46,12 +47,12 @@ function logDispatch(
 
 /** Dispatches an email via real SMTP or deterministic mock transport. */
 async function dispatchEmail(
-  recipient: string, subject: string, body: string, trigger: ReminderTrigger
+  recipient: string, subject: string, body: string, trigger: ReminderTrigger, htmlBody?: string
 ): Promise<EmailDispatchLog> {
   const status: EmailDeliveryStatus = isSmtpConfigured()
     ? await sendRealEmail(recipient, subject, body)
     : 'Delivered';
-  return logDispatch(recipient, subject, trigger, status, body);
+  return logDispatch(recipient, subject, trigger, status, body, htmlBody);
 }
 
 function getRecipients() {
@@ -76,7 +77,8 @@ export async function checkUpcomingDoses(): Promise<EmailDispatchLog[]> {
       const diff = new Date(`${todayStr}T${time}:00Z`).getTime() - now;
       if (diff > 0 && diff <= window) {
         const body = `Reminder: ${med.medicationName} ${med.dosage} is due at ${time}.`;
-        dispatches.push(dispatchEmail(recipients.elderly, `Upcoming Dose: ${med.medicationName}`, body, 'Upcoming Medication Dose'));
+        const html = generateUpcomingDoseHtml(med.medicationName, med.dosage, time, med.instructions);
+        dispatches.push(dispatchEmail(recipients.elderly, `Upcoming Dose: ${med.medicationName}`, body, 'Upcoming Medication Dose', html));
       }
     }
   }
@@ -89,11 +91,12 @@ function queueMissedAlerts(
   consent: ReturnType<typeof getConsent>, queue: Promise<EmailDispatchLog>[]
 ): void {
   const body = `ALERT: ${med.medicationName} ${med.dosage} was missed at ${time}.`;
+  const html = generateMissedDoseHtml(med.medicationName, med.dosage, time);
   if (consent.shareWithCaretaker) {
-    queue.push(dispatchEmail(recipients.caretaker, `Missed Dose: ${med.medicationName}`, body, 'Missed Medication'));
+    queue.push(dispatchEmail(recipients.caretaker, `Missed Dose: ${med.medicationName}`, body, 'Missed Medication', html));
   }
   if (consent.shareWithFamily) {
-    queue.push(dispatchEmail(recipients.family, `Missed Dose: ${med.medicationName}`, body, 'Missed Medication'));
+    queue.push(dispatchEmail(recipients.family, `Missed Dose: ${med.medicationName}`, body, 'Missed Medication', html));
   }
 }
 
@@ -131,10 +134,12 @@ export async function checkUpcomingAppointments(): Promise<EmailDispatchLog[]> {
     const diff = new Date(apt.appointmentDateTime).getTime() - now;
     if (diff > 0 && diff <= REMINDER_CONFIG.APPOINTMENT_2H_MS) {
       const body = `Appointment with ${apt.doctorName} (${apt.specialty}) in 2 hours at ${apt.location}.`;
-      dispatches.push(dispatchEmail(recipients.elderly, `Appointment Soon: ${apt.doctorName}`, body, 'Upcoming Appointment 2h'));
+      const html = generateAppointmentHtml(apt.doctorName, apt.specialty, apt.appointmentDateTime, apt.location, apt.preparationNotes);
+      dispatches.push(dispatchEmail(recipients.elderly, `Appointment Soon: ${apt.doctorName}`, body, 'Upcoming Appointment 2h', html));
     } else if (diff > 0 && diff <= REMINDER_CONFIG.APPOINTMENT_24H_MS) {
       const body = `Upcoming appointment with ${apt.doctorName} (${apt.specialty}) tomorrow at ${apt.location}. ${apt.preparationNotes}`;
-      dispatches.push(dispatchEmail(recipients.elderly, `Appointment Tomorrow: ${apt.doctorName}`, body, 'Upcoming Appointment 24h'));
+      const html = generateAppointmentHtml(apt.doctorName, apt.specialty, apt.appointmentDateTime, apt.location, apt.preparationNotes);
+      dispatches.push(dispatchEmail(recipients.elderly, `Appointment Tomorrow: ${apt.doctorName}`, body, 'Upcoming Appointment 24h', html));
     }
   }
   return Promise.all(dispatches);

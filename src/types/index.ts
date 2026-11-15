@@ -77,6 +77,29 @@ export interface EmailDispatchLog {
   readonly timestamp: string;
   readonly deliveryStatus: EmailDeliveryStatus;
   readonly body: string;
+  readonly htmlBody?: string;
+}
+
+/** Cross-role shared ecosystem activity entry. */
+export interface EcosystemActivity {
+  readonly id: string;
+  readonly actorRole: UserRole | 'System';
+  readonly action: string;
+  readonly details?: string;
+  readonly timestamp: string;
+  readonly category: 'medication' | 'adherence' | 'appointment' | 'email' | 'autonomy';
+}
+
+/** Care circle schedule proposals submitted to the elderly decision-maker. */
+export interface ElderlyProposal {
+  readonly id: string;
+  readonly proposerRole: 'Caretaker' | 'Family Member';
+  readonly proposerName: string;
+  readonly title: string;
+  readonly description: string;
+  readonly suggestedChange: string;
+  readonly status: 'pending' | 'approved' | 'declined';
+  readonly createdAt: string;
 }
 
 /** Elderly consent / sharing preferences. */

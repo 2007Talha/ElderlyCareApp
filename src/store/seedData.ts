@@ -1,4 +1,28 @@
-import type { Medication, Appointment, AdherenceRecord } from '@/types';
+import type { Medication, Appointment, AdherenceRecord, EcosystemActivity } from '@/types';
+
+/** Pre-seeded ecosystem activity timeline for cross-role collaboration. */
+export const SEED_ACTIVITIES: EcosystemActivity[] = [
+  {
+    id: 'act-1', actorRole: 'System', action: 'Proactive Alert Dispatched',
+    details: 'Automated monitoring engine dispatched scheduled email notices to Care Circle.',
+    timestamp: '15 mins ago', category: 'email',
+  },
+  {
+    id: 'act-2', actorRole: 'Elderly Individual', action: 'Morning Dose Confirmed',
+    details: 'Took Metformin HCl 500mg as scheduled with breakfast.',
+    timestamp: '45 mins ago', category: 'adherence',
+  },
+  {
+    id: 'act-3', actorRole: 'Caretaker', action: 'Clinical Schedule Review',
+    details: 'Caretaker Sarah Jenkins verified inventory refill status for Lisinopril.',
+    timestamp: '2 hours ago', category: 'medication',
+  },
+  {
+    id: 'act-4', actorRole: 'Family Member', action: 'Gentle Check-in Sent',
+    details: 'Emily Vance sent a check-in: "Thinking of you today! Hope you are hydrated."',
+    timestamp: '4 hours ago', category: 'autonomy',
+  },
+];
 
 /** Realistic pre-seeded medication records for demo. */
 export const SEED_MEDICATIONS: Medication[] = [

@@ -82,9 +82,9 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
 
           <div>
             <label htmlFor="passcode-input" className="block text-sm font-semibold text-gray-300 mb-2 flex items-center justify-between">
-              <span>6-Digit Passcode</span>
+              <span>Passcode (4-6 Digits)</span>
               <span className="text-[11px] text-gray-400 flex items-center gap-1">
-                <KeyRound className="w-3 h-3" /> Default: 123456
+                <KeyRound className="w-3 h-3" /> PIN: 1234 / 5678 / 9012
               </span>
             </label>
             <div className="relative">
@@ -95,7 +95,7 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
                 maxLength={6}
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
-                placeholder="Enter 6-digit passcode"
+                placeholder="Enter passcode"
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:border-teal-400 text-sm tracking-widest tabular-nums"
                 required
                 aria-describedby={error ? 'login-error' : undefined}
@@ -110,12 +110,39 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
 
           <button
             type="submit"
-            disabled={loading || passcode.length !== 6}
+            disabled={loading || passcode.length < 4}
             className="w-full flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-colors shadow-md"
           >
             <LogIn className="w-5 h-5" aria-hidden="true" />
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
+
+          <div className="pt-2 border-t border-gray-800">
+            <p className="text-[11px] text-gray-400 font-medium mb-2 text-center">1-Click Judge Quick Login:</p>
+            <div className="grid grid-cols-3 gap-2 text-xs">
+              <button
+                type="button"
+                onClick={() => { setRole('Elderly Individual'); setPasscode('1234'); }}
+                className="bg-gray-800 hover:bg-gray-700 border border-teal-500/30 text-teal-300 rounded-lg p-1.5 font-semibold text-center transition-colors"
+              >
+                Elderly (1234)
+              </button>
+              <button
+                type="button"
+                onClick={() => { setRole('Caretaker'); setPasscode('5678'); }}
+                className="bg-gray-800 hover:bg-gray-700 border border-amber-500/30 text-amber-300 rounded-lg p-1.5 font-semibold text-center transition-colors"
+              >
+                Caretaker (5678)
+              </button>
+              <button
+                type="button"
+                onClick={() => { setRole('Family Member'); setPasscode('9012'); }}
+                className="bg-gray-800 hover:bg-gray-700 border border-emerald-500/30 text-emerald-300 rounded-lg p-1.5 font-semibold text-center transition-colors"
+              >
+                Family (9012)
+              </button>
+            </div>
+          </div>
         </form>
       </section>
     </main>
