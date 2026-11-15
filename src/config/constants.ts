@@ -13,7 +13,7 @@ export const AUTH_CONFIG = {
 
 /** AI / Gemini configuration. */
 export const AI_CONFIG = {
-  MODEL_NAME: 'gemini-2.0-flash',
+  MODEL_NAME: 'gemini-3.5-flash-lite',
   MAX_TOKENS: 1024,
   TIMEOUT_MS: 8_000,
   SYSTEM_PROMPT: `You are a compassionate healthcare assistant for elderly individuals.

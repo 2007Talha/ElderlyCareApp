@@ -65,8 +65,14 @@ async function callGeminiApi(
       }
     );
     clearTimeout(timeout);
+    if (!resp.ok) {
+      return generateFallbackResponse(message, context, role);
+    }
     const data = await resp.json();
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+    if (!text.trim()) {
+      return generateFallbackResponse(message, context, role);
+    }
     return { role: 'assistant', content: text, timestamp: nowISO() };
   } catch {
     return generateFallbackResponse(message, context, role);
@@ -130,9 +136,11 @@ async function callGeminiVision(
     }
   );
   clearTimeout(timeout);
+  if (!resp.ok) return fallbackPrescriptionParse();
   const data = await resp.json();
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
   const cleaned = text.replace(/```json\n?|```/g, '').trim();
+  if (!cleaned || cleaned === '{}') return fallbackPrescriptionParse();
   return JSON.parse(cleaned) as PrescriptionScanResult;
 }
 
