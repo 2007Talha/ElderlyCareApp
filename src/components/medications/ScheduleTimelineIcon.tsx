@@ -15,12 +15,21 @@ export function getTimeSlot(timeStr: string): {
 } {
   const hour = parseInt(timeStr.split(':')[0] || '8', 10);
   if (hour < 12) {
-    return { slot: 'Morning', color: 'text-amber-400 bg-amber-500/15 border-amber-500/30' };
+    return {
+      slot: 'Morning',
+      color: 'text-amber-800 dark:text-amber-400 bg-amber-100 dark:bg-amber-500/15 border-amber-300 dark:border-amber-500/30',
+    };
   }
   if (hour < 18) {
-    return { slot: 'Afternoon', color: 'text-sky-400 bg-sky-500/15 border-sky-500/30' };
+    return {
+      slot: 'Afternoon',
+      color: 'text-sky-800 dark:text-sky-400 bg-sky-100 dark:bg-sky-500/15 border-sky-300 dark:border-sky-500/30',
+    };
   }
-  return { slot: 'Night', color: 'text-indigo-400 bg-indigo-500/15 border-indigo-500/30' };
+  return {
+    slot: 'Night',
+    color: 'text-indigo-800 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-500/15 border-indigo-300 dark:border-indigo-500/30',
+  };
 }
 
 /** Renders Sunrise, Sun, or MoonStar icon for medication schedule times. */
@@ -31,12 +40,12 @@ export default function ScheduleTimelineIcon({
   const { slot, color } = getTimeSlot(time);
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border text-xs font-medium tabular-nums ${color}`}>
-      {slot === 'Morning' && <Sunrise className="w-3.5 h-3.5 text-amber-400 shrink-0" aria-hidden="true" />}
-      {slot === 'Afternoon' && <Sun className="w-3.5 h-3.5 text-sky-400 shrink-0" aria-hidden="true" />}
-      {slot === 'Night' && <MoonStar className="w-3.5 h-3.5 text-indigo-400 shrink-0" aria-hidden="true" />}
+    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border text-xs font-semibold tabular-nums ${color}`}>
+      {slot === 'Morning' && <Sunrise className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" aria-hidden="true" />}
+      {slot === 'Afternoon' && <Sun className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" aria-hidden="true" />}
+      {slot === 'Night' && <MoonStar className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" aria-hidden="true" />}
       <span>{time}</span>
-      {showLabel && <span className="opacity-75 text-[10px]">({slot})</span>}
+      {showLabel && <span className="opacity-80 text-[10px]">({slot})</span>}
     </span>
   );
 }

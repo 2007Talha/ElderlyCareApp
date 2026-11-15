@@ -37,11 +37,19 @@ export default function EmailLog() {
           Proactive Email Dispatch & Telemetry Log
         </h2>
         <div className="flex gap-2">
-          <button onClick={fetchLogs} className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm" aria-label="Refresh email logs">
+          <button
+            onClick={fetchLogs}
+            className="flex items-center gap-2 bg-stone-200 hover:bg-stone-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-stone-800 dark:text-white border border-stone-300 dark:border-gray-600 px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
+            aria-label="Refresh email logs"
+          >
             <RefreshCw className="w-4 h-4" aria-hidden="true" />
             Refresh
           </button>
-          <button onClick={triggerDispatch} disabled={dispatching} className="flex items-center gap-2 bg-accent hover:bg-blue-600 disabled:opacity-50 text-white px-3 py-2 rounded-lg text-sm">
+          <button
+            onClick={triggerDispatch}
+            disabled={dispatching}
+            className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
+          >
             <Send className="w-4 h-4" aria-hidden="true" />
             {dispatching ? 'Dispatching...' : 'Dispatch Now'}
           </button>

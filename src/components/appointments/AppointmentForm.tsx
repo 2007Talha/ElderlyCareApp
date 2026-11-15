@@ -76,7 +76,7 @@ export default function AppointmentForm({ appointment, onSave, onCancel }: Appoi
           <Save className="w-4 h-4" aria-hidden="true" />
           {loading ? 'Saving...' : 'Save'}
         </button>
-        <button type="button" onClick={onCancel} className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
+        <button type="button" onClick={onCancel} className="flex items-center gap-2 bg-stone-200 hover:bg-stone-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-stone-800 dark:text-white border border-stone-300 dark:border-gray-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
           <X className="w-4 h-4" aria-hidden="true" />
           Cancel
         </button>
