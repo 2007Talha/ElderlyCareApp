@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { AdherenceRecord, Medication, ApiResponse, DoseStatus } from '@/types';
 import StatusBadge from '@/components/shared/StatusBadge';
+import PillShapeIcon from '@/components/ui/PillShapeIcon';
+import ScheduleTimelineIcon from '@/components/medications/ScheduleTimelineIcon';
 import { Activity, CheckCircle, XCircle, Clock, SkipForward } from 'lucide-react';
 import { DOSE_STATUSES } from '@/config/constants';
 
@@ -13,13 +15,14 @@ interface AdherenceData {
   breakdown: Record<DoseStatus, number>;
 }
 
-/** Adherence tracking panel with metrics and dose logging. */
+/** Adherence tracking panel with direct 1-click dose loggers and manual entry. */
 export default function AdherenceTracker() {
   const [data, setData] = useState<AdherenceData | null>(null);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [selectedMed, setSelectedMed] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<DoseStatus>('Taken');
   const [selectedTime, setSelectedTime] = useState('');
+  const [loggingMedId, setLoggingMedId] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -35,7 +38,26 @@ export default function AdherenceTracker() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const handleLog = useCallback(async (e: React.FormEvent) => {
+  const handleDirectLog = useCallback(async (medId: string, time: string, status: DoseStatus) => {
+    setLoggingMedId(`${medId}-${status}`);
+    try {
+      await fetch('/api/adherence', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          medicationId: medId,
+          status,
+          scheduledTime: time,
+          recordedBy: 'Elderly Individual',
+          notes: `Logged directly via Adherence Panel (${status})`,
+        }),
+      });
+      await fetchData();
+    } catch { /* fallback */ }
+    finally { setLoggingMedId(null); }
+  }, [fetchData]);
+
+  const handleManualLog = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedMed || !selectedTime) return;
     try {
@@ -43,15 +65,26 @@ export default function AdherenceTracker() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          medicationId: selectedMed, status: selectedStatus,
+          medicationId: selectedMed,
+          status: selectedStatus,
           scheduledTime: selectedTime,
-          recordedBy: 'Elderly Individual', notes: '',
+          recordedBy: 'Elderly Individual',
+          notes: '',
         }),
       });
       await fetchData();
-      setSelectedMed(''); setSelectedTime('');
+      setSelectedMed('');
+      setSelectedTime('');
     } catch { /* fallback */ }
   }, [selectedMed, selectedStatus, selectedTime, fetchData]);
+
+  const handleMedSelect = useCallback((medId: string) => {
+    setSelectedMed(medId);
+    const med = medications.find((m) => m.id === medId);
+    if (med && med.scheduledTimes.length > 0) {
+      setSelectedTime(med.scheduledTimes[0]);
+    }
+  }, [medications]);
 
   const statusIcons: Record<string, React.ReactNode> = {
     Taken: <CheckCircle className="w-4 h-4 text-success" />,
@@ -60,67 +93,164 @@ export default function AdherenceTracker() {
     Skipped: <SkipForward className="w-4 h-4 text-gray-400" />,
   };
 
+  const activeMeds = medications.filter((m) => m.isActive);
+
   return (
     <section aria-labelledby="adherence-heading">
       <h2 id="adherence-heading" className="text-xl font-bold flex items-center gap-2 mb-6">
         <Activity className="w-6 h-6 text-teal-400" aria-hidden="true" />
-        Medication Adherence
+        Medication Adherence & Dose Logging
       </h2>
 
       {data && (
         <div className="grid grid-cols-3 gap-4 mb-6" aria-live="polite">
           <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
-            <p className="text-3xl font-bold text-success">{data.rate}%</p>
-            <p className="text-sm text-gray-400">Adherence Rate</p>
+            <p className="text-3xl font-bold text-success tabular-nums">{data.rate}%</p>
+            <p className="text-sm text-gray-400 font-medium">Adherence Rate</p>
           </div>
           <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
-            <p className="text-3xl font-bold text-accent">{data.streak}</p>
-            <p className="text-sm text-gray-400">Day Streak</p>
+            <p className="text-3xl font-bold text-teal-400 tabular-nums">{data.streak}</p>
+            <p className="text-sm text-gray-400 font-medium">Day Streak</p>
           </div>
           <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
-            <p className="text-3xl font-bold text-warning">{data.breakdown.Missed}</p>
-            <p className="text-sm text-gray-400">Missed Doses</p>
+            <p className="text-3xl font-bold text-warning tabular-nums">{data.breakdown.Missed}</p>
+            <p className="text-sm text-gray-400 font-medium">Missed Doses</p>
           </div>
         </div>
       )}
 
-      <form onSubmit={handleLog} className="bg-surface border border-gray-800 rounded-xl p-4 mb-6">
-        <h3 className="font-medium mb-3">Log Dose</h3>
-        <div className="grid grid-cols-3 gap-3">
+      {/* Active Medications Quick Logger */}
+      <div className="bg-surface border border-gray-800 rounded-xl p-5 mb-6">
+        <h3 className="font-bold text-white text-base mb-1">
+          Active Medications — Quick Intake Logger
+        </h3>
+        <p className="text-xs text-gray-400 mb-4">
+          All added medications appear here. Click to mark intake status instantly:
+        </p>
+
+        {activeMeds.length === 0 ? (
+          <p className="text-xs text-gray-400 italic">No active medications scheduled. Add one in the Medications tab.</p>
+        ) : (
+          <div className="space-y-3">
+            {activeMeds.map((med) => (
+              <div key={med.id} className="p-3.5 rounded-xl bg-gray-800/60 border border-gray-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-stone-100 dark:bg-gray-900/60 border border-stone-200 dark:border-gray-700/50 shrink-0">
+                    <PillShapeIcon medicationName={med.medicationName} size={28} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-bold text-white text-sm">{med.medicationName}</p>
+                      <span className="text-xs text-teal-400 font-semibold tabular-nums">{med.dosage}</span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                      {med.scheduledTimes.map((time) => (
+                        <ScheduleTimelineIcon key={time} time={time} showLabel={false} />
+                      ))}
+                      <span className="text-[11px] text-gray-400 tabular-nums ml-1">
+                        (Inventory: {med.inventoryCount})
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => handleDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Taken')}
+                    disabled={loggingMedId === `${med.id}-Taken`}
+                    className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                  >
+                    <CheckCircle className="w-3.5 h-3.5" />
+                    Taken
+                  </button>
+                  <button
+                    onClick={() => handleDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Missed')}
+                    disabled={loggingMedId === `${med.id}-Missed`}
+                    className="flex items-center gap-1 bg-rose-600 hover:bg-rose-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                  >
+                    <XCircle className="w-3.5 h-3.5" />
+                    Missed
+                  </button>
+                  <button
+                    onClick={() => handleDirectLog(med.id, med.scheduledTimes[0] || '08:00', 'Snoozed')}
+                    disabled={loggingMedId === `${med.id}-Snoozed`}
+                    className="flex items-center gap-1 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shadow-sm"
+                  >
+                    <Clock className="w-3.5 h-3.5" />
+                    Snooze
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Manual Entry Form */}
+      <form onSubmit={handleManualLog} className="bg-surface border border-gray-800 rounded-xl p-5 mb-6">
+        <h3 className="font-bold text-white text-sm mb-3">Custom Dose Entry</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div>
-            <label htmlFor="adh-med" className="block text-xs text-gray-400 mb-1">Medication</label>
-            <select id="adh-med" value={selectedMed} onChange={(e) => setSelectedMed(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm" required>
-              <option value="">Select...</option>
-              {medications.filter((m) => m.isActive).map((m) => (
-                <option key={m.id} value={m.id}>{m.medicationName}</option>
+            <label htmlFor="adh-med" className="block text-xs font-semibold text-gray-300 mb-1">Medication</label>
+            <select
+              id="adh-med"
+              value={selectedMed}
+              onChange={(e) => handleMedSelect(e.target.value)}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-teal-400"
+              required
+            >
+              <option value="">Select medication...</option>
+              {activeMeds.map((m) => (
+                <option key={m.id} value={m.id}>{m.medicationName} ({m.dosage})</option>
               ))}
             </select>
           </div>
           <div>
-            <label htmlFor="adh-status" className="block text-xs text-gray-400 mb-1">Status</label>
-            <select id="adh-status" value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value as DoseStatus)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm">
+            <label htmlFor="adh-status" className="block text-xs font-semibold text-gray-300 mb-1">Status</label>
+            <select
+              id="adh-status"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value as DoseStatus)}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-teal-400"
+            >
               {DOSE_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
           <div>
-            <label htmlFor="adh-time" className="block text-xs text-gray-400 mb-1">Scheduled Time</label>
-            <input id="adh-time" type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm" required />
+            <label htmlFor="adh-time" className="block text-xs font-semibold text-gray-300 mb-1">Scheduled Time</label>
+            <input
+              id="adh-time"
+              type="time"
+              value={selectedTime}
+              onChange={(e) => setSelectedTime(e.target.value)}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:border-teal-400 tabular-nums"
+              required
+            />
           </div>
         </div>
-        <button type="submit" className="mt-3 bg-teal-600 hover:bg-teal-500 font-semibold text-white px-4 py-2 rounded-lg text-sm transition-colors">Log Dose</button>
+        <button
+          type="submit"
+          className="mt-3.5 bg-teal-600 hover:bg-teal-500 font-semibold text-white px-4 py-2 rounded-lg text-sm transition-colors shadow-sm"
+        >
+          Log Custom Dose
+        </button>
       </form>
 
+      {/* History */}
       <div className="space-y-2" aria-live="polite">
-        <h3 className="font-medium text-gray-300 mb-2">Recent History</h3>
+        <h3 className="font-bold text-white text-sm mb-2">Recent Adherence Activity</h3>
         {data?.records.slice(-10).reverse().map((r) => (
-          <div key={r.id} className="flex items-center justify-between bg-surface border border-gray-800 rounded-lg px-4 py-2">
-            <div className="flex items-center gap-2">
+          <div key={r.id} className="flex items-center justify-between bg-surface border border-gray-800 rounded-lg px-4 py-2.5 hover:border-gray-700 transition-colors">
+            <div className="flex items-center gap-2.5">
               {statusIcons[r.status]}
-              <span className="text-sm">{medications.find((m) => m.id === r.medicationId)?.medicationName ?? r.medicationId}</span>
+              <span className="text-sm font-semibold text-white">
+                {medications.find((m) => m.id === r.medicationId)?.medicationName ?? r.medicationId}
+              </span>
+              <span className="text-xs text-gray-400 tabular-nums">({r.scheduledTime})</span>
             </div>
             <div className="flex items-center gap-3">
               <StatusBadge status={r.status} />
-              <span className="text-xs text-gray-500">{new Date(r.recordedAt).toLocaleString()}</span>
+              <span className="text-xs text-gray-500 tabular-nums">{new Date(r.recordedAt).toLocaleString()}</span>
             </div>
           </div>
         ))}
