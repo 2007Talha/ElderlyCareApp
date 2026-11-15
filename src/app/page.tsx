@@ -17,6 +17,7 @@ import PrescriptionScanner from '@/components/assistant/PrescriptionScanner';
 import ComfortModeToggle from '@/components/shared/ComfortModeToggle';
 import ConsentToggle from '@/components/shared/ConsentToggle';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import SkipToContent from '@/components/a11y/SkipToContent';
 import { HeartHandshake, Stethoscope, UsersRound } from 'lucide-react';
 
 const SESSION_KEY = 'eldercare_session';
@@ -90,6 +91,7 @@ export default function HomePage() {
 
   return (
     <div className={`flex min-h-screen ${comfortMode ? 'comfort-mode' : ''}`}>
+      <SkipToContent />
       <Sidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
@@ -97,7 +99,7 @@ export default function HomePage() {
         onLogout={handleLogout}
       />
 
-      <main className="flex-1 p-6 overflow-y-auto">
+      <main id="main-content" className="flex-1 p-6 overflow-y-auto">
         <header className="flex items-center justify-between mb-6 flex-wrap gap-4">
           <div>
             <h1 className="text-2xl font-bold flex items-center gap-2">

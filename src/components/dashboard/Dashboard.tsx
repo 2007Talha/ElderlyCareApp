@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { Medication, Appointment, ApiResponse, DoseStatus, UserRole } from '@/types';
 import StatusBadge from '@/components/shared/StatusBadge';
 import ElderlyQuickActions from './ElderlyQuickActions';
@@ -47,9 +47,10 @@ export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
 
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
-  const activeMeds = medications.filter((m) => m.isActive);
-  const upcomingApts = appointments.filter(
-    (a) => new Date(a.appointmentDateTime).getTime() > Date.now()
+  const activeMeds = useMemo(() => medications.filter((m) => m.isActive), [medications]);
+  const upcomingApts = useMemo(
+    () => appointments.filter((a) => new Date(a.appointmentDateTime).getTime() > Date.now()),
+    [appointments]
   );
 
   return (
@@ -70,6 +71,7 @@ export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
         <CaretakerOversight
           lowInventory={lowInventory}
           missedDoseCount={adherence?.breakdown.Missed ?? 0}
+          onRefresh={fetchAll}
         />
       )}
       {role === 'Family Member' && (

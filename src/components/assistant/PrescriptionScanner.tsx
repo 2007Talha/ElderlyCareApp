@@ -25,11 +25,15 @@ export default function PrescriptionScanner({ onScanResult }: PrescriptionScanne
       setLoading(true);
 
       try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
         const res = await fetch('/api/assistant/scan', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ image: base64 }),
+          signal: controller.signal,
         });
+        clearTimeout(timeout);
         const data: ApiResponse<PrescriptionScanResult> = await res.json();
         if (data.success && data.data) {
           onScanResult(data.data);
@@ -43,11 +47,15 @@ export default function PrescriptionScanner({ onScanResult }: PrescriptionScanne
   const handleDemoScan = useCallback(async () => {
     setLoading(true);
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
       const res = await fetch('/api/assistant/scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: 'demo-placeholder' }),
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
       const data: ApiResponse<PrescriptionScanResult> = await res.json();
       if (data.success && data.data) onScanResult(data.data);
     } catch { /* fallback */ }

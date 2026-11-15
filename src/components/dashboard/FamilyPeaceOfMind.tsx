@@ -17,13 +17,35 @@ export default function FamilyPeaceOfMind({
   const [sent, setSent] = useState(false);
   const [rideOffered, setRideOffered] = useState<string | null>(null);
 
-  const handleSendNote = useCallback((e: React.FormEvent) => {
+  const handleSendNote = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!note.trim()) return;
+    const noteText = note.trim();
     setSent(true);
     setNote('');
+    try {
+      await fetch('/api/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: `Family Note: ${noteText}`, requestedBy: 'Family Member' }),
+      });
+    } catch { /* offline fallback */ }
     setTimeout(() => setSent(false), 3000);
   }, [note]);
+
+  const handleOfferRide = useCallback(async (apt: Appointment) => {
+    setRideOffered(apt.id);
+    try {
+      await fetch('/api/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `Family Support: Ride offered for your visit with ${apt.doctorName} on ${new Date(apt.appointmentDateTime).toLocaleDateString()}.`,
+          requestedBy: 'Family Member',
+        }),
+      });
+    } catch { /* offline fallback */ }
+  }, []);
 
   const nextApt = appointments.find(
     (a) => new Date(a.appointmentDateTime).getTime() > Date.now()
@@ -54,7 +76,7 @@ export default function FamilyPeaceOfMind({
                 <p className="text-gray-400">{new Date(nextApt.appointmentDateTime).toLocaleDateString()}</p>
               </div>
               <button
-                onClick={() => setRideOffered(nextApt.id)}
+                onClick={() => handleOfferRide(nextApt)}
                 className="flex items-center gap-1 bg-accent/20 hover:bg-accent/30 text-accent text-xs px-2.5 py-1.5 rounded transition-colors"
               >
                 {rideOffered === nextApt.id ? <Check className="w-3 h-3 text-success" /> : <Car className="w-3 h-3" />}

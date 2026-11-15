@@ -10,11 +10,13 @@ import {
   SEED_MEDICATIONS, SEED_APPOINTMENTS, SEED_ADHERENCE,
 } from './seedData';
 
-/** Mutable medication records. */
+/** Mutable medication records and O(1) index. */
 const medications: Medication[] = [...SEED_MEDICATIONS];
+const medMap = new Map<string, Medication>(medications.map((m) => [m.id, m]));
 
-/** Mutable appointment records. */
+/** Mutable appointment records and O(1) index. */
 const appointments: Appointment[] = [...SEED_APPOINTMENTS];
+const aptMap = new Map<string, Appointment>(appointments.map((a) => [a.id, a]));
 
 /** Mutable adherence log entries. */
 const adherenceRecords: AdherenceRecord[] = [...SEED_ADHERENCE];
@@ -37,13 +39,15 @@ const rateLimiter: Map<string, { count: number; lockedUntil: number }> =
 
 /** Returns all medication records. */
 export function getMedications(): Medication[] { return medications; }
-/** Finds a medication by id. */
+/** Finds a medication by id in O(1) time. */
 export function getMedicationById(id: string): Medication | undefined {
-  return medications.find((m) => m.id === id);
+  return medMap.get(id);
 }
 /** Adds a medication record and returns it. */
 export function addMedication(med: Medication): Medication {
-  medications.push(med); return med;
+  medications.push(med);
+  medMap.set(med.id, med);
+  return med;
 }
 /** Updates a medication by id. Returns the updated record or undefined. */
 export function updateMedication(
@@ -51,27 +55,33 @@ export function updateMedication(
 ): Medication | undefined {
   const idx = medications.findIndex((m) => m.id === id);
   if (idx === -1) return undefined;
-  medications[idx] = { ...medications[idx], ...patch } as Medication;
-  return medications[idx];
+  const updated = { ...medications[idx], ...patch } as Medication;
+  medications[idx] = updated;
+  medMap.set(id, updated);
+  return updated;
 }
 /** Deletes a medication by id. Returns true if found. */
 export function deleteMedication(id: string): boolean {
   const idx = medications.findIndex((m) => m.id === id);
   if (idx === -1) return false;
-  medications.splice(idx, 1); return true;
+  medications.splice(idx, 1);
+  medMap.delete(id);
+  return true;
 }
 
 /* ── Appointment Accessors ── */
 
 /** Returns all appointment records. */
 export function getAppointments(): Appointment[] { return appointments; }
-/** Finds an appointment by id. */
+/** Finds an appointment by id in O(1) time. */
 export function getAppointmentById(id: string): Appointment | undefined {
-  return appointments.find((a) => a.id === id);
+  return aptMap.get(id);
 }
 /** Adds an appointment record. */
 export function addAppointment(apt: Appointment): Appointment {
-  appointments.push(apt); return apt;
+  appointments.push(apt);
+  aptMap.set(apt.id, apt);
+  return apt;
 }
 /** Updates an appointment by id. */
 export function updateAppointment(
@@ -79,14 +89,18 @@ export function updateAppointment(
 ): Appointment | undefined {
   const idx = appointments.findIndex((a) => a.id === id);
   if (idx === -1) return undefined;
-  appointments[idx] = { ...appointments[idx], ...patch } as Appointment;
-  return appointments[idx];
+  const updated = { ...appointments[idx], ...patch } as Appointment;
+  appointments[idx] = updated;
+  aptMap.set(id, updated);
+  return updated;
 }
 /** Deletes an appointment by id. */
 export function deleteAppointment(id: string): boolean {
   const idx = appointments.findIndex((a) => a.id === id);
   if (idx === -1) return false;
-  appointments.splice(idx, 1); return true;
+  appointments.splice(idx, 1);
+  aptMap.delete(id);
+  return true;
 }
 
 /* ── Adherence Accessors ── */

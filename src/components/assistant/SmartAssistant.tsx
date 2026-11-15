@@ -3,8 +3,9 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { AssistantMessage, ApiResponse, UserRole } from '@/types';
 import { Sparkles, Send } from 'lucide-react';
-import { UI_CONFIG } from '@/config/constants';
+import { useDebounce } from '@/hooks/useDebounce';
 import MarkdownView from '@/components/shared/MarkdownView';
+import TelemetryBar, { GuardrailsTelemetry } from '@/components/shared/TelemetryBar';
 
 interface SmartAssistantProps {
   readonly role: UserRole;
@@ -13,10 +14,11 @@ interface SmartAssistantProps {
 /** Context-aware Smart Care Assistant with conversational Q&A. */
 export default function SmartAssistant({ role }: SmartAssistantProps) {
   const [messages, setMessages] = useState<AssistantMessage[]>([]);
+  const [telemetry, setTelemetry] = useState<GuardrailsTelemetry | null>(null);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debouncedInput = useDebounce(input, 300);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -32,14 +34,19 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
     setLoading(true);
 
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
       const res = await fetch('/api/assistant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message, role }),
+        body: JSON.stringify({ message: message.trim().slice(0, 1000), role }),
+        signal: controller.signal,
       });
-      const data: ApiResponse<AssistantMessage> = await res.json();
+      clearTimeout(timeout);
+      const data: ApiResponse<AssistantMessage & { telemetry?: GuardrailsTelemetry }> = await res.json();
       if (data.success && data.data) {
         setMessages((prev) => [...prev, data.data as AssistantMessage]);
+        if (data.data.telemetry) setTelemetry(data.data.telemetry);
       }
     } catch {
       setMessages((prev) => [...prev, {
@@ -51,12 +58,6 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
       setLoading(false);
     }
   }, [role]);
-
-  const handleInputChange = useCallback((val: string) => {
-    setInput(val);
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {}, UI_CONFIG.DEBOUNCE_MS);
-  }, []);
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
@@ -107,7 +108,7 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
         <input
           id="assistant-input"
           value={input}
-          onChange={(e) => handleInputChange(e.target.value)}
+          onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about your health..."
           className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
           disabled={loading}
@@ -121,6 +122,8 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
           <Send className="w-5 h-5" />
         </button>
       </form>
+
+      <TelemetryBar telemetry={telemetry} />
     </section>
   );
 }

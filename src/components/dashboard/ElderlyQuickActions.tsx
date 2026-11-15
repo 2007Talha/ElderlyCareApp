@@ -37,8 +37,23 @@ export default function ElderlyQuickActions({
 
   useEffect(() => {
     fetchCheckIn();
-    const interval = setInterval(fetchCheckIn, 5000);
-    return () => clearInterval(interval);
+    const handleVisChange = () => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        fetchCheckIn();
+      }
+    };
+    window.addEventListener('focus', fetchCheckIn);
+    document.addEventListener('visibilitychange', handleVisChange);
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        fetchCheckIn();
+      }
+    }, 15000);
+    return () => {
+      window.removeEventListener('focus', fetchCheckIn);
+      document.removeEventListener('visibilitychange', handleVisChange);
+      clearInterval(interval);
+    };
   }, [fetchCheckIn]);
 
   const handleConfirmSafe = useCallback(async () => {

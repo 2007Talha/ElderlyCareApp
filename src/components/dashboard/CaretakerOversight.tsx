@@ -7,19 +7,40 @@ import { AlertCircle, PackagePlus, PhoneCall, Check } from 'lucide-react';
 interface CaretakerOversightProps {
   readonly lowInventory: Medication[];
   readonly missedDoseCount: number;
+  readonly onRefresh?: () => void;
 }
 
 /** Clinical oversight & escalation panel for Caretaker persona. */
 export default function CaretakerOversight({
-  lowInventory, missedDoseCount,
+  lowInventory, missedDoseCount, onRefresh,
 }: CaretakerOversightProps) {
   const [reorderedId, setReorderedId] = useState<string | null>(null);
   const [called, setCalled] = useState(false);
 
-  const handleReorder = useCallback((medId: string) => {
+  const handleReorder = useCallback(async (medId: string) => {
     setReorderedId(medId);
-    setTimeout(() => setReorderedId(null), 3000);
-  }, []);
+    try {
+      const med = lowInventory.find((m) => m.id === medId);
+      const newCount = (med?.inventoryCount ?? 5) + 30;
+      await fetch(`/api/medications/${medId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inventoryCount: newCount }),
+      });
+      await fetch('/api/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `Refill confirmed: 30 pills added for ${med?.medicationName || 'medication'}.`,
+          requestedBy: 'Caretaker',
+        }),
+      });
+      onRefresh?.();
+    } catch { /* fallback */ }
+    finally {
+      setTimeout(() => setReorderedId(null), 3000);
+    }
+  }, [lowInventory, onRefresh]);
 
   const handleEmergencyCall = useCallback(async () => {
     try {

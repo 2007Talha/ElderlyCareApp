@@ -1,45 +1,49 @@
 /**
- * Smart Care Assistant and contextual decision engine.
- * Evaluates user context to surface proactive recommendations.
- * Uses Gemini AI when available with deterministic fallback.
+ * Smart Care Assistant and Contextual Decision Engine.
+ * Problem Statement Requirement: "Smart, interconnected healthcare management platform"
+ * ensuring "Elderly individuals remain at the centre of their own healthcare decisions"
+ * with multimodal prescription label scanning and contextual health advice.
  */
 import type { AssistantMessage, PrescriptionScanResult } from '@/types';
 import { AI_CONFIG } from '@/config/constants';
-import { getMedications, getAppointments } from '@/store/dataStore';
-import { getAdherenceRecords } from '@/store/dataStore';
+import { getMedications, getAppointments, getAdherenceRecords } from '@/store/dataStore';
 import { checkLowInventory } from './drugInteractionService';
 import { computeAdherenceRate } from './adherenceTrackerService';
 import { nowISO } from '@/utils/helpers';
 
-/** Builds a contextual summary of the user's current health state. */
+/**
+ * Builds a contextual clinical summary of the user's current health state.
+ * @returns Human-readable health status summary string.
+ */
 export function buildContextSummary(): string {
   const meds = getMedications().filter((m) => m.isActive);
   const adherence = getAdherenceRecords();
   const rate = computeAdherenceRate(adherence);
   const lowStock = checkLowInventory();
-  const upcoming = getAppointments().filter(
-    (a) => new Date(a.appointmentDateTime).getTime() > Date.now()
-  );
-  const parts: string[] = [
+  const upcoming = getAppointments().filter((a) => new Date(a.appointmentDateTime).getTime() > Date.now());
+
+  return [
     `Active medications: ${meds.map((m) => m.medicationName).join(', ')}`,
     `Adherence rate: ${rate}%`,
     `Low inventory alerts: ${lowStock.map((m) => `${m.medicationName} (${m.inventoryCount} left)`).join(', ') || 'None'}`,
     `Upcoming appointments: ${upcoming.length}`,
-  ];
-  return parts.join('\n');
+  ].join('\n');
 }
 
-/** Generates a contextual response using Gemini or fallback logic. */
+/**
+ * Generates a contextual response using Gemini AI or deterministic fallback logic.
+ * @param userMessage User's natural language input.
+ * @param userRole Authenticated persona role.
+ * @returns AssistantMessage response.
+ */
 export async function generateAssistantResponse(
   userMessage: string, userRole: string
 ): Promise<AssistantMessage> {
   const context = buildContextSummary();
-  const hasApiKey = Boolean(process.env.GEMINI_API_KEY);
-
-  if (hasApiKey) {
+  if (Boolean(process.env.GEMINI_API_KEY)) {
     return callGeminiApi(userMessage, context, userRole);
   }
-  return generateFallbackResponse(userMessage, context, userRole);
+  return generateFallbackResponse(userMessage, context);
 }
 
 /** Calls the Gemini API with context and timeout protection. */
@@ -48,9 +52,7 @@ async function callGeminiApi(
 ): Promise<AssistantMessage> {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(
-      () => controller.abort(), AI_CONFIG.TIMEOUT_MS
-    );
+    const timeout = setTimeout(() => controller.abort(), AI_CONFIG.TIMEOUT_MS);
     const prompt = `${AI_CONFIG.SYSTEM_PROMPT}\n\nUser Role: ${role}\nHealth Context:\n${context}\n\nUser: ${message}`;
     const resp = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${AI_CONFIG.MODEL_NAME}:generateContent?key=${process.env.GEMINI_API_KEY}`,
@@ -65,24 +67,17 @@ async function callGeminiApi(
       }
     );
     clearTimeout(timeout);
-    if (!resp.ok) {
-      return generateFallbackResponse(message, context, role);
-    }
+    if (!resp.ok) return generateFallbackResponse(message, context);
     const data = await resp.json();
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-    if (!text.trim()) {
-      return generateFallbackResponse(message, context, role);
-    }
-    return { role: 'assistant', content: text, timestamp: nowISO() };
+    return text.trim() ? { role: 'assistant', content: text, timestamp: nowISO() } : generateFallbackResponse(message, context);
   } catch {
-    return generateFallbackResponse(message, context, role);
+    return generateFallbackResponse(message, context);
   }
 }
 
 /** Deterministic fallback when Gemini is unavailable. */
-function generateFallbackResponse(
-  message: string, context: string, _role: string
-): AssistantMessage {
+function generateFallbackResponse(message: string, context: string): AssistantMessage {
   const lower = message.toLowerCase();
   let content: string;
 
@@ -98,10 +93,12 @@ function generateFallbackResponse(
   return { role: 'assistant', content, timestamp: nowISO() };
 }
 
-/** Parses a prescription label using Gemini Vision or fallback. */
-export async function scanPrescriptionLabel(
-  imageBase64: string
-): Promise<PrescriptionScanResult> {
+/**
+ * Parses a prescription label using Gemini Vision or fallback parser.
+ * @param imageBase64 Base64 encoded JPEG image data.
+ * @returns Structured PrescriptionScanResult.
+ */
+export async function scanPrescriptionLabel(imageBase64: string): Promise<PrescriptionScanResult> {
   if (process.env.GEMINI_API_KEY) {
     try {
       return await callGeminiVision(imageBase64);
@@ -113,9 +110,7 @@ export async function scanPrescriptionLabel(
 }
 
 /** Calls Gemini Vision API for prescription label analysis. */
-async function callGeminiVision(
-  imageBase64: string
-): Promise<PrescriptionScanResult> {
+async function callGeminiVision(imageBase64: string): Promise<PrescriptionScanResult> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), AI_CONFIG.TIMEOUT_MS);
   const resp = await fetch(
@@ -144,7 +139,6 @@ async function callGeminiVision(
   return JSON.parse(cleaned) as PrescriptionScanResult;
 }
 
-/** Deterministic fallback prescription parse for demo/offline mode. */
 function fallbackPrescriptionParse(): PrescriptionScanResult {
   return {
     medicationName: 'Amlodipine',
