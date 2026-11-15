@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import type { AssistantMessage, ApiResponse, UserRole } from '@/types';
 import { Brain, Send } from 'lucide-react';
 import { UI_CONFIG } from '@/config/constants';
+import MarkdownView from '@/components/shared/MarkdownView';
 
 interface SmartAssistantProps {
   readonly role: UserRole;
@@ -80,7 +81,11 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
             <div className={`max-w-[80%] rounded-xl px-4 py-2 text-sm ${
               msg.role === 'user' ? 'bg-accent text-white' : 'bg-gray-800 text-gray-200'
             }`}>
-              <p className="whitespace-pre-wrap">{msg.content}</p>
+              {msg.role === 'user' ? (
+                <p className="whitespace-pre-wrap">{msg.content}</p>
+              ) : (
+                <MarkdownView content={msg.content} />
+              )}
               <p className="text-xs opacity-50 mt-1">
                 {new Date(msg.timestamp).toLocaleTimeString()}
               </p>
