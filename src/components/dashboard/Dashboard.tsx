@@ -55,8 +55,8 @@ export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
   return (
     <section aria-labelledby="dashboard-heading">
       <h2 id="dashboard-heading" className="text-xl font-bold flex items-center gap-2 mb-6">
-        <Heart className="w-6 h-6 text-accent" aria-hidden="true" />
-        Health Dashboard — <span className="text-accent text-lg font-normal">{role} View</span>
+        <Heart className="w-6 h-6 text-teal-400" aria-hidden="true" />
+        Health Dashboard — <span className="text-teal-400 text-lg font-normal">{role} View</span>
       </h2>
 
       {role === 'Elderly Individual' && (
@@ -81,23 +81,23 @@ export default function Dashboard({ role, onVoiceClick }: DashboardProps) {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
-          <Pill className="w-8 h-8 text-accent mx-auto mb-2" aria-hidden="true" />
-          <p className="text-2xl font-bold">{activeMeds.length}</p>
+          <Pill className="w-8 h-8 text-teal-400 mx-auto mb-2" aria-hidden="true" />
+          <p className="text-2xl font-bold tabular-nums">{activeMeds.length}</p>
           <p className="text-sm text-gray-400">Active Medications</p>
         </div>
         <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
           <Activity className="w-8 h-8 text-success mx-auto mb-2" aria-hidden="true" />
-          <p className="text-2xl font-bold text-success">{adherence?.rate ?? 0}%</p>
+          <p className="text-2xl font-bold text-success tabular-nums">{adherence?.rate ?? 0}%</p>
           <p className="text-sm text-gray-400">Adherence Rate</p>
         </div>
         <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
           <Calendar className="w-8 h-8 text-warning mx-auto mb-2" aria-hidden="true" />
-          <p className="text-2xl font-bold">{upcomingApts.length}</p>
+          <p className="text-2xl font-bold tabular-nums">{upcomingApts.length}</p>
           <p className="text-sm text-gray-400">Upcoming Appointments</p>
         </div>
         <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
-          <Heart className="w-8 h-8 text-accent mx-auto mb-2" aria-hidden="true" />
-          <p className="text-2xl font-bold">{adherence?.streak ?? 0}</p>
+          <Heart className="w-8 h-8 text-teal-400 mx-auto mb-2" aria-hidden="true" />
+          <p className="text-2xl font-bold tabular-nums">{adherence?.streak ?? 0}</p>
           <p className="text-sm text-gray-400">Day Streak</p>
         </div>
       </div>

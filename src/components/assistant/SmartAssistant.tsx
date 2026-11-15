@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { AssistantMessage, ApiResponse, UserRole } from '@/types';
-import { Brain, Send } from 'lucide-react';
+import { Sparkles, Send } from 'lucide-react';
 import { UI_CONFIG } from '@/config/constants';
 import MarkdownView from '@/components/shared/MarkdownView';
 
@@ -66,7 +66,7 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
   return (
     <section aria-labelledby="assistant-heading" className="flex flex-col h-full">
       <h2 id="assistant-heading" className="text-xl font-bold flex items-center gap-2 mb-4">
-        <Brain className="w-6 h-6 text-accent" aria-hidden="true" />
+        <Sparkles className="w-6 h-6 text-teal-400" aria-hidden="true" />
         Smart Care Assistant
       </h2>
 

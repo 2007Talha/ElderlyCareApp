@@ -40,10 +40,10 @@ export default function AppointmentList() {
     <section aria-labelledby="apt-heading">
       <div className="flex items-center justify-between mb-6">
         <h2 id="apt-heading" className="text-xl font-bold flex items-center gap-2">
-          <Calendar className="w-6 h-6 text-accent" aria-hidden="true" />
+          <Calendar className="w-6 h-6 text-teal-400" aria-hidden="true" />
           Medical Appointments
         </h2>
-        <button onClick={() => { setEditingApt(null); setShowForm(true); }} className="flex items-center gap-2 bg-accent hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+        <button onClick={() => { setEditingApt(null); setShowForm(true); }} className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 font-semibold text-white px-4 py-2 rounded-lg transition-colors">
           <Plus className="w-4 h-4" aria-hidden="true" />
           Add Appointment
         </button>

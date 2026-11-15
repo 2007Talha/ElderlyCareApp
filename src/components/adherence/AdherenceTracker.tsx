@@ -63,7 +63,7 @@ export default function AdherenceTracker() {
   return (
     <section aria-labelledby="adherence-heading">
       <h2 id="adherence-heading" className="text-xl font-bold flex items-center gap-2 mb-6">
-        <Activity className="w-6 h-6 text-accent" aria-hidden="true" />
+        <Activity className="w-6 h-6 text-teal-400" aria-hidden="true" />
         Medication Adherence
       </h2>
 
@@ -107,7 +107,7 @@ export default function AdherenceTracker() {
             <input id="adh-time" type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm" required />
           </div>
         </div>
-        <button type="submit" className="mt-3 bg-accent hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">Log Dose</button>
+        <button type="submit" className="mt-3 bg-teal-600 hover:bg-teal-500 font-semibold text-white px-4 py-2 rounded-lg text-sm transition-colors">Log Dose</button>
       </form>
 
       <div className="space-y-2" aria-live="polite">

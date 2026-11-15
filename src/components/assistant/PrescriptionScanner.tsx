@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import type { PrescriptionScanResult, ApiResponse } from '@/types';
-import { Camera, Upload, FileText } from 'lucide-react';
+import { ScanLine, Upload, Sparkles } from 'lucide-react';
 
 interface PrescriptionScannerProps {
   readonly onScanResult: (result: PrescriptionScanResult) => void;
@@ -57,14 +57,14 @@ export default function PrescriptionScanner({ onScanResult }: PrescriptionScanne
   return (
     <div className="bg-surface border border-gray-800 rounded-xl p-4">
       <h3 className="font-medium flex items-center gap-2 mb-3">
-        <Camera className="w-5 h-5 text-accent" aria-hidden="true" />
-        Prescription Label Scanner
+        <ScanLine className="w-5 h-5 text-teal-400" aria-hidden="true" />
+        Prescription Label AI Scanner
       </h3>
 
       <div className="flex gap-3">
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg border border-gray-700"
+          className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg border border-gray-700 text-sm font-medium"
           aria-label="Upload prescription label image"
         >
           <Upload className="w-4 h-4" aria-hidden="true" />
@@ -73,10 +73,10 @@ export default function PrescriptionScanner({ onScanResult }: PrescriptionScanne
         <button
           onClick={handleDemoScan}
           disabled={loading}
-          className="flex items-center gap-2 bg-accent hover:bg-blue-600 disabled:opacity-50 text-white px-4 py-2 rounded-lg"
+          className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm"
         >
-          <FileText className="w-4 h-4" aria-hidden="true" />
-          {loading ? 'Scanning...' : 'Demo Scan'}
+          <Sparkles className="w-4 h-4" aria-hidden="true" />
+          {loading ? 'Scanning...' : 'Demo AI Scan'}
         </button>
       </div>
 

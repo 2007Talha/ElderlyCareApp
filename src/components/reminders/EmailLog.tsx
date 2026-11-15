@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { EmailDispatchLog, ApiResponse } from '@/types';
 import StatusBadge from '@/components/shared/StatusBadge';
-import { Mail, RefreshCw, Send } from 'lucide-react';
+import { MailCheck, RefreshCw, Send } from 'lucide-react';
 
 /** Proactive Email Dispatch & Telemetry Log panel. */
 export default function EmailLog() {
@@ -33,7 +33,7 @@ export default function EmailLog() {
     <section aria-labelledby="email-heading">
       <div className="flex items-center justify-between mb-6">
         <h2 id="email-heading" className="text-xl font-bold flex items-center gap-2">
-          <Mail className="w-6 h-6 text-accent" aria-hidden="true" />
+          <MailCheck className="w-6 h-6 text-teal-400" aria-hidden="true" />
           Proactive Email Dispatch & Telemetry Log
         </h2>
         <div className="flex gap-2">

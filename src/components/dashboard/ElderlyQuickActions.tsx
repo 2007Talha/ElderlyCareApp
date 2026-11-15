@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import type { Medication, ApiResponse } from '@/types';
+import PillShapeIcon from '@/components/ui/PillShapeIcon';
 import { CheckCircle2, Volume2, BellRing, Heart } from 'lucide-react';
 
 interface ElderlyQuickActionsProps {
@@ -107,10 +108,15 @@ export default function ElderlyQuickActions({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {medications.filter((m) => m.isActive).map((med) => (
-            <div key={med.id} className="bg-gray-800/80 border border-gray-700/80 rounded-lg p-3 flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-white">{med.medicationName}</p>
-                <p className="text-xs text-gray-400">{med.dosage} • {med.scheduledTimes[0]}</p>
+            <div key={med.id} className="bg-gray-800/80 border border-gray-700/80 rounded-lg p-3 flex items-center justify-between gap-2.5">
+              <div className="flex items-center gap-2.5">
+                <div className="p-1.5 rounded-md bg-gray-900/60 shrink-0">
+                  <PillShapeIcon medicationName={med.medicationName} size={24} />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">{med.medicationName}</p>
+                  <p className="text-xs text-gray-400 tabular-nums">{med.dosage} • {med.scheduledTimes[0]}</p>
+                </div>
               </div>
               <button
                 onClick={() => handleQuickTake(med.id, med.scheduledTimes[0])}

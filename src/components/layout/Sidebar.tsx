@@ -1,8 +1,11 @@
 'use client';
 
 import type { UserRole } from '@/types';
+import BrandLogo from '@/components/ui/BrandLogo';
 import {
-  Heart, Pill, Calendar, Bell, Brain, Mail, Settings, LogOut,
+  LayoutDashboard, Pill, Activity, Calendar, MailCheck,
+  Sparkles, Send, ShieldCheck, LogOut,
+  HeartHandshake, Stethoscope, UsersRound,
 } from 'lucide-react';
 
 type TabId = 'dashboard' | 'medications' | 'adherence' | 'appointments'
@@ -22,42 +25,44 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: <Heart className="w-5 h-5" /> },
+  { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
   { id: 'medications', label: 'Medications', icon: <Pill className="w-5 h-5" /> },
-  { id: 'adherence', label: 'Adherence', icon: <Bell className="w-5 h-5" /> },
+  { id: 'adherence', label: 'Adherence', icon: <Activity className="w-5 h-5" /> },
   { id: 'appointments', label: 'Appointments', icon: <Calendar className="w-5 h-5" /> },
-  { id: 'reminders', label: 'Reminders', icon: <Bell className="w-5 h-5" /> },
-  { id: 'assistant', label: 'Smart Assistant', icon: <Brain className="w-5 h-5" /> },
-  { id: 'email-log', label: 'Email Log', icon: <Mail className="w-5 h-5" /> },
-  { id: 'settings', label: 'Settings', icon: <Settings className="w-5 h-5" /> },
+  { id: 'reminders', label: 'Reminders', icon: <MailCheck className="w-5 h-5" /> },
+  { id: 'assistant', label: 'Smart Assistant', icon: <Sparkles className="w-5 h-5" /> },
+  { id: 'email-log', label: 'Email Log', icon: <Send className="w-5 h-5" /> },
+  { id: 'settings', label: 'Consent & Settings', icon: <ShieldCheck className="w-5 h-5" /> },
 ];
 
-/** Sidebar navigation with role display and logout. */
+/** Sidebar navigation with Brand Logo, role badges, and semantic icon system. */
 export default function Sidebar({
   activeTab, onTabChange, role, onLogout,
 }: SidebarProps) {
   return (
     <nav
-      className="w-64 bg-surface border-r border-gray-800 flex flex-col min-h-screen"
+      className="w-64 bg-surface border-r border-gray-800 flex flex-col min-h-screen shrink-0"
       aria-label="Main navigation"
     >
       <div className="p-4 border-b border-gray-800">
-        <div className="flex items-center gap-2">
-          <Heart className="w-6 h-6 text-accent" aria-hidden="true" />
-          <span className="font-bold text-lg">ElderCare</span>
+        <BrandLogo size="sm" />
+        <div className="flex items-center gap-1.5 mt-2.5 px-2 py-1 rounded-md bg-gray-800/60 border border-gray-700/50 w-fit">
+          {role === 'Elderly Individual' && <HeartHandshake className="w-3.5 h-3.5 text-teal-400 shrink-0" aria-hidden="true" />}
+          {role === 'Caretaker' && <Stethoscope className="w-3.5 h-3.5 text-amber-400 shrink-0" aria-hidden="true" />}
+          {role === 'Family Member' && <UsersRound className="w-3.5 h-3.5 text-emerald-400 shrink-0" aria-hidden="true" />}
+          <span className="text-xs font-semibold text-gray-300">{role}</span>
         </div>
-        <p className="text-xs text-gray-400 mt-1">{role}</p>
       </div>
 
-      <ul className="flex-1 py-2">
+      <ul className="flex-1 py-3 px-2 space-y-1">
         {NAV_ITEMS.map((item) => (
           <li key={item.id}>
             <button
               onClick={() => onTabChange(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left transition-colors ${
                 activeTab === item.id
-                  ? 'bg-accent/10 text-accent border-r-2 border-accent'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                  ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-800/60'
               }`}
               aria-current={activeTab === item.id ? 'page' : undefined}
             >
@@ -71,9 +76,9 @@ export default function Sidebar({
       <div className="p-4 border-t border-gray-800">
         <button
           onClick={onLogout}
-          className="w-full flex items-center gap-2 text-gray-400 hover:text-danger transition-colors"
+          className="w-full flex items-center gap-2 text-sm text-gray-400 hover:text-danger transition-colors py-1"
         >
-          <LogOut className="w-5 h-5" aria-hidden="true" />
+          <LogOut className="w-4 h-4" aria-hidden="true" />
           Sign Out
         </button>
       </div>
