@@ -36,7 +36,18 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: 'Atkinson Hyperlegible', system-ui, -apple-system, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Accessible Readability: +2pt boost for small & micro text */
+.text-\[10px\] {
+  font-size: 12px !important;
+}
+
+.text-\[11px\] {
+  font-size: 13px !important;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {

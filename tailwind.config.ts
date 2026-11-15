@@ -16,6 +16,9 @@ const config: Config = {
         danger: 'var(--danger)',
       },
       fontSize: {
+        xs: ['0.875rem', { lineHeight: '1.25rem' }],
+        sm: ['1rem', { lineHeight: '1.5rem' }],
+        base: ['1.125rem', { lineHeight: '1.75rem' }],
         comfort: '1.25rem',
         'comfort-lg': '1.5rem',
       },
