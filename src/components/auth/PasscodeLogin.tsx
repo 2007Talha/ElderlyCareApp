@@ -47,7 +47,7 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
         <ThemeToggle />
       </div>
 
-      <section className="w-full max-w-md bg-surface rounded-2xl p-8 border border-gray-800 shadow-xl">
+      <section className="w-full max-w-md bg-surface rounded-2xl p-8 border border-border-color shadow-xl">
         <div className="flex flex-col items-center text-center mb-6">
           <BrandLogo size="lg" />
           <div className="flex items-center gap-1.5 mt-4 text-xs font-semibold text-teal-400 bg-teal-500/10 border border-teal-500/25 px-2.5 py-1 rounded-full">
@@ -58,7 +58,7 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="role-select" className="block text-sm font-semibold text-gray-300 mb-2">
+            <label htmlFor="role-select" className="block text-sm font-semibold text-text-secondary mb-2">
               Select Your Role
             </label>
             <div className="relative">
@@ -66,13 +66,13 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
                 id="role-select"
                 value={role}
                 onChange={(e) => setRole(e.target.value as UserRole)}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:border-teal-400 text-sm"
+                className="w-full bg-card-subtle border border-border-color rounded-lg pl-10 pr-4 py-3 text-text-primary focus:border-teal-400 text-sm"
               >
                 {VALID_ROLES.map((r) => (
                   <option key={r} value={r}>{r}</option>
                 ))}
               </select>
-              <div className="absolute left-3 top-3.5 text-gray-400 pointer-events-none">
+              <div className="absolute left-3 top-3.5 text-text-secondary pointer-events-none">
                 {role === 'Elderly Individual' && <HeartHandshake className="w-4 h-4 text-teal-400" />}
                 {role === 'Caretaker' && <Stethoscope className="w-4 h-4 text-amber-400" />}
                 {role === 'Family Member' && <UsersRound className="w-4 h-4 text-emerald-400" />}
@@ -81,9 +81,9 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
           </div>
 
           <div>
-            <label htmlFor="passcode-input" className="block text-sm font-semibold text-gray-300 mb-2 flex items-center justify-between">
+            <label htmlFor="passcode-input" className="block text-sm font-semibold text-text-secondary mb-2 flex items-center justify-between">
               <span>Passcode (4-6 Digits)</span>
-              <span className="text-[11px] text-gray-400 flex items-center gap-1">
+              <span className="text-[11px] text-text-secondary flex items-center gap-1">
                 <KeyRound className="w-3 h-3" /> PIN: 1234 / 5678 / 9012
               </span>
             </label>
@@ -96,11 +96,11 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
                 placeholder="Enter passcode"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:border-teal-400 text-sm tracking-widest tabular-nums"
+                className="w-full bg-card-subtle border border-border-color rounded-lg pl-10 pr-4 py-3 text-text-primary focus:border-teal-400 text-sm tracking-widest tabular-nums"
                 required
                 aria-describedby={error ? 'login-error' : undefined}
               />
-              <KeyRound className="w-4 h-4 text-gray-400 absolute left-3 top-3.5 pointer-events-none" aria-hidden="true" />
+              <KeyRound className="w-4 h-4 text-text-secondary absolute left-3 top-3.5 pointer-events-none" aria-hidden="true" />
             </div>
           </div>
 
@@ -117,27 +117,27 @@ export default function PasscodeLogin({ onLogin }: PasscodeLoginProps) {
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
 
-          <div className="pt-2 border-t border-gray-800">
-            <p className="text-[11px] text-gray-400 font-medium mb-2 text-center">1-Click Judge Quick Login:</p>
+          <div className="pt-2 border-t border-border-color">
+            <p className="text-[11px] text-text-secondary font-medium mb-2 text-center">1-Click Quick Role Login:</p>
             <div className="grid grid-cols-3 gap-2 text-xs">
               <button
                 type="button"
                 onClick={() => { setRole('Elderly Individual'); setPasscode('1234'); }}
-                className="bg-gray-800 hover:bg-gray-700 border border-teal-500/30 text-teal-300 rounded-lg p-1.5 font-semibold text-center transition-colors"
+                className="bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 border border-teal-500/30 text-teal-400 rounded-lg p-1.5 font-semibold text-center transition-colors"
               >
                 Elderly (1234)
               </button>
               <button
                 type="button"
                 onClick={() => { setRole('Caretaker'); setPasscode('5678'); }}
-                className="bg-gray-800 hover:bg-gray-700 border border-amber-500/30 text-amber-300 rounded-lg p-1.5 font-semibold text-center transition-colors"
+                className="bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 border border-amber-500/30 text-amber-500 rounded-lg p-1.5 font-semibold text-center transition-colors"
               >
                 Caretaker (5678)
               </button>
               <button
                 type="button"
                 onClick={() => { setRole('Family Member'); setPasscode('9012'); }}
-                className="bg-gray-800 hover:bg-gray-700 border border-emerald-500/30 text-emerald-300 rounded-lg p-1.5 font-semibold text-center transition-colors"
+                className="bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 border border-emerald-500/30 text-emerald-500 rounded-lg p-1.5 font-semibold text-center transition-colors"
               >
                 Family (9012)
               </button>

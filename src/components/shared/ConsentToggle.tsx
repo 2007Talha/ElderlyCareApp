@@ -45,20 +45,20 @@ export default function ConsentToggle({ role = 'Elderly Individual' }: ConsentTo
   }, [consent, isElderly]);
 
   return (
-    <section aria-labelledby="consent-heading" className="bg-surface border border-gray-800 rounded-xl p-6">
+    <section aria-labelledby="consent-heading" className="bg-surface border border-border-color rounded-xl p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
-        <h2 id="consent-heading" className="text-lg font-bold flex items-center gap-2">
+        <h2 id="consent-heading" className="text-lg font-bold text-text-primary flex items-center gap-2">
           <Shield className="w-5 h-5 text-accent" aria-hidden="true" />
           Privacy & Autonomy Consent Governance
         </h2>
         {!isElderly && (
-          <span className="flex items-center gap-1 text-xs bg-gray-800 text-gray-400 px-3 py-1 rounded-full border border-gray-700">
+          <span className="flex items-center gap-1 text-xs bg-card-subtle text-text-secondary px-3 py-1 rounded-full border border-border-color">
             <Lock className="w-3 h-3" /> Read-Only Mode
           </span>
         )}
       </div>
 
-      <p className="text-sm text-gray-400 mb-4">
+      <p className="text-sm text-text-secondary mb-4">
         {isElderly
           ? 'As the primary decision-maker, you have exclusive control over who can view your health data and propose schedule modifications.'
           : 'Privacy & Sharing settings are under the sole autonomy of the Elderly Individual. Caretakers and Family Members have view-only access.'}
@@ -73,7 +73,7 @@ export default function ConsentToggle({ role = 'Elderly Individual' }: ConsentTo
             onChange={(e) => setConsent({ ...consent, shareWithCaretaker: e.target.checked })}
             className="rounded"
           />
-          <span className="text-sm text-gray-200">Share health data with Caretaker</span>
+          <span className="text-sm text-text-primary">Share health data with Caretaker</span>
         </label>
         <label className={`flex items-center gap-3 ${isElderly ? 'cursor-pointer' : 'cursor-not-allowed opacity-70'}`}>
           <input
@@ -83,7 +83,7 @@ export default function ConsentToggle({ role = 'Elderly Individual' }: ConsentTo
             onChange={(e) => setConsent({ ...consent, shareWithFamily: e.target.checked })}
             className="rounded"
           />
-          <span className="text-sm text-gray-200">Share health summaries with Family Members</span>
+          <span className="text-sm text-text-primary">Share health summaries with Family Members</span>
         </label>
         <label className={`flex items-center gap-3 ${isElderly ? 'cursor-pointer' : 'cursor-not-allowed opacity-70'}`}>
           <input
@@ -93,7 +93,7 @@ export default function ConsentToggle({ role = 'Elderly Individual' }: ConsentTo
             onChange={(e) => setConsent({ ...consent, allowScheduleModifications: e.target.checked })}
             className="rounded"
           />
-          <span className="text-sm text-gray-200">Allow schedule modifications proposed by Caretakers / Family</span>
+          <span className="text-sm text-text-primary">Allow schedule modifications proposed by Caretakers / Family</span>
         </label>
       </div>
 
@@ -107,7 +107,7 @@ export default function ConsentToggle({ role = 'Elderly Individual' }: ConsentTo
           {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Autonomy Preferences'}
         </button>
       ) : (
-        <p className="mt-4 text-xs text-gray-500 italic">
+        <p className="mt-4 text-xs text-text-secondary italic">
           To modify these settings, please sign in with the Elderly Individual persona.
         </p>
       )}

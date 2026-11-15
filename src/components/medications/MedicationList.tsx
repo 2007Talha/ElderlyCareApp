@@ -63,8 +63,8 @@ export default function MedicationList({ refreshTrigger }: MedicationListProps =
       </div>
 
       {lowInventory.length > 0 && (
-        <div className="mb-4 p-3 bg-warning/10 border border-warning/30 rounded-lg" role="alert">
-          <div className="flex items-center gap-2 text-warning text-sm font-medium">
+        <div className="mb-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg" role="alert">
+          <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm font-medium">
             <AlertTriangle className="w-4 h-4 shrink-0" aria-hidden="true" />
             Low inventory alert: {lowInventory.map((m) => `${m.medicationName} (${m.inventoryCount} left)`).join(', ')}
           </div>
@@ -73,14 +73,14 @@ export default function MedicationList({ refreshTrigger }: MedicationListProps =
 
       <div className="grid gap-4" aria-live="polite">
         {medications.map((med) => (
-          <article key={med.id} className="bg-surface border border-gray-800 rounded-xl p-4 shadow-sm hover:border-gray-700 transition-colors">
+          <article key={med.id} className="bg-surface border border-border-color rounded-xl p-4 shadow-sm hover:border-gray-400 dark:hover:border-gray-700 transition-colors">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-3.5">
-                <div className="p-2 rounded-lg bg-gray-800/70 border border-gray-700/60 shrink-0">
+                <div className="p-2 rounded-lg bg-card-subtle border border-border-color shrink-0">
                   <PillShapeIcon medicationName={med.medicationName} size={32} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base">{med.medicationName}</h3>
+                  <h3 className="font-bold text-text-primary text-base">{med.medicationName}</h3>
                   <p className="text-sm text-teal-400 font-semibold tabular-nums mt-0.5">
                     {med.dosage} — {med.frequency}
                   </p>
@@ -91,15 +91,15 @@ export default function MedicationList({ refreshTrigger }: MedicationListProps =
                     ))}
                   </div>
 
-                  <p className="text-xs text-gray-400 mt-2 flex items-center gap-3">
+                  <p className="text-xs text-text-secondary mt-2 flex items-center gap-3">
                     <span className="tabular-nums">Inventory: {med.inventoryCount}</span>
                     <span className="flex items-center gap-1">
-                      <ShieldCheck className="w-3.5 h-3.5 text-gray-400" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-text-secondary" />
                       By: {med.prescribedBy}
                     </span>
                   </p>
                   {med.instructions && (
-                    <p className="text-xs text-gray-500 mt-1 italic">{med.instructions}</p>
+                    <p className="text-xs text-text-secondary mt-1 italic">{med.instructions}</p>
                   )}
                 </div>
               </div>
@@ -108,14 +108,14 @@ export default function MedicationList({ refreshTrigger }: MedicationListProps =
                 <StatusBadge status={med.isActive ? 'Active' : 'Inactive'} />
                 <button
                   onClick={() => { setEditingMed(med); setShowForm(true); }}
-                  className="text-gray-400 hover:text-teal-400 p-1.5 rounded-md hover:bg-gray-800"
+                  className="text-text-secondary hover:text-teal-400 p-1.5 rounded-md hover:bg-card-subtle"
                   aria-label={`Edit ${med.medicationName}`}
                 >
                   <Edit className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDelete(med.id)}
-                  className="text-gray-400 hover:text-danger p-1.5 rounded-md hover:bg-gray-800"
+                  className="text-text-secondary hover:text-danger p-1.5 rounded-md hover:bg-card-subtle"
                   aria-label={`Delete ${med.medicationName}`}
                 >
                   <Trash2 className="w-4 h-4" />

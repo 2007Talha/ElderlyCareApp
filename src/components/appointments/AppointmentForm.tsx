@@ -51,24 +51,24 @@ export default function AppointmentForm({ appointment, onSave, onCancel }: Appoi
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="apt-doctor" className="block text-sm font-medium text-gray-300 mb-1">Doctor Name</label>
-        <input id="apt-doctor" value={doctor} onChange={(e) => setDoctor(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+        <label htmlFor="apt-doctor" className="block text-sm font-medium text-text-secondary mb-1">Doctor Name</label>
+        <input id="apt-doctor" value={doctor} onChange={(e) => setDoctor(e.target.value)} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
       </div>
       <div>
-        <label htmlFor="apt-specialty" className="block text-sm font-medium text-gray-300 mb-1">Specialty</label>
-        <input id="apt-specialty" value={specialty} onChange={(e) => setSpecialty(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+        <label htmlFor="apt-specialty" className="block text-sm font-medium text-text-secondary mb-1">Specialty</label>
+        <input id="apt-specialty" value={specialty} onChange={(e) => setSpecialty(e.target.value)} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
       </div>
       <div>
-        <label htmlFor="apt-datetime" className="block text-sm font-medium text-gray-300 mb-1">Date & Time</label>
-        <input id="apt-datetime" type="datetime-local" value={dateTime} onChange={(e) => setDateTime(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+        <label htmlFor="apt-datetime" className="block text-sm font-medium text-text-secondary mb-1">Date & Time</label>
+        <input id="apt-datetime" type="datetime-local" value={dateTime} onChange={(e) => setDateTime(e.target.value)} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
       </div>
       <div>
-        <label htmlFor="apt-location" className="block text-sm font-medium text-gray-300 mb-1">Location</label>
-        <input id="apt-location" value={location} onChange={(e) => setLocation(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+        <label htmlFor="apt-location" className="block text-sm font-medium text-text-secondary mb-1">Location</label>
+        <input id="apt-location" value={location} onChange={(e) => setLocation(e.target.value)} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
       </div>
       <div>
-        <label htmlFor="apt-prep" className="block text-sm font-medium text-gray-300 mb-1">Preparation Notes</label>
-        <textarea id="apt-prep" value={prepNotes} onChange={(e) => setPrepNotes(e.target.value)} rows={2} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" />
+        <label htmlFor="apt-prep" className="block text-sm font-medium text-text-secondary mb-1">Preparation Notes</label>
+        <textarea id="apt-prep" value={prepNotes} onChange={(e) => setPrepNotes(e.target.value)} rows={2} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" />
       </div>
       {error && <p className="text-danger text-sm" role="alert">{error}</p>}
       <div className="flex gap-3">
@@ -76,7 +76,7 @@ export default function AppointmentForm({ appointment, onSave, onCancel }: Appoi
           <Save className="w-4 h-4" aria-hidden="true" />
           {loading ? 'Saving...' : 'Save'}
         </button>
-        <button type="button" onClick={onCancel} className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+        <button type="button" onClick={onCancel} className="flex items-center gap-2 bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary border border-border-color px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
           <X className="w-4 h-4" aria-hidden="true" />
           Cancel
         </button>

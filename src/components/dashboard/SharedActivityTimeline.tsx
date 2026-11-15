@@ -40,26 +40,26 @@ export default function SharedActivityTimeline({ activities }: SharedActivityTim
   const filtered = activities.filter((a) => (filter === 'all' ? true : a.category === filter));
 
   return (
-    <div className="bg-surface border border-gray-800 rounded-2xl p-5 mb-6 shadow-sm" aria-live="polite">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-gray-800">
+    <div className="bg-surface border border-border-color rounded-2xl p-5 mb-6 shadow-sm" aria-live="polite">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-border-color">
         <div>
-          <h3 className="text-base font-bold text-white flex items-center gap-2">
+          <h3 className="text-base font-bold text-text-primary flex items-center gap-2">
             <UsersRound className="w-5 h-5 text-teal-400" aria-hidden="true" />
             Shared Ecosystem Activity Stream
           </h3>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-xs text-text-secondary mt-0.5">
             Real-time collaborative audit trail between Elderly, Caretakers, and Family members.
           </p>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex items-center gap-1 bg-gray-900 border border-gray-800 p-0.5 rounded-lg text-xs">
+        <div className="flex items-center gap-1 bg-card-subtle border border-border-color p-0.5 rounded-lg text-xs">
           {(['all', 'medication', 'email', 'autonomy'] as const).map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
               className={`px-2.5 py-1 rounded capitalize font-semibold transition-colors ${
-                filter === cat ? 'bg-teal-600 text-white' : 'text-gray-400 hover:text-white'
+                filter === cat ? 'bg-teal-600 text-white' : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               {cat}
@@ -74,9 +74,9 @@ export default function SharedActivityTimeline({ activities }: SharedActivityTim
           return (
             <div
               key={item.id}
-              className="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800/80 flex items-start gap-3 hover:border-gray-700 transition-colors"
+              className="p-3.5 rounded-xl bg-card-subtle border border-border-color flex items-start gap-3 hover:border-gray-400 dark:hover:border-gray-700 transition-colors shadow-sm"
             >
-              <div className="p-2 rounded-lg bg-gray-800 border border-gray-700/60 shrink-0 mt-0.5">
+              <div className="p-2 rounded-lg bg-surface border border-border-color shrink-0 mt-0.5">
                 {CATEGORY_ICONS[item.category]}
               </div>
               <div className="flex-1 min-w-0">
@@ -85,12 +85,12 @@ export default function SharedActivityTimeline({ activities }: SharedActivityTim
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badge.className}`}>
                       {badge.label}
                     </span>
-                    <span className="text-xs font-semibold text-white truncate">{item.action}</span>
+                    <span className="text-xs font-semibold text-text-primary truncate">{item.action}</span>
                   </div>
-                  <span className="text-[11px] text-gray-500 shrink-0">{item.timestamp}</span>
+                  <span className="text-[11px] text-text-secondary shrink-0">{item.timestamp}</span>
                 </div>
                 {item.details && (
-                  <p className="text-xs text-gray-400 mt-1 leading-relaxed">{item.details}</p>
+                  <p className="text-xs text-text-secondary mt-1 leading-relaxed">{item.details}</p>
                 )}
               </div>
             </div>

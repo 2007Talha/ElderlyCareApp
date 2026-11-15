@@ -21,11 +21,11 @@ export default function AppHeader({
   return (
     <>
       {/* Mobile & Tablet App Bar (< lg) */}
-      <div className="lg:hidden flex items-center justify-between pb-3.5 mb-4 border-b border-gray-800">
+      <div className="lg:hidden flex items-center justify-between pb-3.5 mb-4 border-b border-border-color">
         <div className="flex items-center gap-2.5">
           <button
             onClick={onOpenMenu}
-            className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 transition-colors"
+            className="p-2 rounded-lg bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary border border-border-color transition-colors"
             aria-label="Open navigation menu"
           >
             <Menu className="w-5 h-5" />
@@ -41,13 +41,13 @@ export default function AppHeader({
       {/* Desktop Header (>= lg) */}
       <header className="hidden lg:flex items-center justify-between mb-6 flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
+          <h1 className="text-2xl font-bold flex items-center gap-2 text-text-primary">
             {role === 'Elderly Individual' && <HeartHandshake className="w-6 h-6 text-teal-400" />}
             {role === 'Caretaker' && <Stethoscope className="w-6 h-6 text-amber-400" />}
             {role === 'Family Member' && <UsersRound className="w-6 h-6 text-emerald-400" />}
             Welcome, {role}
           </h1>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-xs text-text-secondary mt-0.5">
             {role === 'Elderly Individual' && 'Primary Decision-Maker • Full Privacy Autonomy'}
             {role === 'Caretaker' && 'Healthcare Clinical Oversight & Supply Management'}
             {role === 'Family Member' && 'Family Peace-of-Mind & Support Network'}

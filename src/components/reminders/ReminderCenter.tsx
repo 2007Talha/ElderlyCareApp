@@ -19,17 +19,17 @@ export default function ReminderCenter({ role }: ReminderCenterProps) {
   return (
     <div className="space-y-6">
       {/* View Switcher Bar */}
-      <div className="flex items-center justify-between pb-2 border-b border-gray-800 flex-wrap gap-3">
+      <div className="flex items-center justify-between pb-2 border-b border-border-color flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <Bell className="w-5 h-5 text-teal-400" aria-hidden="true" />
-          <h2 className="text-lg font-bold">
+          <h2 className="text-lg font-bold text-text-primary">
             Reminders Center — <span className="text-teal-400">{role} Mode</span>
           </h2>
         </div>
 
         <button
           onClick={() => setShowTechnicalLogs(!showTechnicalLogs)}
-          className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 transition-colors"
+          className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary border border-border-color transition-colors"
         >
           <MailCheck className="w-4 h-4" />
           {showTechnicalLogs ? 'Back to Mode Reminders' : 'View Email Delivery Logs'}

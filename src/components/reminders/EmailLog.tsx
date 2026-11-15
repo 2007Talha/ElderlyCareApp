@@ -39,7 +39,7 @@ export default function EmailLog() {
         <div className="flex gap-2">
           <button
             onClick={fetchLogs}
-            className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
+            className="flex items-center gap-2 bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary border border-border-color px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
             aria-label="Refresh email logs"
           >
             <RefreshCw className="w-4 h-4" aria-hidden="true" />
@@ -63,18 +63,18 @@ export default function EmailLog() {
       ) : (
         <div className="space-y-3" aria-live="polite">
           {logs.slice().reverse().map((log) => (
-            <article key={log.id} className="bg-surface border border-gray-800 rounded-xl p-4">
+            <article key={log.id} className="bg-surface border border-border-color rounded-xl p-4 shadow-sm hover:border-gray-400 dark:hover:border-gray-700 transition-colors">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="font-medium text-white text-sm">{log.subject}</p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="font-medium text-text-primary text-sm">{log.subject}</p>
+                  <p className="text-xs text-text-secondary mt-1">
                     To: {log.recipient} | Trigger: {log.triggerReason}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">{log.body}</p>
+                  <p className="text-xs text-text-secondary mt-1">{log.body}</p>
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <StatusBadge status={log.deliveryStatus} />
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-text-secondary">
                     {new Date(log.timestamp).toLocaleString()}
                   </span>
                 </div>

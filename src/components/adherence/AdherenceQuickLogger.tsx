@@ -19,16 +19,16 @@ export default function AdherenceQuickLogger({
   onDirectLog,
 }: AdherenceQuickLoggerProps) {
   return (
-    <div className="bg-surface border border-gray-800 rounded-xl p-5 mb-6">
-      <h3 className="font-bold text-white text-base mb-1">
+    <div className="bg-surface border border-border-color rounded-xl p-5 mb-6 shadow-sm">
+      <h3 className="font-bold text-text-primary text-base mb-1">
         Active Medications — Quick Intake Logger
       </h3>
-      <p className="text-xs text-gray-400 mb-4">
+      <p className="text-xs text-text-secondary mb-4">
         All added medications appear here. Click to mark intake status instantly:
       </p>
 
       {activeMeds.length === 0 ? (
-        <p className="text-xs text-gray-400 italic">
+        <p className="text-xs text-text-secondary italic">
           No active medications scheduled. Add one in the Medications tab.
         </p>
       ) : (
@@ -36,22 +36,22 @@ export default function AdherenceQuickLogger({
           {activeMeds.map((med) => (
             <div
               key={med.id}
-              className="p-3.5 rounded-xl bg-gray-800/60 border border-gray-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+              className="p-3.5 rounded-xl bg-card-subtle border border-border-color flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm"
             >
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gray-900/60 border border-gray-700/50 shrink-0">
+                <div className="p-2 rounded-lg bg-surface border border-border-color shrink-0">
                   <PillShapeIcon medicationName={med.medicationName} size={28} />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="font-bold text-white text-sm">{med.medicationName}</p>
+                    <p className="font-bold text-text-primary text-sm">{med.medicationName}</p>
                     <span className="text-xs text-teal-400 font-semibold tabular-nums">{med.dosage}</span>
                   </div>
                   <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
                     {med.scheduledTimes.map((time) => (
                       <ScheduleTimelineIcon key={time} time={time} showLabel={false} />
                     ))}
-                    <span className="text-[11px] text-gray-400 tabular-nums ml-1">
+                    <span className="text-[11px] text-text-secondary tabular-nums ml-1">
                       (Inventory: {med.inventoryCount})
                     </span>
                   </div>

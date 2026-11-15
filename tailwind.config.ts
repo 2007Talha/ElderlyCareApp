@@ -2,17 +2,18 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
-  darkMode: 'class',
+  darkMode: ['class', '[data-theme="dark"]'],
   theme: {
     extend: {
       colors: {
-        surface: '#111827',
-        background: '#0B0F19',
-        accent: '#2DD4BF',
-        'accent-hover': '#14B8A6',
-        success: '#10B981',
-        warning: '#F59E0B',
-        danger: '#EF4444',
+        surface: 'var(--bg-surface)',
+        background: 'var(--bg-primary)',
+        'card-subtle': 'var(--bg-card-subtle)',
+        accent: 'var(--accent)',
+        'accent-hover': 'var(--accent-hover)',
+        success: 'var(--success)',
+        warning: 'var(--warning)',
+        danger: 'var(--danger)',
       },
       fontSize: {
         comfort: '1.25rem',

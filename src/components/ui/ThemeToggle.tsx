@@ -42,8 +42,8 @@ export default function ThemeToggle({ className = '' }: ThemeToggleProps) {
       onClick={toggleTheme}
       className={`p-2.5 rounded-xl border transition-all duration-200 flex items-center justify-center gap-2 ${
         theme === 'dark'
-          ? 'bg-gray-800/80 border-gray-700/80 text-amber-300 hover:bg-gray-700'
-          : 'bg-white border-amber-200 text-slate-700 shadow-sm hover:bg-amber-50'
+          ? 'bg-card-subtle border-border-color text-amber-300 hover:bg-gray-700'
+          : 'bg-surface border-border-color text-text-primary shadow-sm hover:bg-card-subtle'
       } ${className}`}
       aria-label={`Switch to ${theme === 'dark' ? 'Warm Daylight Light Mode' : 'Midnight Sanctuary Dark Mode'}`}
       title={theme === 'dark' ? 'Switch to Warm Daylight' : 'Switch to Midnight Sanctuary'}

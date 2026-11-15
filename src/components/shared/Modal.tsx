@@ -30,22 +30,22 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
     <dialog
       ref={dialogRef}
       onClose={onClose}
-      className="bg-surface border border-gray-700 rounded-2xl p-0 w-full max-w-lg backdrop:bg-black/60"
+      className="bg-surface border border-border-color rounded-2xl p-0 w-full max-w-lg backdrop:bg-black/60 shadow-xl"
       aria-labelledby="modal-title"
     >
-      <div className="flex items-center justify-between p-4 border-b border-gray-700">
-        <h2 id="modal-title" className="text-lg font-bold text-white">
+      <div className="flex items-center justify-between p-4 border-b border-border-color">
+        <h2 id="modal-title" className="text-lg font-bold text-text-primary">
           {title}
         </h2>
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-white p-1"
+          className="text-text-secondary hover:text-text-primary p-1 rounded-lg"
           aria-label="Close dialog"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
-      <div className="p-4 text-gray-200">{children}</div>
+      <div className="p-4 text-text-primary">{children}</div>
     </dialog>
   );
 }

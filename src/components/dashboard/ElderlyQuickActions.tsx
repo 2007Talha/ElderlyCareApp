@@ -91,8 +91,8 @@ export default function ElderlyQuickActions({
           <div className="flex items-center gap-3">
             <BellRing className="w-7 h-7 text-danger shrink-0" aria-hidden="true" />
             <div>
-              <p className="font-bold text-white text-base">Caretaker Wellness Check-In Request</p>
-              <p className="text-xs text-gray-300">{checkInAlert.message} (Sent at {new Date(checkInAlert.requestedAt).toLocaleTimeString()})</p>
+              <p className="font-bold text-text-primary text-base">Caretaker Wellness Check-In Request</p>
+              <p className="text-xs text-text-secondary">{checkInAlert.message} (Sent at {new Date(checkInAlert.requestedAt).toLocaleTimeString()})</p>
             </div>
           </div>
           <button
@@ -106,11 +106,11 @@ export default function ElderlyQuickActions({
         </div>
       )}
 
-      <div className="bg-surface border border-accent/30 rounded-xl p-5">
+      <div className="bg-surface border border-accent/30 rounded-xl p-5 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="font-bold text-white text-base">My Daily Routine</h3>
-            <p className="text-xs text-gray-400">Tap to confirm you took your pill today</p>
+            <h3 className="font-bold text-text-primary text-base">My Daily Routine</h3>
+            <p className="text-xs text-text-secondary">Tap to confirm you took your pill today</p>
           </div>
           <button
             onClick={onVoiceClick}
@@ -123,14 +123,14 @@ export default function ElderlyQuickActions({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {medications.filter((m) => m.isActive).map((med) => (
-            <div key={med.id} className="bg-gray-800/80 border border-gray-700/80 rounded-lg p-3 flex items-center justify-between gap-2.5">
+            <div key={med.id} className="bg-card-subtle border border-border-color rounded-lg p-3 flex items-center justify-between gap-2.5">
               <div className="flex items-center gap-2.5">
-                <div className="p-1.5 rounded-md bg-gray-900/60 shrink-0">
+                <div className="p-1.5 rounded-md bg-surface shrink-0">
                   <PillShapeIcon medicationName={med.medicationName} size={24} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">{med.medicationName}</p>
-                  <p className="text-xs text-gray-400 tabular-nums">{med.dosage} • {med.scheduledTimes[0]}</p>
+                  <p className="text-sm font-semibold text-text-primary">{med.medicationName}</p>
+                  <p className="text-xs text-text-secondary tabular-nums">{med.dosage} • {med.scheduledTimes[0]}</p>
                 </div>
               </div>
               <button

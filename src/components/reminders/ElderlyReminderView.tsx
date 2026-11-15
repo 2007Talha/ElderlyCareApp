@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { Medication, Appointment } from '@/types';
 import { ElderlyMedicationCard } from './ElderlyMedicationCard';
+import { speakDailyReminders } from '@/utils/helpers';
 import { Volume2, Calendar, Heart, Sparkles } from 'lucide-react';
 
 interface CheckInAlert {
@@ -10,18 +11,6 @@ interface CheckInAlert {
   requestedAt: string;
   message: string;
   acknowledged: boolean;
-}
-
-function speakReminders(meds: Medication[], apts: Appointment[]) {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const medNames = meds.map((m) => `${m.medicationName} at ${m.scheduledTimes.join(', ')}`).join('. ');
-  const aptNames = apts.length > 0
-    ? `Upcoming appointment with ${apts[0].doctorName} on ${new Date(apts[0].appointmentDateTime).toLocaleDateString()}.`
-    : 'No appointments today.';
-  const speech = new SpeechSynthesisUtterance(`Here are your daily reminders. Medications: ${medNames}. ${aptNames}`);
-  speech.rate = 0.9;
-  window.speechSynthesis.speak(speech);
 }
 
 /** Elderly-focused reminder center with compact typography and 1-click dose confirmation. */
@@ -76,7 +65,7 @@ export default function ElderlyReminderView() {
 
   const handleSpeak = useCallback(() => {
     setSpeaking(true);
-    speakReminders(medications, appointments);
+    speakDailyReminders(medications, appointments);
     setTimeout(() => setSpeaking(false), 5000);
   }, [medications, appointments]);
 
@@ -145,18 +134,18 @@ export default function ElderlyReminderView() {
           Upcoming Doctor Appointments
         </h3>
         {upcomingApts.map((apt) => {
-          const aptDate = new Date(apt.appointmentDateTime);
+          const d = new Date(apt.appointmentDateTime);
           return (
-            <div key={apt.id} className="p-3 rounded-xl bg-surface border border-gray-800 flex items-center justify-between text-xs">
+            <div key={apt.id} className="p-3 rounded-xl bg-surface border border-border-color flex items-center justify-between text-xs">
               <div>
-                <p className="font-semibold text-xs text-white">{apt.doctorName} — {apt.specialty}</p>
-                <p className="text-[11px] text-gray-400 mt-0.5">{apt.location}</p>
+                <p className="font-semibold text-xs text-text-primary">{apt.doctorName} — {apt.specialty}</p>
+                <p className="text-[11px] text-text-secondary mt-0.5">{apt.location}</p>
               </div>
               <div className="text-right">
-                <span className="text-xs font-semibold text-amber-400 tabular-nums">
-                  {aptDate.toLocaleDateString()} at {aptDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <span className="text-xs font-semibold text-amber-500 tabular-nums">
+                  {d.toLocaleDateString()} at {d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
-                <p className="text-[11px] text-gray-400 mt-0.5">{apt.preparationNotes || 'Scheduled'}</p>
+                <p className="text-[11px] text-text-secondary mt-0.5">{apt.preparationNotes || 'Scheduled'}</p>
               </div>
             </div>
           );

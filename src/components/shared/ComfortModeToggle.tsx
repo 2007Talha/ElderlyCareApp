@@ -14,10 +14,10 @@ export default function ComfortModeToggle({
   return (
     <button
       onClick={onToggle}
-      className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
+      className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors shadow-sm ${
         enabled
           ? 'bg-accent/20 border-accent text-accent'
-          : 'bg-gray-800 border-gray-700 text-gray-400 hover:text-white'
+          : 'bg-card-subtle border-border-color text-text-secondary hover:text-text-primary'
       }`}
       aria-pressed={enabled}
       aria-label="Toggle Elderly Comfort Mode"

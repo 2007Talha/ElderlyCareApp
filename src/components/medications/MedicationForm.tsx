@@ -61,40 +61,40 @@ export default function MedicationForm({ medication, onSave, onCancel }: Medicat
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="med-name" className="block text-sm font-medium text-gray-300 mb-1">Medication Name</label>
-        <input id="med-name" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+        <label htmlFor="med-name" className="block text-sm font-medium text-text-secondary mb-1">Medication Name</label>
+        <input id="med-name" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="med-dosage" className="block text-sm font-medium text-gray-300 mb-1">Dosage</label>
-          <input id="med-dosage" value={dosage} onChange={(e) => setDosage(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+          <label htmlFor="med-dosage" className="block text-sm font-medium text-text-secondary mb-1">Dosage</label>
+          <input id="med-dosage" value={dosage} onChange={(e) => setDosage(e.target.value)} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
         </div>
         <div>
-          <label htmlFor="med-frequency" className="block text-sm font-medium text-gray-300 mb-1">Frequency</label>
-          <input id="med-frequency" value={frequency} onChange={(e) => setFrequency(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+          <label htmlFor="med-frequency" className="block text-sm font-medium text-text-secondary mb-1">Frequency</label>
+          <input id="med-frequency" value={frequency} onChange={(e) => setFrequency(e.target.value)} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
         </div>
       </div>
       <div>
-        <label htmlFor="med-times" className="block text-sm font-medium text-gray-300 mb-1">Scheduled Times (comma-separated)</label>
-        <input id="med-times" value={times} onChange={(e) => setTimes(e.target.value)} placeholder="08:00, 20:00" className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+        <label htmlFor="med-times" className="block text-sm font-medium text-text-secondary mb-1">Scheduled Times (comma-separated)</label>
+        <input id="med-times" value={times} onChange={(e) => setTimes(e.target.value)} placeholder="08:00, 20:00" className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="med-inventory" className="block text-sm font-medium text-gray-300 mb-1">Inventory Count</label>
-          <input id="med-inventory" type="number" value={inventory} onChange={(e) => setInventory(Number(e.target.value))} min={0} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+          <label htmlFor="med-inventory" className="block text-sm font-medium text-text-secondary mb-1">Inventory Count</label>
+          <input id="med-inventory" type="number" value={inventory} onChange={(e) => setInventory(Number(e.target.value))} min={0} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
         </div>
         <div>
-          <label htmlFor="med-prescriber" className="block text-sm font-medium text-gray-300 mb-1">Prescribed By</label>
-          <input id="med-prescriber" value={prescribedBy} onChange={(e) => setPrescribedBy(e.target.value)} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" required />
+          <label htmlFor="med-prescriber" className="block text-sm font-medium text-text-secondary mb-1">Prescribed By</label>
+          <input id="med-prescriber" value={prescribedBy} onChange={(e) => setPrescribedBy(e.target.value)} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" required />
         </div>
       </div>
       <div>
-        <label htmlFor="med-instructions" className="block text-sm font-medium text-gray-300 mb-1">Instructions</label>
-        <textarea id="med-instructions" value={instructions} onChange={(e) => setInstructions(e.target.value)} rows={2} className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white" />
+        <label htmlFor="med-instructions" className="block text-sm font-medium text-text-secondary mb-1">Instructions</label>
+        <textarea id="med-instructions" value={instructions} onChange={(e) => setInstructions(e.target.value)} rows={2} className="w-full bg-surface border border-border-color rounded-lg px-3 py-2 text-text-primary" />
       </div>
       <div className="flex items-center gap-2">
         <input id="med-active" type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} className="rounded" />
-        <label htmlFor="med-active" className="text-sm text-gray-300">Active</label>
+        <label htmlFor="med-active" className="text-sm text-text-secondary">Active</label>
       </div>
 
       {interactions.length > 0 && (
@@ -103,7 +103,7 @@ export default function MedicationForm({ medication, onSave, onCancel }: Medicat
             <AlertTriangle className="w-4 h-4" /> Drug Interaction Warnings
           </p>
           {interactions.map((i, idx) => (
-            <p key={idx} className="text-xs text-gray-300 mt-1">{i.drugA} + {i.drugB}: {i.description}</p>
+            <p key={idx} className="text-xs text-text-secondary mt-1">{i.drugA} + {i.drugB}: {i.description}</p>
           ))}
         </div>
       )}
@@ -115,7 +115,7 @@ export default function MedicationForm({ medication, onSave, onCancel }: Medicat
           <Save className="w-4 h-4" aria-hidden="true" />
           {loading ? 'Saving...' : 'Save'}
         </button>
-        <button type="button" onClick={onCancel} className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+        <button type="button" onClick={onCancel} className="flex items-center gap-2 bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary border border-border-color px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
           <X className="w-4 h-4" aria-hidden="true" />
           Cancel
         </button>

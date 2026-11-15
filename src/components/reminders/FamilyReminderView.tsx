@@ -52,21 +52,21 @@ export default function FamilyReminderView() {
         <h2 className="text-sm font-bold">Family Peace-of-Mind & Gentle Reminders</h2>
       </div>
 
-      <section aria-labelledby="loving-nudge-heading" className="p-4 rounded-xl bg-surface border border-gray-800 space-y-3">
-        <h3 id="loving-nudge-heading" className="text-sm font-bold flex items-center gap-2">
+      <section aria-labelledby="loving-nudge-heading" className="p-4 rounded-xl bg-surface border border-border-color space-y-3 shadow-sm">
+        <h3 id="loving-nudge-heading" className="text-sm font-bold text-text-primary flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-emerald-400" aria-hidden="true" />
           Send a Caring Reminder or Check-in
         </h3>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleSendLovingNudge('❤️ Thinking of you today! Hope you are feeling well and hydrated.')}
-            className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3 py-1.5 rounded-lg transition-colors"
+            className="text-xs bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary border border-border-color px-3 py-1.5 rounded-lg transition-colors"
           >
             ❤️ Thinking of you
           </button>
           <button
             onClick={() => handleSendLovingNudge('💊 Gentle reminder for your evening medications with dinner!')}
-            className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3 py-1.5 rounded-lg transition-colors"
+            className="text-xs bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary border border-border-color px-3 py-1.5 rounded-lg transition-colors"
           >
             💊 Evening pill reminder
           </button>
@@ -77,7 +77,7 @@ export default function FamilyReminderView() {
             value={customMsg}
             onChange={(e) => setCustomMsg(e.target.value)}
             placeholder="Write a personal note to your loved one..."
-            className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-white focus:border-emerald-500"
+            className="flex-1 bg-card-subtle border border-border-color rounded-lg px-3 py-2 text-xs text-text-primary focus:border-emerald-500"
           />
           <button
             onClick={() => handleSendLovingNudge()}
@@ -89,27 +89,27 @@ export default function FamilyReminderView() {
           </button>
         </div>
         {sentSuccess && (
-          <p className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+          <p className="text-xs text-emerald-500 font-semibold flex items-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5" /> Delivered to their screen!
           </p>
         )}
       </section>
 
-      <section aria-labelledby="family-prefs-heading" className="p-4 rounded-xl bg-surface border border-gray-800 space-y-3">
-        <h3 id="family-prefs-heading" className="text-sm font-bold flex items-center gap-2">
+      <section aria-labelledby="family-prefs-heading" className="p-4 rounded-xl bg-surface border border-border-color space-y-3 shadow-sm">
+        <h3 id="family-prefs-heading" className="text-sm font-bold text-text-primary flex items-center gap-2">
           <BellRing className="w-4 h-4 text-teal-400" aria-hidden="true" />
           Family Oversight Alert Subscriptions
         </h3>
         <div className="space-y-2">
           {preferences.map((pref) => (
-            <div key={pref.id} className="p-3 rounded-xl bg-gray-800/40 border border-gray-700/60 flex items-center justify-between text-xs">
+            <div key={pref.id} className="p-3 rounded-xl bg-card-subtle border border-border-color flex items-center justify-between text-xs">
               <div>
-                <p className="font-semibold text-white">{pref.label}</p>
-                <p className="text-gray-400 mt-0.5">{pref.description}</p>
+                <p className="font-semibold text-text-primary">{pref.label}</p>
+                <p className="text-text-secondary mt-0.5">{pref.description}</p>
               </div>
               <button
                 onClick={() => togglePref(pref.id)}
-                className={`px-3 py-1 rounded-full text-xs font-semibold ${pref.enabled ? 'bg-emerald-500 text-white' : 'bg-gray-700 text-gray-400'}`}
+                className={`px-3 py-1 rounded-full text-xs font-semibold ${pref.enabled ? 'bg-emerald-500 text-white' : 'bg-gray-300 dark:bg-gray-700 text-text-secondary'}`}
               >
                 {pref.enabled ? 'Enabled' : 'Disabled'}
               </button>

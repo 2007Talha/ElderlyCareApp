@@ -51,12 +51,12 @@ export default function AppointmentList() {
 
       <div className="grid gap-4" aria-live="polite">
         {appointments.map((apt) => (
-          <article key={apt.id} className="bg-surface border border-gray-800 rounded-xl p-4">
+          <article key={apt.id} className="bg-surface border border-border-color rounded-xl p-4 shadow-sm hover:border-gray-400 dark:hover:border-gray-700 transition-colors">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-semibold text-white">{apt.doctorName}</h3>
+                <h3 className="font-semibold text-text-primary">{apt.doctorName}</h3>
                 <p className="text-sm text-accent">{apt.specialty}</p>
-                <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
+                <div className="flex items-center gap-4 mt-2 text-xs text-text-secondary">
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" aria-hidden="true" />
                     {new Date(apt.appointmentDateTime).toLocaleString()}
@@ -67,15 +67,15 @@ export default function AppointmentList() {
                   </span>
                 </div>
                 {apt.preparationNotes && (
-                  <p className="text-xs text-gray-500 mt-2">Prep: {apt.preparationNotes}</p>
+                  <p className="text-xs text-text-secondary mt-2">Prep: {apt.preparationNotes}</p>
                 )}
               </div>
               <div className="flex items-center gap-2">
                 <StatusBadge status={apt.reminderStatus} />
-                <button onClick={() => { setEditingApt(apt); setShowForm(true); }} className="text-gray-400 hover:text-accent p-1" aria-label={`Edit appointment with ${apt.doctorName}`}>
+                <button onClick={() => { setEditingApt(apt); setShowForm(true); }} className="text-text-secondary hover:text-accent p-1" aria-label={`Edit appointment with ${apt.doctorName}`}>
                   <Edit className="w-4 h-4" />
                 </button>
-                <button onClick={() => handleDelete(apt.id)} className="text-gray-400 hover:text-danger p-1" aria-label={`Delete appointment with ${apt.doctorName}`}>
+                <button onClick={() => handleDelete(apt.id)} className="text-text-secondary hover:text-danger p-1" aria-label={`Delete appointment with ${apt.doctorName}`}>
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>

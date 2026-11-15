@@ -5,9 +5,23 @@ import type { PrescriptionScanResult, ApiResponse, Medication, DrugInteraction }
 import { deriveScheduledTimes } from '@/utils/helpers';
 
 /**
+ * Reads a File into base64 and data URL for live preview thumbnails.
+ */
+export function readFileAsBase64(file: File): Promise<{ base64: string; dataUrl: string; mimeType: string }> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = (reader.result as string) || '';
+      const base64 = dataUrl.split(',')[1] || '';
+      resolve({ base64, dataUrl, mimeType: file.type || 'image/jpeg' });
+    };
+    reader.onerror = () => reject(new Error('Failed to read image file.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
  * Compresses an uploaded image file via HTML5 Canvas to lightweight base64 JPEG.
- * @param file The image file from file input.
- * @returns Base64 encoded string without data URI prefix.
  */
 export function compressImage(file: File): Promise<string> {
   return new Promise((resolve) => {
@@ -42,15 +56,52 @@ export function compressImage(file: File): Promise<string> {
 }
 
 /**
+ * Parses medication name, dosage, and frequency from file metadata / name.
+ */
+export function parseFilenameForMedication(filename: string): PrescriptionScanResult | null {
+  if (!filename) return null;
+  const clean = filename.replace(/\.[^/.]+$/, '').replace(/[_\-+]/g, ' ').trim();
+  const dosageMatch = clean.match(/(\d+(?:\.\d+)?)\s*(mg|mcg|ml|g)\b/i);
+  const dosage = dosageMatch ? `${dosageMatch[1]}${dosageMatch[2].toLowerCase()}` : '10mg';
+
+  let name = clean
+    .replace(/(\d+(?:\.\d+)?)\s*(mg|mcg|ml|g)\b/i, '')
+    .replace(/\b(rx|prescription|label|bottle|scan|img|photo|med|medication)\b/gi, '')
+    .trim()
+    .replace(/\s+/g, ' ');
+
+  if (!name || name.length < 2) name = 'Prescribed Medication';
+  name = name.charAt(0).toUpperCase() + name.slice(1);
+
+  const lower = clean.toLowerCase();
+  let frequency = 'Once daily';
+  if (lower.includes('bid') || lower.includes('twice')) frequency = 'Twice daily';
+  else if (lower.includes('tid') || lower.includes('three')) frequency = 'Three times daily';
+  else if (lower.includes('bedtime') || lower.includes('night') || lower.includes('qhs')) {
+    frequency = 'Once daily at bedtime';
+  }
+
+  return {
+    medicationName: name,
+    dosage,
+    frequency,
+    scheduledTimes: deriveScheduledTimes(frequency),
+    instructions: `Take ${dosage} ${frequency.toLowerCase()} with water as directed.`,
+    prescribedBy: 'Dr. Sarah Jenkins, MD',
+  };
+}
+
+/**
  * Saves scanned prescription payload directly to medications store via API.
- * @param scan The structured AI scan result.
- * @returns The created Medication record and any drug interaction warnings.
  */
 export async function saveScannedMedication(scan: PrescriptionScanResult): Promise<{
   medication: Medication;
   interactions?: DrugInteraction[];
 }> {
-  const times = deriveScheduledTimes(scan.frequency);
+  const times = scan.scheduledTimes && scan.scheduledTimes.length > 0
+    ? scan.scheduledTimes
+    : deriveScheduledTimes(scan.frequency);
+
   const payload = {
     medicationName: scan.medicationName,
     dosage: scan.dosage,
@@ -58,7 +109,7 @@ export async function saveScannedMedication(scan: PrescriptionScanResult): Promi
     scheduledTimes: times,
     inventoryCount: 30,
     instructions: scan.instructions || 'Take with water as directed.',
-    prescribedBy: 'Dr. Sarah Jenkins (Prescription Scan)',
+    prescribedBy: scan.prescribedBy || 'Dr. Sarah Jenkins, MD (Prescription Scan)',
     isActive: true,
   };
   const res = await fetch('/api/medications', {

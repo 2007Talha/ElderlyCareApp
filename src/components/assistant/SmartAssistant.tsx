@@ -69,16 +69,16 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
         Smart Care Assistant
       </h2>
 
-      <div className="flex-1 bg-surface border border-gray-800 rounded-xl p-4 overflow-y-auto max-h-96 space-y-3" aria-live="polite" aria-label="Assistant conversation">
+      <div className="flex-1 bg-surface border border-border-color rounded-xl p-4 overflow-y-auto max-h-96 space-y-3 shadow-sm" aria-live="polite" aria-label="Assistant conversation">
         {messages.length === 0 && (
-          <p className="text-gray-500 text-sm text-center py-8">
+          <p className="text-text-secondary text-sm text-center py-8">
             Ask me about your medications, appointments, or health routines.
           </p>
         )}
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[80%] rounded-xl px-4 py-2.5 text-sm ${
-              msg.role === 'user' ? 'bg-teal-600 text-white shadow-sm font-medium' : 'bg-gray-800 text-gray-200 border border-gray-700/60'
+              msg.role === 'user' ? 'bg-teal-600 text-white shadow-sm font-medium' : 'bg-card-subtle text-text-primary border border-border-color'
             }`}>
               {msg.role === 'user' ? (
                 <p className="whitespace-pre-wrap">{msg.content}</p>
@@ -93,7 +93,7 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-gray-800 rounded-xl px-4 py-2 text-sm text-gray-400">
+            <div className="bg-card-subtle rounded-xl px-4 py-2 text-sm text-text-secondary border border-border-color">
               Thinking...
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function SmartAssistant({ role }: SmartAssistantProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about your health..."
-          className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+          className="flex-1 bg-card-subtle border border-border-color rounded-lg px-4 py-2 text-text-primary"
           disabled={loading}
         />
         <button

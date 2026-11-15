@@ -137,4 +137,6 @@ export interface PrescriptionScanResult {
   readonly dosage: string;
   readonly frequency: string;
   readonly instructions: string;
+  readonly prescribedBy?: string;
+  readonly scheduledTimes?: string[];
 }

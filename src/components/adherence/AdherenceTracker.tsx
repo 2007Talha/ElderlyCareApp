@@ -84,17 +84,17 @@ export default function AdherenceTracker() {
 
       {data && (
         <div className="grid grid-cols-3 gap-4 mb-6" aria-live="polite">
-          <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
+          <div className="bg-surface border border-border-color rounded-xl p-4 text-center shadow-sm">
             <p className="text-3xl font-bold text-success tabular-nums">{data.rate}%</p>
-            <p className="text-sm text-gray-400 font-medium">Adherence Rate</p>
+            <p className="text-sm text-text-secondary font-medium">Adherence Rate</p>
           </div>
-          <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
+          <div className="bg-surface border border-border-color rounded-xl p-4 text-center shadow-sm">
             <p className="text-3xl font-bold text-teal-400 tabular-nums">{data.streak}</p>
-            <p className="text-sm text-gray-400 font-medium">Day Streak</p>
+            <p className="text-sm text-text-secondary font-medium">Day Streak</p>
           </div>
-          <div className="bg-surface border border-gray-800 rounded-xl p-4 text-center">
-            <p className="text-3xl font-bold text-warning tabular-nums">{data.breakdown.Missed}</p>
-            <p className="text-sm text-gray-400 font-medium">Missed Doses</p>
+          <div className="bg-surface border border-border-color rounded-xl p-4 text-center shadow-sm">
+            <p className="text-3xl font-bold text-amber-500 tabular-nums">{data.breakdown.Missed}</p>
+            <p className="text-sm text-text-secondary font-medium">Missed Doses</p>
           </div>
         </div>
       )}
@@ -108,19 +108,19 @@ export default function AdherenceTracker() {
       <AdherenceManualForm activeMeds={activeMeds} onSave={handleManualSave} />
 
       <div className="space-y-2" aria-live="polite">
-        <h3 className="font-bold text-white text-sm mb-2">Recent Adherence Activity</h3>
+        <h3 className="font-bold text-text-primary text-sm mb-2">Recent Adherence Activity</h3>
         {recentRecords.map((r) => (
-          <div key={r.id} className="flex items-center justify-between bg-surface border border-gray-800 rounded-lg px-4 py-2.5 hover:border-gray-700 transition-colors">
+          <div key={r.id} className="flex items-center justify-between bg-surface border border-border-color rounded-lg px-4 py-2.5 hover:border-gray-400 dark:hover:border-gray-700 transition-colors shadow-sm">
             <div className="flex items-center gap-2.5">
               {statusIcons[r.status]}
-              <span className="text-sm font-semibold text-white">
+              <span className="text-sm font-semibold text-text-primary">
                 {medNameMap.get(r.medicationId) ?? r.medicationId}
               </span>
-              <span className="text-xs text-gray-400 tabular-nums">({r.scheduledTime})</span>
+              <span className="text-xs text-text-secondary tabular-nums">({r.scheduledTime})</span>
             </div>
             <div className="flex items-center gap-3">
               <StatusBadge status={r.status} />
-              <span className="text-xs text-gray-500 tabular-nums">{new Date(r.recordedAt).toLocaleString()}</span>
+              <span className="text-xs text-text-secondary tabular-nums">{new Date(r.recordedAt).toLocaleString()}</span>
             </div>
           </div>
         ))}

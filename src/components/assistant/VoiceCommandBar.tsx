@@ -54,9 +54,9 @@ export default function VoiceCommandBar({ onCommand }: VoiceCommandBarProps) {
   }, []);
 
   return (
-    <div className="bg-surface border border-gray-800 rounded-xl p-4">
+    <div className="bg-surface border border-border-color rounded-xl p-4 shadow-sm">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-medium flex items-center gap-2">
+        <h3 className="font-medium text-text-primary flex items-center gap-2">
           <Volume2 className="w-5 h-5 text-teal-400" aria-hidden="true" />
           Voice Commands
         </h3>
@@ -75,7 +75,7 @@ export default function VoiceCommandBar({ onCommand }: VoiceCommandBarProps) {
       </div>
 
       {transcript && (
-        <p className="text-sm text-gray-300 mb-3 italic" aria-live="polite">
+        <p className="text-sm text-text-secondary mb-3 italic" aria-live="polite">
           &ldquo;{transcript}&rdquo;
         </p>
       )}
@@ -88,7 +88,7 @@ export default function VoiceCommandBar({ onCommand }: VoiceCommandBarProps) {
               onCommand(cmd);
               speakText(cmd);
             }}
-            className="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-1.5 rounded-full border border-gray-700 transition-colors"
+            className="bg-card-subtle hover:bg-gray-200 dark:hover:bg-gray-700 text-text-primary text-xs px-3 py-1.5 rounded-full border border-border-color transition-colors"
           >
             {cmd}
           </button>

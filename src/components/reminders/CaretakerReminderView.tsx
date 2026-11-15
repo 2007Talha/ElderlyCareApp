@@ -100,8 +100,8 @@ export default function CaretakerReminderView() {
         </section>
       )}
 
-      <section aria-labelledby="nudge-heading" className="p-4 rounded-xl bg-surface border border-gray-800 space-y-3">
-        <h3 id="nudge-heading" className="text-sm font-bold flex items-center gap-2">
+      <section aria-labelledby="nudge-heading" className="p-4 rounded-xl bg-surface border border-border-color space-y-3 shadow-sm">
+        <h3 id="nudge-heading" className="text-sm font-bold text-text-primary flex items-center gap-2">
           <Send className="w-4 h-4 text-teal-400" aria-hidden="true" />
           Send Immediate Clinical Nudge
         </h3>
@@ -111,7 +111,7 @@ export default function CaretakerReminderView() {
             value={nudgeMessage}
             onChange={(e) => setNudgeMessage(e.target.value)}
             placeholder="Type clinical check-in message..."
-            className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-xs text-white focus:border-amber-500"
+            className="flex-1 bg-card-subtle border border-border-color rounded-lg px-3 py-2 text-xs text-text-primary focus:border-amber-500"
           />
           <button
             onClick={() => handleSendNudge()}
@@ -123,7 +123,7 @@ export default function CaretakerReminderView() {
           </button>
         </div>
         {nudgeSuccess && (
-          <p className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+          <p className="text-xs text-emerald-500 font-semibold flex items-center gap-1">
             <CheckCircle className="w-3.5 h-3.5" /> Nudge delivered to elderly interface!
           </p>
         )}
@@ -131,18 +131,18 @@ export default function CaretakerReminderView() {
 
       <section aria-labelledby="dispatches-heading" className="space-y-2.5">
         <div className="flex items-center justify-between">
-          <h3 id="dispatches-heading" className="text-sm font-bold flex items-center gap-2">
-            <RefreshCw className="w-4 h-4 text-gray-400" aria-hidden="true" />
+          <h3 id="dispatches-heading" className="text-sm font-bold text-text-primary flex items-center gap-2">
+            <RefreshCw className="w-4 h-4 text-text-secondary" aria-hidden="true" />
             Recent Proactive Escalations & Reminders
           </h3>
-          <span className="text-xs text-gray-400">{recentLogs.length} logged</span>
+          <span className="text-xs text-text-secondary">{recentLogs.length} logged</span>
         </div>
         <div className="space-y-2">
           {latestLogs.map((log) => (
-            <div key={log.id} className="p-3 rounded-xl bg-surface border border-gray-800 flex items-center justify-between text-xs">
+            <div key={log.id} className="p-3 rounded-xl bg-surface border border-border-color flex items-center justify-between text-xs shadow-sm">
               <div>
-                <p className="font-semibold text-white">{log.subject}</p>
-                <p className="text-gray-400 mt-0.5">To: {log.recipient} • Reason: {log.triggerReason}</p>
+                <p className="font-semibold text-text-primary">{log.subject}</p>
+                <p className="text-text-secondary mt-0.5">To: {log.recipient} • Reason: {log.triggerReason}</p>
               </div>
               <StatusBadge status={log.deliveryStatus} />
             </div>

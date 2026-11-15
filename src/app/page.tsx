@@ -17,13 +17,9 @@ import PrescriptionScanner from '@/components/assistant/PrescriptionScanner';
 import AppHeader from '@/components/layout/AppHeader';
 import ConsentToggle from '@/components/shared/ConsentToggle';
 import SkipToContent from '@/components/a11y/SkipToContent';
-import JudgeQuickBar from '@/components/judge/JudgeQuickBar';
-import EmailPreviewModal from '@/components/judge/EmailPreviewModal';
-import ToastNotification from '@/components/ui/ToastNotification';
-import { useJudgeSandbox } from '@/hooks/useJudgeSandbox';
 import { STORAGE_KEYS, loadLocalData, saveLocalData } from '@/utils/persistence';
 
-/** Root page — authentication gate with Judge Quick-Bar and role views. */
+/** Root page — authentication gate with role views. */
 export default function HomePage() {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
@@ -33,11 +29,6 @@ export default function HomePage() {
   const [mounted, setMounted] = useState(false);
 
   const triggerRefresh = useCallback(() => setMedRefreshTrigger((k) => k + 1), []);
-
-  const {
-    lastEmail, emailModalOpen, setEmailModalOpen, toast, dismissToast,
-    switchRole, simulateEmailAlert, resetDemoState,
-  } = useJudgeSandbox({ onSessionChange: setSession, onDataRefresh: triggerRefresh });
 
   useEffect(() => {
     setMounted(true);
@@ -75,77 +66,64 @@ export default function HomePage() {
 
   if (!mounted) return <div className="min-h-screen bg-background" />;
 
+  if (!session) {
+    return (
+      <div className={`min-h-screen ${comfortMode ? 'comfort-mode' : ''}`}>
+        <SkipToContent />
+        <PasscodeLogin onLogin={handleLogin} />
+      </div>
+    );
+  }
+
   return (
     <div className={`min-h-screen flex flex-col ${comfortMode ? 'comfort-mode' : ''}`}>
       <SkipToContent />
-      <JudgeQuickBar
-        currentRole={session?.role}
-        onSwitchRole={switchRole}
-        onSimulateMissed={() => simulateEmailAlert('missed')}
-        onSimulateUpcoming={() => simulateEmailAlert('upcoming')}
-        onResetDemoData={resetDemoState}
-        onViewLastEmail={() => setEmailModalOpen(true)}
-        hasDispatchedEmail={Boolean(lastEmail)}
-      />
+      <div className="flex-1 flex overflow-hidden">
+        <Sidebar
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          role={session.role}
+          onLogout={handleLogout}
+          isOpen={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+        />
 
-      <EmailPreviewModal
-        isOpen={emailModalOpen}
-        onClose={() => setEmailModalOpen(false)}
-        email={lastEmail}
-      />
-
-      <ToastNotification toast={toast} onDismiss={dismissToast} />
-
-      {!session ? (
-        <PasscodeLogin onLogin={handleLogin} />
-      ) : (
-        <div className="flex-1 flex overflow-hidden">
-          <Sidebar
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
+        <main id="main-content" className="flex-1 p-4 sm:p-6 overflow-y-auto">
+          <AppHeader
             role={session.role}
-            onLogout={handleLogout}
-            isOpen={mobileMenuOpen}
-            onClose={() => setMobileMenuOpen(false)}
+            comfortMode={comfortMode}
+            onToggleComfort={handleToggleComfort}
+            onOpenMenu={() => setMobileMenuOpen(true)}
           />
 
-          <main id="main-content" className="flex-1 p-4 sm:p-6 overflow-y-auto">
-            <AppHeader
+          {activeTab === 'dashboard' && (
+            <Dashboard
               role={session.role}
-              comfortMode={comfortMode}
-              onToggleComfort={handleToggleComfort}
-              onOpenMenu={() => setMobileMenuOpen(true)}
+              onVoiceClick={() => setActiveTab('assistant')}
             />
-
-            {activeTab === 'dashboard' && (
-              <Dashboard
-                role={session.role}
-                onVoiceClick={() => setActiveTab('assistant')}
+          )}
+          {activeTab === 'medications' && (
+            <div className="space-y-6">
+              <PrescriptionScanner
+                onScanResult={triggerRefresh}
+                onMedicationAdded={triggerRefresh}
               />
-            )}
-            {activeTab === 'medications' && (
-              <div className="space-y-6">
-                <PrescriptionScanner
-                  onScanResult={triggerRefresh}
-                  onMedicationAdded={triggerRefresh}
-                />
-                <MedicationList refreshTrigger={medRefreshTrigger} />
-              </div>
-            )}
-            {activeTab === 'adherence' && <AdherenceTracker />}
-            {activeTab === 'appointments' && <AppointmentList />}
-            {activeTab === 'reminders' && <ReminderCenter role={session.role} />}
-            {activeTab === 'assistant' && (
-              <div className="space-y-6">
-                <VoiceCommandBar onCommand={handleVoiceCommand} />
-                <SmartAssistant role={session.role} />
-              </div>
-            )}
-            {activeTab === 'email-log' && <EmailLog />}
-            {activeTab === 'settings' && <ConsentToggle role={session.role} />}
-          </main>
-        </div>
-      )}
+              <MedicationList refreshTrigger={medRefreshTrigger} />
+            </div>
+          )}
+          {activeTab === 'adherence' && <AdherenceTracker />}
+          {activeTab === 'appointments' && <AppointmentList />}
+          {activeTab === 'reminders' && <ReminderCenter role={session.role} />}
+          {activeTab === 'assistant' && (
+            <div className="space-y-6">
+              <VoiceCommandBar onCommand={handleVoiceCommand} />
+              <SmartAssistant role={session.role} />
+            </div>
+          )}
+          {activeTab === 'email-log' && <EmailLog />}
+          {activeTab === 'settings' && <ConsentToggle role={session.role} />}
+        </main>
+      </div>
     </div>
   );
 }

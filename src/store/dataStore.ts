@@ -1,7 +1,4 @@
-/**
- * In-memory data store pre-seeded with realistic demo data.
- * Provides deterministic local persistence without external databases.
- */
+/** In-memory data store pre-seeded with realistic clinical demo data. */
 import type {
   Medication, Appointment, AdherenceRecord,
   EmailDispatchLog, ConsentPreferences,
@@ -147,9 +144,7 @@ export function setCheckInAlert(val: { id: string; requestedAt: string; message:
 /** Returns the rate limit state for a given IP key. */
 export function getRateLimit(key: string) { return rateLimiter.get(key); }
 /** Sets the rate limit state for a given IP key. */
-export function setRateLimit(
-  key: string, val: { count: number; lockedUntil: number }
-): void {
+export function setRateLimit(key: string, val: { count: number; lockedUntil: number }): void {
   rateLimiter.set(key, val);
 }
 

@@ -21,7 +21,7 @@ Provide clear, simple, and actionable advice about medications, appointments,
 and daily health routines. Always prioritize safety and suggest consulting
 a doctor for medical decisions.`,
   SCAN_PROMPT: `Extract medication details from this prescription label image.
-Return ONLY valid JSON: {"medicationName":"...","dosage":"...","frequency":"...","instructions":"..."}`,
+Return ONLY valid JSON: {"medicationName":"...","dosage":"...","frequency":"...","instructions":"...","prescribedBy":"..."}`,
 } as const;
 
 /** Email reminder timing thresholds. */

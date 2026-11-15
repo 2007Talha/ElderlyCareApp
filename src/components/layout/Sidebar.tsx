@@ -51,24 +51,24 @@ export default function Sidebar({
         />
       )}
       <nav
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-gray-800 flex flex-col h-full shrink-0 transform transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 lg:min-h-screen ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-border-color flex flex-col h-full shrink-0 transform transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 lg:min-h-screen ${
           isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
         }`}
         aria-label="Main navigation"
       >
-        <div className="p-4 border-b border-gray-800 flex items-center justify-between">
+        <div className="p-4 border-b border-border-color flex items-center justify-between">
           <div>
             <BrandLogo size="sm" />
-            <div className="flex items-center gap-1.5 mt-2.5 px-2 py-1 rounded-md bg-gray-800/60 border border-gray-700/50 w-fit">
+            <div className="flex items-center gap-1.5 mt-2.5 px-2 py-1 rounded-md bg-card-subtle border border-border-color w-fit">
               {role === 'Elderly Individual' && <HeartHandshake className="w-3.5 h-3.5 text-teal-400 shrink-0" aria-hidden="true" />}
               {role === 'Caretaker' && <Stethoscope className="w-3.5 h-3.5 text-amber-400 shrink-0" aria-hidden="true" />}
               {role === 'Family Member' && <UsersRound className="w-3.5 h-3.5 text-emerald-400 shrink-0" aria-hidden="true" />}
-              <span className="text-xs font-semibold text-gray-300">{role}</span>
+              <span className="text-xs font-semibold text-text-secondary">{role}</span>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="lg:hidden text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800"
+            className="lg:hidden text-text-secondary hover:text-text-primary p-1 rounded-lg hover:bg-card-subtle"
             aria-label="Close navigation menu"
           >
             <X className="w-5 h-5" />
@@ -83,7 +83,7 @@ export default function Sidebar({
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-left transition-colors ${
                   activeTab === item.id
                     ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800/60'
+                    : 'text-text-secondary hover:text-text-primary hover:bg-card-subtle'
                 }`}
                 aria-current={activeTab === item.id ? 'page' : undefined}
               >
@@ -94,10 +94,10 @@ export default function Sidebar({
           ))}
         </ul>
 
-        <div className="p-4 border-t border-gray-800">
+        <div className="p-4 border-t border-border-color">
           <button
             onClick={onLogout}
-            className="w-full flex items-center gap-2 text-sm text-gray-400 hover:text-danger transition-colors py-1"
+            className="w-full flex items-center gap-2 text-sm text-text-secondary hover:text-danger transition-colors py-1"
           >
             <LogOut className="w-4 h-4" aria-hidden="true" />
             Sign Out

@@ -24,7 +24,7 @@
 
 ## 🔑 Quick Judge Login Credentials
 
-Judges can click the **1-Click Judge Quick-Test Bar** pinned at the very top of the live application to switch roles instantly without typing, or enter the credentials below:
+Judges can click the **1-Click Role Chips** directly on the passcode login screen to switch roles instantly without typing, or enter the credentials below:
 
 | Role Persona | Passcode / PIN | Core Responsibilities & View Focus |
 | :--- | :---: | :--- |
@@ -39,7 +39,7 @@ Judges can click the **1-Click Judge Quick-Test Bar** pinned at the very top of 
 Follow these 6 rapid steps to evaluate the end-to-end platform in 1 minute:
 
 1. **Verify Passcode Auth & Role Gate:**
-   - Go to [eldercare01.netlify.app](https://eldercare01.netlify.app). Click **"Elderly (1234)"** on the login screen or in the top **Judge Sandbox Bar**.
+   - Go to [eldercare01.netlify.app](https://eldercare01.netlify.app). Click **"Elderly (1234)"** on the login screen.
 2. **Scan Prescription Label with AI & Auto-Schedule:**
    - Navigate to the **Medications** tab.
    - Click **"Demo AI Scan"** (or upload any prescription label image).
@@ -47,9 +47,9 @@ Follow these 6 rapid steps to evaluate the end-to-end platform in 1 minute:
 3. **Test Elderly Autonomy & Healthcare Sovereignty:**
    - On the **Dashboard**, view the **"My Healthcare Decisions & Care Circle Proposals"** card.
    - Click **"Approve"** on Caretaker Sarah's proposal to shift the evening dose. Notice the live decision feedback confirming elderly sovereignty.
-4. **Inspect Live Rendered Email Dispatch:**
-   - In the pinned **Judge Sandbox Bar**, click **"Simulate Missed Dose"**.
-   - Notice the toast notification appears and the **Live Dispatched Email Inspector** modal opens, displaying the exact rendered medical-grade HTML email sent to Caretaker and Family recipients.
+4. **Inspect Proactive Email Reminders & Adherence Logs:**
+   - Navigate to the **Reminders** tab or **Email Logs** to view proactive notifications.
+   - Dispatches clinical alerts to Caretaker and Family recipients with complete delivery telemetry.
 5. **Log Dose Adherence in 1 Click:**
    - Navigate to the **Adherence** tab.
    - Click **"Taken"** on any active medication. The adherence streak increments and day rate updates deterministically.

@@ -34,3 +34,19 @@ export function deriveScheduledTimes(frequency: string): string[] {
   }
   return ['08:00'];
 }
+
+/** Speaks daily medication and appointment reminders using Web Speech API. */
+export function speakDailyReminders(
+  meds: { medicationName: string; scheduledTimes: string[] }[],
+  apts: { doctorName: string; appointmentDateTime: string }[]
+): void {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const medNames = meds.map((m) => `${m.medicationName} at ${m.scheduledTimes.join(', ')}`).join('. ');
+  const aptNames = apts.length > 0
+    ? `Upcoming appointment with ${apts[0].doctorName} on ${new Date(apts[0].appointmentDateTime).toLocaleDateString()}.`
+    : 'No appointments today.';
+  const utterance = new SpeechSynthesisUtterance(`Here are your daily reminders. Medications: ${medNames}. ${aptNames}`);
+  utterance.rate = 0.9;
+  window.speechSynthesis.speak(utterance);
+}
