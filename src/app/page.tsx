@@ -14,11 +14,9 @@ import ReminderCenter from '@/components/reminders/ReminderCenter';
 import SmartAssistant from '@/components/assistant/SmartAssistant';
 import VoiceCommandBar from '@/components/assistant/VoiceCommandBar';
 import PrescriptionScanner from '@/components/assistant/PrescriptionScanner';
-import ComfortModeToggle from '@/components/shared/ComfortModeToggle';
+import AppHeader from '@/components/layout/AppHeader';
 import ConsentToggle from '@/components/shared/ConsentToggle';
-import ThemeToggle from '@/components/ui/ThemeToggle';
 import SkipToContent from '@/components/a11y/SkipToContent';
-import { HeartHandshake, Stethoscope, UsersRound } from 'lucide-react';
 
 const SESSION_KEY = 'eldercare_session';
 const COMFORT_KEY = 'eldercare_comfort_mode';
@@ -28,6 +26,7 @@ export default function HomePage() {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
   const [comfortMode, setComfortMode] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -97,31 +96,17 @@ export default function HomePage() {
         onTabChange={setActiveTab}
         role={session.role}
         onLogout={handleLogout}
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
       />
 
-      <main id="main-content" className="flex-1 p-6 overflow-y-auto">
-        <header className="flex items-center justify-between mb-6 flex-wrap gap-4">
-          <div>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              {session.role === 'Elderly Individual' && <HeartHandshake className="w-6 h-6 text-teal-400" />}
-              {session.role === 'Caretaker' && <Stethoscope className="w-6 h-6 text-amber-400" />}
-              {session.role === 'Family Member' && <UsersRound className="w-6 h-6 text-emerald-400" />}
-              Welcome, {session.role}
-            </h1>
-            <p className="text-xs text-gray-400 mt-0.5">
-              {session.role === 'Elderly Individual' && 'Primary Decision-Maker • Full Privacy Autonomy'}
-              {session.role === 'Caretaker' && 'Healthcare Clinical Oversight & Supply Management'}
-              {session.role === 'Family Member' && 'Family Peace-of-Mind & Support Network'}
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <ComfortModeToggle
-              enabled={comfortMode}
-              onToggle={handleToggleComfort}
-            />
-          </div>
-        </header>
+      <main id="main-content" className="flex-1 p-4 sm:p-6 overflow-y-auto">
+        <AppHeader
+          role={session.role}
+          comfortMode={comfortMode}
+          onToggleComfort={handleToggleComfort}
+          onOpenMenu={() => setMobileMenuOpen(true)}
+        />
 
         {activeTab === 'dashboard' && (
           <Dashboard
