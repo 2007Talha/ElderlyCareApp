@@ -8,6 +8,7 @@
   /* Midnight Sanctuary (Dark Mode Default) */
   --bg-primary: #0B0F19;
   --bg-surface: #111827;
+  --bg-card-subtle: #1F2937;
   --text-primary: #F3F4F6;
   --text-secondary: #9CA3AF;
   --border-color: #1F2937;
@@ -22,6 +23,7 @@
   /* Warm Daylight (Light Mode) */
   --bg-primary: #FAF8F5;
   --bg-surface: #FFFFFF;
+  --bg-card-subtle: #F3EFEA;
   --text-primary: #1C1917;
   --text-secondary: #57534E;
   --border-color: #E6E1D6;
@@ -41,35 +43,64 @@ body {
 
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* Light Theme Component Overrides */
+/* ============================================================
+   WARM DAYLIGHT (LIGHT THEME) COMPLETE STYLING
+   ============================================================ */
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+[data-theme="light"] body {
+  background-color: #FAF8F5 !important;
+  color: #1C1917 !important;
+}
+
+/* Surface & Backgrounds */
 [data-theme="light"] .bg-surface {
   background-color: #FFFFFF !important;
   color: #1C1917 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="light"] .bg-background {
   background-color: #FAF8F5 !important;
 }
 
-[data-theme="light"] .border-gray-800,
-[data-theme="light"] .border-gray-700 {
-  border-color: #E6E1D6 !important;
-}
-
 [data-theme="light"] .bg-gray-800,
-[data-theme="light"] .bg-gray-800\/80 {
+[data-theme="light"] .bg-gray-800\/80,
+[data-theme="light"] .bg-gray-800\/70,
+[data-theme="light"] .bg-gray-800\/60 {
   background-color: #F5F2EB !important;
   color: #1C1917 !important;
 }
 
-[data-theme="light"] .bg-gray-900 {
-  background-color: #EBE5DA !important;
+[data-theme="light"] .bg-gray-900,
+[data-theme="light"] .bg-gray-900\/60 {
+  background-color: #EFE9DF !important;
+}
+
+/* Borders */
+[data-theme="light"] .border-gray-800,
+[data-theme="light"] .border-gray-700,
+[data-theme="light"] .border-gray-700\/80,
+[data-theme="light"] .border-gray-700\/60,
+[data-theme="light"] .border-gray-700\/50 {
+  border-color: #E6E1D6 !important;
+}
+
+/* Typography in Light Mode */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4 {
   color: #1C1917 !important;
 }
 
@@ -77,16 +108,94 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   color: #1C1917 !important;
 }
 
-[data-theme="light"] .text-gray-300 {
+[data-theme="light"] .text-gray-100 {
+  color: #1C1917 !important;
+}
+
+[data-theme="light"] .text-gray-200 {
   color: #292524 !important;
 }
 
-[data-theme="light"] .text-gray-400,
-[data-theme="light"] .text-gray-500 {
+[data-theme="light"] .text-gray-300 {
+  color: #44403C !important;
+}
+
+[data-theme="light"] .text-gray-400 {
   color: #57534E !important;
 }
 
-/* Elderly Comfort Mode (20px+ body, 56px+ touch targets, 26px icons) */
+[data-theme="light"] .text-gray-500 {
+  color: #78716C !important;
+}
+
+/* Teal Accent in Light Mode (Deep Teal for High Contrast) */
+[data-theme="light"] .text-teal-400,
+[data-theme="light"] .text-accent {
+  color: #0F766E !important;
+}
+
+[data-theme="light"] .bg-teal-500\/15,
+[data-theme="light"] .bg-teal-500\/10,
+[data-theme="light"] .bg-accent\/10,
+[data-theme="light"] .bg-accent\/20 {
+  background-color: #CCFBF1 !important;
+  border-color: #99F6E4 !important;
+  color: #0F766E !important;
+}
+
+[data-theme="light"] .bg-teal-600 {
+  background-color: #0F766E !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="light"] .bg-teal-600:hover {
+  background-color: #115E59 !important;
+}
+
+/* Navigation items in Light Mode */
+[data-theme="light"] nav button:hover {
+  background-color: #F0ECE3 !important;
+  color: #1C1917 !important;
+}
+
+/* Inputs, Selects & Forms */
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background-color: #FFFFFF !important;
+  border-color: #D6D0C4 !important;
+  color: #1C1917 !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #A8A29E !important;
+}
+
+/* Modals & Dialogs */
+[data-theme="light"] dialog {
+  background-color: #FFFFFF !important;
+  color: #1C1917 !important;
+  border-color: #E6E1D6 !important;
+}
+
+/* Alert Boxes in Light Mode */
+[data-theme="light"] .bg-warning\/10 {
+  background-color: #FEF3C7 !important;
+  border-color: #FCD34D !important;
+  color: #92400E !important;
+}
+
+[data-theme="light"] .bg-danger\/10 {
+  background-color: #FEE2E2 !important;
+  border-color: #FCA5A5 !important;
+  color: #991B1B !important;
+}
+
+/* ============================================================
+   ELDERLY COMFORT MODE OVERRIDES
+   ============================================================ */
+
 .comfort-mode {
   font-size: 20px;
   line-height: 1.8;
