@@ -75,4 +75,17 @@ describe('Care Check-in State Management', () => {
     setCheckInAlert(null);
     expect(getCheckInAlert()).toBeNull();
   });
+
+  it('supports caretaker and family custom reminder alerts', () => {
+    setCheckInAlert({
+      id: 'fam-chk-1',
+      requestedAt: new Date().toISOString(),
+      message: 'Thinking of you! Remember your evening pills with dinner ❤️',
+      acknowledged: false,
+    });
+    const current = getCheckInAlert();
+    expect(current?.message).toContain('dinner');
+    expect(current?.acknowledged).toBe(false);
+    setCheckInAlert(null);
+  });
 });

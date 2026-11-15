@@ -10,6 +10,7 @@ import MedicationList from '@/components/medications/MedicationList';
 import AdherenceTracker from '@/components/adherence/AdherenceTracker';
 import AppointmentList from '@/components/appointments/AppointmentList';
 import EmailLog from '@/components/reminders/EmailLog';
+import ReminderCenter from '@/components/reminders/ReminderCenter';
 import SmartAssistant from '@/components/assistant/SmartAssistant';
 import VoiceCommandBar from '@/components/assistant/VoiceCommandBar';
 import PrescriptionScanner from '@/components/assistant/PrescriptionScanner';
@@ -120,7 +121,7 @@ export default function HomePage() {
         )}
         {activeTab === 'adherence' && <AdherenceTracker />}
         {activeTab === 'appointments' && <AppointmentList />}
-        {activeTab === 'reminders' && <EmailLog />}
+        {activeTab === 'reminders' && <ReminderCenter role={session.role} />}
         {activeTab === 'assistant' && (
           <div className="space-y-6">
             <VoiceCommandBar onCommand={handleVoiceCommand} />
